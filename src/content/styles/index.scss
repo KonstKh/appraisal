@@ -1,0 +1,11 @@
+$nice-blue: #5B83AD;
+$light-blue: $nice-blue + #111;
+
+body {
+  background-color: $light-blue;
+}
+
+.header {
+  background-color: $light-blue;
+  border: 1px solid green;
+}

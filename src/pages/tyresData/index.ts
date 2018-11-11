@@ -1,0 +1,1 @@
+export { TyresDataContainer } from './tyresDataContainer';
