@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button } from 'antd';
 import { Link } from 'react-router';
 import { Select, Input } from 'antd';
-import { FormInputComponent } from '../../components/formInput';
+import { FormInputComponent } from '../../components';
 
 const Option = Select.Option;
 const { TextArea } = Input;

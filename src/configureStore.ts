@@ -2,7 +2,6 @@ import { createStore, applyMiddleware, compose  } from 'redux';
 import reduxThunk from 'redux-thunk';
 import { reducers } from './reducers';
 
-
 export const configureStore = (preloadedState?: {}) => {
   const nonTypedWindow: any = window;
   const composeEnhancers = nonTypedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

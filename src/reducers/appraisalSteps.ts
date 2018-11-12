@@ -24,7 +24,6 @@ export const appraisalStepReducer = (state = defaultAppraisalStep(), action) => 
 }
 
 const handleGoToNextStep = (state: AppraisalStepState, action) => {
-  console.log(state.currentStep)
   return {
     ...state,
     currentStep: state.currentStep + 1

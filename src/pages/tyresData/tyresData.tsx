@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Button } from 'antd';
 import { Link } from 'react-router';
-import { FormInputComponent } from '../../components/formInput';
+import { FormInputComponent } from '../../components';
 import { Select } from 'antd';
 import './tyresData.less';
 
