@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Select, Input } from 'antd';
+import './componentControl.less';
 
 const Option = Select.Option;
 

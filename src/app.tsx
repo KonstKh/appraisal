@@ -2,6 +2,8 @@ import * as React from 'react';
 import { HeaderContainer } from './components';
 import { FooterComponent } from './components';
 
+import './index.less';
+
 export const App = (props: { children?}) => {
   return (
     <>

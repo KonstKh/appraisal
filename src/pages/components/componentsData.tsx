@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button } from 'antd';
 import { Link } from 'react-router';
 import { ComponentControl } from '../../components/componentControl';
+import './componentsData.less';
 
 interface Props {
   appraisalStep: number;

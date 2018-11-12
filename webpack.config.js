@@ -8,15 +8,14 @@ var basePath = __dirname;
 module.exports = {
  context: path.join(basePath, "src"),
  resolve: {
-   extensions: ['.js', '.ts', '.tsx']
+   extensions: ['.js', '.ts', '.tsx', '.css','.less']
  },
  entry: ['@babel/polyfill',
-        './content/styles.css',
-         './main.tsx'
+         './index.tsx'
         ],
  output: {
    path: path.join(basePath, 'dist'),
-   filename: 'bundle.js'
+   filename: '[name].js'
  },
  devtool: 'source-map',
  devServer: {
@@ -41,6 +40,22 @@ module.exports = {
        test: /\.css$/,
        use: [MiniCssExtractPlugin.loader, "css-loader"]
      },
+     {
+			test: /\.less$/,
+			use: [{
+				loader: 'style-loader'
+			}, {
+				loader: 'css-loader',
+				options: {
+					sourceMap: true
+				}
+			}, {
+				loader: 'less-loader',
+				options: {
+					sourceMap: true
+				}
+			}]
+		},
      {
        test: /\.(png|jpg|gif|svg)$/,
        loader: 'file-loader',

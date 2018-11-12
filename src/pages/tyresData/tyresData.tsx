@@ -3,6 +3,7 @@ import { Button } from 'antd';
 import { Link } from 'react-router';
 import { FormInputComponent } from '../../components/formInput';
 import { Select } from 'antd';
+import './tyresData.less';
 
 const Option = Select.Option;
 

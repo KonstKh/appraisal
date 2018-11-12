@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Button } from 'antd';
 import { Link } from 'react-router';
 import { Input } from 'antd';
+import './equipmentData.less';
+
 const { TextArea } = Input;
 
 interface Props {

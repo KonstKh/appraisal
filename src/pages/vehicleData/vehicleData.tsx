@@ -3,6 +3,7 @@ import { VehicleEntity } from '../../models/vehicle';
 import { Button, Radio, Select } from 'antd';
 import { Link } from 'react-router';
 import { FormInputComponent } from '../../components/formInput';
+import './vehicleData.less';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;

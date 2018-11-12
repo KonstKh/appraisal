@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Steps, Popover } from 'antd';
 import { appraisalSteps } from '../../common/appraisalSteps';
+import './header.less';
 
 const Step = Steps.Step;
 const customDot = (dot, { status, index }) => (
