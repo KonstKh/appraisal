@@ -1,5 +1,4 @@
 import { actionsEnum } from './actionEnum';
-import { hashHistory } from 'react-router';
 
 export const updateAppraisalStep = (currentStep: number) => ({
   type: actionsEnum.UPDATE_APPRAISAL_STEP,

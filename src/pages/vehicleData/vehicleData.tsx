@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { VehicleEntity } from '../../models/vehicle';
 import { Button, Radio, Select } from 'antd';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { FormInputComponent } from '../../components';
 import './vehicleData.less';
 

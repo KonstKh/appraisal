@@ -1,21 +1,20 @@
 import * as React from 'react';
-import { HeaderContainer } from './components';
-import { FooterComponent } from './components';
+import { History } from 'history';
+import { ConnectedRouter } from 'connected-react-router'
+import routes from './routes';
 
 import './index.less';
 
-export const App = (props: { children?}) => {
+interface AppProps {
+  history: History
+}
+
+const App = ({ history }: AppProps) => {
   return (
-    <>
-      <header>
-        <HeaderContainer userName="Max Mustermann" auto="Vokswagen - Arteon 2.0 TDI Elegance 4Motion" />
-      </header>
-      <main>
-        {props.children}
-      </main>
-      <footer>
-        <FooterComponent />
-      </footer>
-    </>
+    <ConnectedRouter history={history}>
+      {routes}
+    </ConnectedRouter>
   )
 }
+
+export default App;

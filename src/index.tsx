@@ -1,44 +1,47 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import { Provider } from 'react-redux';
-import { syncHistoryWithStore} from 'react-router-redux'
-import { configureStore } from './configureStore';
+import App from './App';
+import rootReducer from './reducers';
 
-import { App } from './app';
-import { VehicleDataContainer } from './pages/vehicleData';
-import { TyresDataContainer} from './pages/tyresData';
-import { EquipmentDataContainer } from './pages/equipment';
-import { ComponentsDataContainer } from './pages/components';
-import { InspectionDataContainer } from './pages/inspection';
-import { DocumentsDataContainer } from './pages/documentation';
+import { AppContainer } from 'react-hot-loader';
+import { applyMiddleware, compose, createStore } from 'redux';
+import { createBrowserHistory } from 'history';
+import { routerMiddleware } from 'connected-react-router';
 
-
-const store = configureStore();
-const history = syncHistoryWithStore(hashHistory, store);
+const composeEnhancer: typeof compose = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const history = createBrowserHistory();
+const store = createStore(
+  rootReducer(history),
+  composeEnhancer(
+    applyMiddleware(
+      routerMiddleware(history)
+    )
+  )
+)
 
 const render = () => {
-
-ReactDOM.render(
-  <Provider store={store}>
-      <Router history={history}>
-        <Route path="/" component={App}>
-          <IndexRoute component={VehicleDataContainer} />
-          <Route path="vehicle-data" component={VehicleDataContainer} />
-          <Route path="tyres-data" component={TyresDataContainer} />
-          <Route path="equipment" component={EquipmentDataContainer} />
-          <Route path="inspection" component={InspectionDataContainer} />
-          <Route path="components" component={ComponentsDataContainer} />
-          <Route path="documentation" component={DocumentsDataContainer} />
-        </Route>
-      </Router>
-  </Provider>
-  ,document.getElementById('root')
-)
+  ReactDOM.render(
+    <AppContainer>
+      <Provider store={store}>
+        <App history={history} />
+      </Provider>
+    </AppContainer>,
+    document.getElementById('root')
+  )
 }
 
-// if (module.hot) {
-//   module.hot.accept('./routing/AppRouter', render);
-// }
-
 render();
+
+// Hot reloading
+if (module.hot) {
+  // Reload components
+  module.hot.accept('./App', () => {
+    render()
+  })
+
+  // Reload reducers
+  module.hot.accept('./reducers', () => {
+    store.replaceReducer(rootReducer(history))
+  })
+}

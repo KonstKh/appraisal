@@ -1,14 +1,18 @@
 import { combineReducers} from 'redux';
-import { routerReducer } from 'react-router-redux';
+import { History } from 'history';
+import { RouterState, connectRouter } from 'connected-react-router';
 import { appraisalStepReducer, AppraisalStepState } from './appraisalSteps';
 
 import { actionsEnum } from '../actions/actionEnum';
 
 export interface State {
-  appraisalStepReducer: AppraisalStepState
+  appraisalStepReducer: AppraisalStepState,
+  router: RouterState
 }
 
-export const reducers = combineReducers({
-  routing: routerReducer,
+const rootReducer = (history: History) => combineReducers({
+  router: connectRouter(history),
   appraisalStepReducer
-})
+});
+
+export default rootReducer;

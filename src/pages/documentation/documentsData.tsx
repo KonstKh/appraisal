@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button } from 'antd';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { DocumentUploadComponent } from '../../components/';
 import './documentsData.less';
 
