@@ -27,14 +27,16 @@ export class HeaderComponent extends React.Component<Props, {}> {
   render() {
     return (
       <>
-        <div className="header-user-info">
-          <h2>Zustandbericht</h2>
-          <span>{this.props.auto}</span><br />
-          <span>Kunde: {this.props.userName}</span>
+        <div className="header-info">
+          <div className="title">Zustandbericht</div>
+          <div className="auto-info">{this.props.auto}</div>
+          <div className="user-info">Kunde: {this.props.userName}</div>
         </div>
-        <Steps current={this.props.currentStep} progressDot={customDot}>
-          {this.createSteps()}
-        </Steps>
+        <div className="steps">
+          <Steps current={this.props.currentStep} progressDot={customDot}>
+            {this.createSteps()}
+          </Steps>
+        </div>
       </>
     );
   }

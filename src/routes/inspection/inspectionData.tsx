@@ -185,12 +185,16 @@ export class InspectionDataComponent extends React.Component<Props, {}>{
           </div>
         </div>
         <div className="footer-nav">
-          <Link to="/equipment/">
-            <Button onClick={() => this.props.previousStep()}>Zurück</Button>
-          </Link>
-          <Link to="/components/">
-            <Button onClick={() => this.props.nextStep()}>Weiter</Button>
-          </Link>
+          <div className="go-prev">
+            <Link to="/equipment/">
+              <Button onClick={() => this.props.previousStep()}>Zurück</Button>
+            </Link>
+          </div>
+          <div className="go-next">
+            <Link to="/components/">
+              <Button onClick={() => this.props.nextStep()} className="button-right next">Weiter</Button>
+            </Link>
+          </div>
         </div>
       </React.Fragment>
     )

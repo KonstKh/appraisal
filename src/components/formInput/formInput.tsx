@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Input } from 'antd';
+import './formInput.less';
 
 interface Props {
   label: string;

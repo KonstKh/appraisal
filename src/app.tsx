@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { History } from 'history';
 import { ConnectedRouter } from 'connected-react-router'
-import routes from './routes';
+import routes from './routes/index';
 
 import './index.less';
 

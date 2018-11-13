@@ -19,8 +19,8 @@ export class ComponentsDataComponent extends React.Component<Props, {}> {
             <h4>Bauteil</h4>
             <h4>Zustand</h4>
           </div>
-          <ComponentControl conditionLabel="Kotflügel vorne links"/>
-          <ComponentControl conditionLabel="Stoßstange vorne"/>
+          <ComponentControl conditionLabel="Kotflügel vorne links" />
+          <ComponentControl conditionLabel="Stoßstange vorne" />
           <ComponentControl conditionLabel="Tür vorne links" />
           <ComponentControl conditionLabel="Tür hinten links" />
           <ComponentControl conditionLabel="Seitenwand hinten links" />
@@ -32,17 +32,20 @@ export class ComponentsDataComponent extends React.Component<Props, {}> {
           <ComponentControl conditionLabel="Kotflügel vorne rechts" />
           <ComponentControl conditionLabel="Motorhaube" />
           <ComponentControl conditionLabel="Dach" />
-          
+
           <ComponentControl conditionLabel="Windschutzscheibe" />
 
         </div>
         <div className="footer-nav">
-          <Link to="/inspection/">
-            <Button onClick={() => this.props.previousStep()}>Zurück</Button>
-          </Link>
-          <Link to="/documentation/">
-            <Button onClick={() => this.props.nextStep()}>Weiter</Button>
-          </Link>
+          <div className="go-prev">
+            <Link to="/inspection/">
+              <Button onClick={() => this.props.previousStep()}>Zurück</Button>
+            </Link>
+          </div>
+          <div className="go-next">
+            <Link to="/documentation/">
+            <Button onClick={() => this.props.nextStep()} className="button-right next">Weiter</Button>
+          </Link></div>
         </div>
       </ React.Fragment>
     )

@@ -18,6 +18,9 @@ html, body {
 main {
   padding: 1rem;
   background-color: #fff;
+  margin: 0 7%;
+  display: flex;
+  flex-direction: column;
 }
 
 footer {
@@ -26,10 +29,45 @@ footer {
 }
 
 // common styles for pages
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0; 
+}
+
 .form-part {
   display: flex;
   flex-direction: column;
   flex-basis: 45%;
   padding: 2%;
   flex-grow: 1;
+  margin: 0 2%;
+}
+
+button {
+  &.next {
+    color: #fff;
+    background-color: #09B3DB;
+  }
+  span {
+    padding: 3px 20px;
+  }
+}
+
+.footer-nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .go-prev {
+    flex-basis: 10%;
+  }
+
+  .go-next {
+    flex-basis: 10%;
+  }
 }

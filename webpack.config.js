@@ -23,7 +23,8 @@ module.exports = {
    inline: true, // Enable watch and live reload
    host: 'localhost',
    port: 8080,
-   stats: 'errors-only'
+   stats: 'errors-only',
+   historyApiFallback: true
  },
  module: {
    rules: [
@@ -57,10 +58,12 @@ module.exports = {
 			}]
 		},
      {
-       test: /\.(png|jpg|gif|svg)$/,
-       loader: 'file-loader',
+       test: /\.(png|jpg|gif|svg)?$/,
+       loader: 'url-loader',
        options: {
-         name: 'assets/img/[name].[ext]?[hash]'
+         limit: 8192,
+         fallback: 'file-loader',
+         mimetipe: 'image/[ext]'
        }
      },
   ],

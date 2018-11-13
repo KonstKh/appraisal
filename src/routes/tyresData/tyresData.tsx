@@ -26,9 +26,10 @@ export class TyresDataComponent extends React.Component<Props, {}> {
             <FormInputComponent label="1. Achse – rechts Hersteller/Bezeichnung" placeholder="z.B.: Pirelli / 245/45r18 88V" />
             <FormInputComponent label="2. Achse – links Hersteller/Bezeichnung" placeholder="z.B.: Pirelli / 245/45r18 88V" />
             <FormInputComponent label="2. Achse – rechts Hersteller/Bezeichnung" placeholder="z.B.: Pirelli / 245/45r18 88V" />
+            <FormInputComponent label="DOT - Nummer" placeholder="z.B.: 4503" />
           </div>
           <div className="form-part-right">
-            <div className="single-field">
+            <div className="selector-wrapper">
               <label>Felgentyp</label>
               <Select defaultValue="Wählen">
                 <Option value="Wählen">Wählen</Option>
@@ -49,25 +50,30 @@ export class TyresDataComponent extends React.Component<Props, {}> {
           <FormInputComponent label="Zustand Erzatzrad" placeholder="z.B.: Nicht vorhanden" />
           </div>
         </div>
+        <hr/>
         <div className="tyre-data">
           <div className="form-part-left">
-          <div className="single-field">
+          <div className="selector-wrapper">
               <label>Zusätzliche Bereifung</label>
               <Select defaultValue="Wählen">
                 <Option value="Wählen">Wählen</Option>
                 <Option value="Wählen-1">Wählen 1</Option>
                 <Option value="Wählen-2">Wählen 2</Option>
               </Select>
-            </div>          
+            </div>
           </div>
         </div>
         <div className="footer-nav">
-          <Link to="/">
-            <Button onClick={() => this.props.previousStep()}>Zurück</Button>
-          </Link>
-          <Link to="/equipment/">
-            <Button onClick={() => this.props.nextStep()}>Weiter</Button>
-          </Link>
+          <div className="go-prev">
+            <Link to="/">
+              <Button onClick={() => this.props.previousStep()}>Zurück</Button>
+            </Link>
+          </div>
+          <div className="go-next">
+            <Link to="/equipment/">
+              <Button onClick={() => this.props.nextStep()} className="button-right next">Weiter</Button>
+            </Link>
+          </div>
         </div>
       </React.Fragment>
     )

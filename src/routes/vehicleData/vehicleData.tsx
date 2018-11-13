@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { VehicleEntity } from '../../models/vehicle';
 import { Button, Radio, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormInputComponent } from '../../components';
@@ -26,7 +25,7 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
             <FormInputComponent label="Aufbauart" placeholder="z.B.: Limousine" />
             <FormInputComponent label="Kraftstoff" placeholder="z.B.: Diesel" />
             <FormInputComponent label="Emissionsklasse" placeholder="z.B.: Euro 6" />
-            <div className="single-field">
+            <div className="radio-wrapper">
               <label>Umweltplakette</label>
               <RadioGroup name="Umweltplakette" className="radio-group">
                 <Radio value={1}>Ja</Radio>
@@ -38,14 +37,14 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
             <FormInputComponent label="Anzahl Schlüssel" placeholder="z.B.: 2" />
             <FormInputComponent label="Polster Art" placeholder="z.B.: Leder" />
             <FormInputComponent label="Farbe Innenraum" placeholder="z.B.: Schwarz" />
-            <div className="single-field">
+            <div className="radio-wrapper">
               <label>Raucherfahrzeug</label>
               <RadioGroup name="raucherfahrzeug" className="radio-group">
                 <Radio value={1}>Ja</Radio>
                 <Radio value={2}>Nein</Radio>
               </RadioGroup>
             </div>
-            <div className="single-field">
+            <div className="radio-wrapper">
               <label>Fahrzeug fahrbereit</label>
               <RadioGroup name="fahrzeugFahrbereit" className="radio-group">
                 <Radio value={1}>Ja</Radio>
@@ -54,7 +53,7 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
             </div>
             <FormInputComponent label="Fahrzeugunterlagen" placeholder="z.B.: ZB | (Fzg.Scheie)" />
 
-            <div className="single-field">
+            <div className="selector-wrapper">
               <label>Re-Import</label>
               <Select placeholder="z.B.: Schwarz" defaultValue="Wählen">
                 <Option value="Wählen">Wählen</Option>
@@ -73,14 +72,14 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
             <FormInputComponent label="Zylinder" placeholder="z.B.: 6" />
             <FormInputComponent label="Zahnriemenwechsel km/am" placeholder="z.B.: 50000 / 01.10.2017" />
             <FormInputComponent label="Nächste HU /AU" placeholder="z.B.: 06.2020" />
-            <div className="single-field">
+            <div className="radio-wrapper">
               <label>Serviceheft verfügbar</label>
               <RadioGroup name="serviceheftVerfügbar" className="radio-group">
                 <Radio value={1}>Ja</Radio>
                 <Radio value={2}>Nein</Radio>
               </RadioGroup>
             </div>
-            <div className="single-field">
+            <div className="radio-wrapper">
               <label>Lückenlos gepflegt</label>
               <RadioGroup name="lueckenlosGepflegt" className="radio-group">
                 <Radio value={1}>Ja</Radio>
@@ -88,14 +87,14 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
               </RadioGroup>
             </div>
             <FormInputComponent label="Letzter Service km/am" placeholder="z.B.: 21000 / 01.02.2017" />
-            <div className="single-field">
+            <div className="radio-wrapper">
               <label>Fahrzeug verkehrssicher</label>
               <RadioGroup name="fahrzeugVerkehrssicher" className="radio-group">
                 <Radio value={1}>Ja</Radio>
                 <Radio value={2}>Nein</Radio>
               </RadioGroup>
             </div>
-            <div className="single-field">
+            <div className="selector-wrapper">
               <label>Besichtigungsbedingungen</label>
               <Select placeholder="z.B.: Schwarz" defaultValue="Wählen">
                 <Option value="Wählen">Wählen</Option>
@@ -109,7 +108,7 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
         <hr />
         <div className="vehicle-data">
           <div className="form-part"> {/* Left bottom side */}
-            <div className="single-field">
+            <div className="selector-wrapper">
               <label>Zustand allgemein</label>
               <Select defaultValue="Wählen">
                 <Option value="Wählen">Wählen</Option>
@@ -117,7 +116,7 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
                 <Option value="Wählen-2">Wählen 2</Option>
               </Select>
             </div>
-            <div className="single-field">
+            <div className="selector-wrapper">
               <label>Zustand Fahrwerk</label>
               <Select defaultValue="Wählen">
                 <Option value="Wählen">Wählen</Option>
@@ -127,7 +126,7 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
             </div>
           </div>
           <div className="form-part"> {/* Rigth bottom side */}
-            <div className="single-field">
+            <div className="selector-wrapper">
               <label>Zustand außen</label>
               <Select defaultValue="Wählen">
                 <Option value="Wählen">Wählen</Option>
@@ -135,7 +134,7 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
                 <Option value="Wählen-2">Wählen 2</Option>
               </Select>
             </div>
-            <div className="single-field">
+            <div className="selector-wrapper">
               <label>Zustand Innen</label>
               <Select defaultValue="Wählen">
                 <Option value="Wählen">Wählen</Option>
@@ -150,9 +149,13 @@ export class VehicleDataComponent extends React.Component<Props, {}> {
           <span>Der Zustandsbericht wurde unparteiisch und nach bestem Wissen und Gewissen erstellt. Die im Zustandsbericht aufgeführten Bilder sind Bestandteil der Fahrzeugbeschreibung, hinsichtlich der Ausstattung und des Fahrzeugzustandes.</span>
         </div>
         <div className="footer-nav">
-          <Link to="/tyres-data">
-            <Button onClick={() => this.props.nextStep()} className="button-right">Weiter</Button>
-          </Link>
+          <div className="go-prev">
+          </div>
+          <div className="go-next">
+            <Link to="/tyres-data">
+              <Button onClick={() => this.props.nextStep()} className="button-right next">Weiter</Button>
+            </Link>
+          </div>
         </div>
       </React.Fragment>
     )

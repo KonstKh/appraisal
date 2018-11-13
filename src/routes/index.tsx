@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router';
 
-import { VehicleDataContainer } from '../pages/vehicleData';
-import { TyresDataContainer } from '../pages/tyresData';
-import { EquipmentDataContainer } from '../pages/equipment';
-import { ComponentsDataContainer } from '../pages/components';
-import { InspectionDataContainer } from '../pages/inspection';
-import { DocumentsDataContainer } from '../pages/documentation';
+import { VehicleDataContainer } from './vehicleData';
+import { TyresDataContainer } from './tyresData';
+import { EquipmentDataContainer } from './equipment';
+import { ComponentsDataContainer } from './components';
+import { InspectionDataContainer } from './inspection';
+import { DocumentsDataContainer } from './documentation';
 
 import { HeaderContainer } from '../components';
 import { FooterComponent } from '../components';
