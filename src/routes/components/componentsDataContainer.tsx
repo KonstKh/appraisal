@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { ComponentsDataComponent } from './componentsData';
-import { updateAppraisalStep, goToNextStep, goToPrevState } from '../../actions/appraisalStep';
+import { ComponentsDataForm } from './componentsData';
+import { goToNextStep, goToPrevState } from '../../actions/appraisalStep';
 
 const mapStateToProps = (state)  => {
   return {
@@ -18,4 +18,4 @@ const mapDispatchToProps = (dispatch) => {
 export const ComponentsDataContainer = connect (
   mapStateToProps,
   mapDispatchToProps
-)(ComponentsDataComponent);
+)(ComponentsDataForm);

@@ -1,7 +1,55 @@
-.components-header {
-  display: flex;
+.components-form {
+  .components-header {
+    display: flex;
+  }
+  
+  .components-header :nth-child(1) {
+    width: 23%;
+  }
+
+  .component-row {
+    display: flex;
+    justify-content: left;
+
+    .label {
+      display: inline-block;
+      width: 23%;
+    }
+
+    .ant-input {
+      width: 100%;
+    }
+
+    .ant-select {
+      width: 22%;
+    }
+  }
+
+  .single-field{
+    margin-left: 50px;
+    width: 50%;
+    
+    .ant-form-item-control-wrapper {
+      width: 100%;
+    }
+  }
+
+  .lack-depth {
+    display: flex;
+
+    .title {
+      width: 235px;
+      margin-left:235px;
+    }
+
+    .input-wrapper {
+      margin-left: 40px;
+      width: 130px;
+    }
+    .ant-form-item-children {
+      line-height: 21px;
+    }
+  }
 }
 
-.components-header :nth-child(2) {
-  margin-left: 23%;
-}
+

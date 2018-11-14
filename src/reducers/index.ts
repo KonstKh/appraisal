@@ -3,8 +3,6 @@ import { History } from 'history';
 import { RouterState, connectRouter } from 'connected-react-router';
 import { appraisalStepReducer, AppraisalStepState } from './appraisalSteps';
 
-import { actionsEnum } from '../actions/actionEnum';
-
 export interface State {
   appraisalStepReducer: AppraisalStepState,
   router: RouterState

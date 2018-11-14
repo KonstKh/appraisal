@@ -13,7 +13,7 @@ export class ComponentControl extends React.Component<Props, {}> {
     return (
       <div className="component-control">
         <div className="part-description">
-          <div className="single-component">
+          <div className="component-row">
             <label>{this.props.conditionLabel}</label>
             <Select defaultValue="Wählen">
               <Option value="Wählen">Wählen</Option>

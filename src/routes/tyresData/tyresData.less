@@ -6,8 +6,10 @@
   
   .form-part-left{
     flex-grow: 5;
+    width: 50%;
     max-width: 58%;
     padding: 15px;
+    
     .ant-select {
       min-width: 30%;
       width: 38%;
@@ -16,18 +18,19 @@
   .form-part-right {
     flex-grow: 3;
     padding: 15px;
+    max-width: 58%;
+    width: 40%;
+
     .ant-select {
+      width: 200px;
       min-width: 40%;
-      width: 51%;
     }
   }
-  .selector-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: auto;
-    justify-content: space-between;
-    margin: 4px 0;
-    align-items: center;
+
+  .single-field {
+    .ant-form-item-label {
+      min-width: 150px;
+    }
   }
 }
 

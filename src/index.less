@@ -28,8 +28,11 @@ footer {
 	padding: 1rem;
 }
 
-// common styles for pages
+// common styles for elements
 
+h2{
+  color: #003761;
+}
 hr {
   display: block;
   height: 1px;
@@ -58,11 +61,72 @@ button {
   }
 }
 
+.single-field {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+
+  .ant-form-item-label {
+    text-align: left;
+    flex-grow: 1;
+    min-width: 200px;
+  }
+  
+  .ant-form-item-control-wrapper {
+    min-width: 200px;
+    width: 35%;
+  }
+}
+
+.radio-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: auto;
+  justify-content: space-between;
+  margin: 4px 0;
+  align-items: center;
+
+  label {
+    min-width: 200px;
+  }
+  .ant-radio-group {
+    padding: 10px 0 5px 10px;
+  }
+  .radio-group {
+    width: 45%;
+    display: inline-flex;
+    min-width: 200px;
+  }
+
+  .ant-radio-wrapper {
+    min-width: 55px;
+  }
+}
+
+.selector-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: auto;
+  justify-content: space-between;
+  margin: 4px 0;
+  align-items: center;
+  
+  label {
+    min-width: 200px;
+  }
+  .ant-select {
+    width: 48%;
+    min-width: 200px;
+  }
+}
+
 .footer-nav {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
+  margin-left: 4%;
+  width: 92%;
+  
   .go-prev {
     flex-basis: 10%;
   }

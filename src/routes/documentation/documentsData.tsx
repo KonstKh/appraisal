@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Button } from 'antd';
+import { Button, Upload, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import { DocumentUploadComponent } from '../../components/';
 import './documentsData.less';
 
 interface Props {
@@ -17,8 +16,65 @@ export class DocumentsDataComponent extends React.Component<Props, {}> {
         <div className="documentation-form">
           <h4>Fotodokumentation</h4>
           <span>Alle Bilde pro Ansicht hohladen:</span>
-          <DocumentUploadComponent />
+          <div className="document-upload-container">
+            <Upload className="document-uploader">
+              <div>
+                <Icon type='plus' />
+                <div className="ant-upload-text">Hochladen</div>
+              </div>
+            </Upload>
+            <label>Vorne links</label>
+          </ div>
         </div>
+
+        <div className="documentation-form">
+          <div className="document-upload-container">
+            <Upload className="document-uploader">
+              <div>
+                <Icon type='plus' />
+                <div className="ant-upload-text">Hochladen</div>
+              </div>
+            </Upload>
+            <label>Vorne rechts</label>
+          </ div>
+        </div>
+
+        <div className="documentation-form">
+          <div className="document-upload-container">
+            <Upload className="document-uploader">
+              <div>
+                <Icon type='plus' />
+                <div className="ant-upload-text">Hochladen</div>
+              </div>
+            </Upload>
+            <label>Vorne rechts</label>
+          </ div>
+        </div>
+
+        <div className="documentation-form">
+          <div className="document-upload-container">
+            <Upload className="document-uploader">
+              <div>
+                <Icon type='plus' />
+                <div className="ant-upload-text">Hochladen</div>
+              </div>
+            </Upload>
+            <label>Vorne rechts</label>
+          </ div>
+        </div>
+
+        <div className="documentation-form">
+          <div className="document-upload-container">
+            <Upload className="document-uploader">
+              <div>
+                <Icon type='plus' />
+                <div className="ant-upload-text">Hochladen</div>
+              </div>
+            </Upload>
+            <label>Vorne rechts</label>
+          </ div>
+        </div>
+
         <div className="footer-nav">
           <div className="go-prev">
             <Link to="/components/">
