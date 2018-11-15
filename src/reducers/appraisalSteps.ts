@@ -1,15 +1,14 @@
-import { actionsEnum } from '../actions/actionEnum';
+import { actionsEnum } from '../actions/actionsEnum';
 
-export interface AppraisalStepState {
+export interface NavigationStepState {
   currentStep: number;
 }
 
-const defaultAppraisalStep : () => AppraisalStepState = () => ({
+const defaultNavigationStep : () => NavigationStepState = () => ({
   currentStep: 0
 });
 
-
-export const appraisalStepReducer = (state = defaultAppraisalStep(), action) => {
+export const navigationStep = (state = defaultNavigationStep(), action) => {
 
   switch(action.type) {
     case actionsEnum.GO_TO_NEXT_STEP:
@@ -21,14 +20,14 @@ export const appraisalStepReducer = (state = defaultAppraisalStep(), action) => 
   return state;
 }
 
-const handleGoToNextStep = (state: AppraisalStepState, action) => {
+const handleGoToNextStep = (state: NavigationStepState, action) => {
   return {
     ...state,
     currentStep: state.currentStep + 1
   }
 }
 
-const handleGoToPrevStep = (state: AppraisalStepState, action) => {
+const handleGoToPrevStep = (state: NavigationStepState, action) => {
   return {
     ...state,
     currentStep: state.currentStep - 1

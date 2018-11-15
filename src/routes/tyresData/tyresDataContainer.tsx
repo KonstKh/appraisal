@@ -1,17 +1,21 @@
 import { connect } from 'react-redux';
 import { TyresDataForm } from './tyresData';
-import { goToNextStep, goToPrevState } from '../../actions/appraisalStep';
+import { goToNextStep, goToPrevState } from '../../actions/navigationStep';
+import { saveTyresData } from '../../actions/vehicleFormActions';
+import { navigateToEquipmentForm } from '../../actions/navigationStep';
 
 const mapStateToProps = (state)  => {
   return {
-    currentStep: state.appraisalStepReducer.currentStep
+    currentStep: state.navigationStep.currentStep
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     nextStep: () => dispatch(goToNextStep()),
-    previousStep: () => dispatch(goToPrevState())
+    previousStep: () => dispatch(goToPrevState()),
+    saveTyresData: (tyresFormData: any) => dispatch(saveTyresData(tyresFormData)),
+    navigateToEquipmentForm: () => dispatch(navigateToEquipmentForm())
   }
 }
 

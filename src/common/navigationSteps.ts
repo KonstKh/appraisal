@@ -1,4 +1,4 @@
-export const appraisalSteps = {
+export const navigationSteps = {
   vehicleData: 'Fahrzeugdaten',
   tyreData: 'Bereifung',
   equipment: 'Ausstattung',

@@ -3,9 +3,7 @@ import { HeaderComponent } from './header';
 
 const mapStateToProps = (state) => {
   return {
-    // userName: state.userProfileReducer.firstname,
-    // auto: state.auto.name,
-    currentStep: state.appraisalStepReducer.currentStep
+    currentStep: state.root.navigation.navStep
   }
 }
 

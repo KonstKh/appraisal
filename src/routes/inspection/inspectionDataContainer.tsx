@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { InspectionDataForm } from './inspectionData';
-import { goToNextStep, goToPrevState } from '../../actions/appraisalStep';
+import { goToNextStep, goToPrevState } from '../../actions/navigationStep';
 
 const mapStateToProps = (state)  => {
   return {
-    currentStep: state.appraisalStepReducer.currentStep
+    currentStep: state.navigationStep.currentStep
   }
 }
 

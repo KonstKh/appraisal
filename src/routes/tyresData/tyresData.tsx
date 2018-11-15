@@ -11,9 +11,27 @@ interface Props {
   appraisalStep: number;
   nextStep: () => void;
   previousStep: () => void;
+  saveTyresData: (formData: any) => void,
+  navigateToEquipmentForm: () => void
 }
 
 class TyresDataComponent extends React.Component<Props & FormComponentProps, {}> {
+
+  formSubmit = (e) => {
+    const { validateFieldsAndScroll, resetFields,
+      getFieldValue, isFieldsTouched } = this.props && this.props.form;
+
+    validateFieldsAndScroll((errors, values) => {
+      if(errors) {
+        return;
+      }
+      const [tire, firstAxeLeft] = ['tire', 'firstAxeLeft'].map(i=> getFieldValue(i));
+
+      this.props.saveTyresData({tire, firstAxeLeft});
+      // this.props.nextStep();
+      this.props.navigateToEquipmentForm();
+    })
+  }
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
@@ -124,7 +142,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, {}>
           </div>
           <div className="go-next">
             <Link to="/equipment/">
-              <Button onClick={() => this.props.nextStep()} className="button-right next">Weiter</Button>
+              <Button onClick={(e) => this.formSubmit(e)} className="button-right next">Weiter</Button>
             </Link>
           </div>
         </div>

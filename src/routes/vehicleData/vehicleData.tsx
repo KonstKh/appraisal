@@ -10,7 +10,9 @@ const FormItem = Form.Item;
 
 interface Props {
   appraisalStep: number,
-  nextStep: () => void
+  nextStep: () => void,
+  saveVehicleData: ( formData: any) => void,
+  navigateToTyreForm: () => void
 }
 
 class VehicleDataComponent extends React.Component<Props & FormComponentProps, {}> {
@@ -19,12 +21,28 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
     const { validateFieldsAndScroll, resetFields,
       getFieldValue, isFieldsTouched } = this.props && this.props.form
     // e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
+    // this.props.form.validateFields((err, values) => {
+    //   if (!err) {
+    //     console.log('Received values of form: ', values);
+    //   }
+    // });
+
+    validateFieldsAndScroll((errors, values) => {
+      if(errors) {
+        return;
       }
+
+      const [registrationNumber, fin, kbaNr , year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery, 
+        keysNumber, vehicleDocoments, nextHU, lastService] = 
+       ['registrationNumber', 'fin', 'kbaNr', 'year', 'mileage', 'power', 'cylinder', 'beltChanged', 'previousOwners', 'farbeLack', 'unpholstery', 
+       'keysNumber', 'vehicleDocoments', 'nextHU', 'lastService'].map(i => getFieldValue(i));
+  
+       this.props.saveVehicleData({fin, registrationNumber, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery, 
+        keysNumber, vehicleDocoments, nextHU, lastService});
+      
+      this.props.navigateToTyreForm();
+        // this.props.nextStep();
     });
-    this.props.nextStep();
   }
 
   render() {
@@ -138,24 +156,24 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
           <div className="vehicle-data">
             <div className="form-part"> {/* left middle side */}
               <FormItem hasFeedback label="Farbe / Lackart" className="single-field">
-                {getFieldDecorator('beltChanged', { rules: [] })(
+                {getFieldDecorator('farbeLack', { rules: [] })(
                   <Input placeholder="z.B.: 50000 / 01.10.2017"></Input>
                 )}
               </FormItem>
               <FormItem hasFeedback label="Farbe Innenraum" className="single-field">
-                {getFieldDecorator('beltChanged', { rules: [] })(
+                {getFieldDecorator('farbeInner', { rules: [] })(
                   <Input placeholder="z.B.: 50000 / 01.10.2017"></Input>
                 )}
               </FormItem>
               <FormItem hasFeedback label="Polster Art" className="single-field">
-                {getFieldDecorator('beltChanged', { rules: [] })(
-                  <Input placeholder="z.B.: 50000 / 01.10.2017"></Input>
+                {getFieldDecorator('unpholstery', { rules: [] })(
+                  <Input placeholder="z.B.: Leder"></Input>
                 )}
               </FormItem>
             </div>
             <div className="form-part"> {/* Right middle side */}
               <FormItem hasFeedback label="Anzahl Schlüssel" className="single-field">
-                {getFieldDecorator('beltChanged', { rules: [] })(
+                {getFieldDecorator('keysNumber', { rules: [] })(
                   <Input placeholder="z.B.: 2"></Input>
                 )}
               </FormItem>
@@ -172,8 +190,8 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
           <div className="vehicle-data">
             <div className="form-part">{/* left middle under side */}
             <FormItem hasFeedback label="Fahrzeugunterlagen" className="single-field">
-                {getFieldDecorator('beltChanged', { rules: [] })(
-                  <Input placeholder="z.B.: 50000 / 01.10.2017"></Input>
+                {getFieldDecorator('vehicleDocoments', { rules: [] })(
+                  <Input placeholder="z.B.: ZB | (Fzg. Schein)"></Input>
                 )}
               </FormItem>
               <div className="radio-wrapper">

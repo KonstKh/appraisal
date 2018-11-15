@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Steps, Popover } from 'antd';
-import { appraisalSteps } from '../../common/appraisalSteps';
+import { navigationSteps } from '../../common/navigationSteps';
 import './header.less';
 
 const Step = Steps.Step;
@@ -19,8 +19,8 @@ interface Props {
 export class HeaderComponent extends React.Component<Props, {}> {
 
   createSteps = () => {
-    return Object.keys(appraisalSteps).map(key => {
-      return <Step key={key} title={appraisalSteps[key]} />
+    return Object.keys(navigationSteps).map(key => {
+      return <Step key={key} title={navigationSteps[key]} />
     })
   }
 
