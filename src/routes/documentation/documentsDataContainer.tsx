@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 import { DocumentsDataComponent } from './documentsData';
-import { goToPrevState } from '../../actions/navigationStep';
+import { navigateToComponentsForm } from '../../actions/navigationStep';
 
 const mapStateToProps = (state)  => {
   return {
-    currentStep: state.navigationStep.currentStep
+    currentStep: state.root.navigation.navStep
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    previousStep: () => dispatch(goToPrevState())
+    navigateToComponentsForm: () => dispatch(navigateToComponentsForm())
   }
 }
 

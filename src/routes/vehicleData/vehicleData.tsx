@@ -12,7 +12,7 @@ interface Props {
   appraisalStep: number,
   nextStep: () => void,
   saveVehicleData: ( formData: any) => void,
-  navigateToTyreForm: () => void
+  navigateToTyresForm: () => void
 }
 
 class VehicleDataComponent extends React.Component<Props & FormComponentProps, {}> {
@@ -40,7 +40,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
        this.props.saveVehicleData({fin, registrationNumber, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery, 
         keysNumber, vehicleDocoments, nextHU, lastService});
       
-      this.props.navigateToTyreForm();
+      this.props.navigateToTyresForm();
         // this.props.nextStep();
     });
   }

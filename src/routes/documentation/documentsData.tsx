@@ -5,7 +5,7 @@ import './documentsData.less';
 
 interface Props {
   appraisalStep: number;
-  previousStep: () => void;
+  navigateToComponentsForm: () => void;
 }
 
 export class DocumentsDataComponent extends React.Component<Props, {}> {
@@ -78,7 +78,7 @@ export class DocumentsDataComponent extends React.Component<Props, {}> {
         <div className="footer-nav">
           <div className="go-prev">
             <Link to="/components/">
-              <Button onClick={() => this.props.previousStep()}>Zurück</Button>
+              <Button onClick={() => this.props.navigateToComponentsForm()}>Zurück</Button>
             </Link>
           </div>
           <div className="go-next"></div>

@@ -1,10 +1,13 @@
 import { combineReducers} from 'redux';
 import { History } from 'history';
 import { RouterState, connectRouter } from 'connected-react-router';
-import { navigationStep, NavigationStepState } from './appraisalSteps';
+import { NavigationStepState } from './appraisalSteps';
+import { navigation } from './navigation';
 import { vehicleForm } from './vehicleData';
 import { tyreForm } from './tyreData';
-import { navigation } from './navigation';
+import { equipmentForm } from './equipmentData';
+import { inspectionForm } from './inspectoinData';
+import { componentsForm } from './componentsData';
 
 export interface State {
   navigationStep: NavigationStepState,
@@ -15,10 +18,12 @@ const rootReducer = (history: History) => combineReducers({
   router: connectRouter(history),
   root: combineReducers({
     navigation,
+    vehicleForm,
     tyreForm,
-    vehicleForm
-  }),
-  navigationStep
+    equipmentForm,
+    inspectionForm,
+    componentsForm
+  })
 });
 
 export default rootReducer;

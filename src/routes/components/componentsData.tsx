@@ -7,9 +7,9 @@ import './componentsData.less';
 const FormItem = Form.Item;
 const Option = Select.Option;
 interface Props {
-  appraisalStep: number;
-  nextStep: () => void;
-  previousStep: () => void;
+  navigateToInspectionForm: () => void,
+  navigateToDocumentsForm: () => void,
+  saveComponentsFormData: (formData: any) => void
 }
 
 class ComponentsDataComponent extends React.Component<Props & FormComponentProps, {}> {
@@ -44,7 +44,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('mudguardFrontLeftLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -60,7 +64,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('frontBamper', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -69,7 +73,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('frontBamperLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -85,7 +93,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('doorFrontLeft', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -94,7 +102,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('doorFrontLeftLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -110,7 +122,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('doorRearLeft', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -119,7 +131,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('doorRearLeftLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -135,7 +151,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('sidewallRearLeft', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -144,7 +160,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('sidewallRearLeftLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -160,7 +180,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('rearBumper', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -169,7 +189,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('rearBumperLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -185,7 +209,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('tailgate', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -194,7 +218,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('tailgateLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -210,7 +238,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('sidepanelRearRight', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -219,7 +247,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('sidepanelRearRightLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -235,7 +267,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('doorRearRight', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -244,7 +276,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('doorRearRightLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -260,7 +296,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('doorFrontRight', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -269,7 +305,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('doorFrontRightLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -285,7 +325,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('mudguardFrontRight', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -294,7 +334,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('mudguardFrontRightLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -310,7 +354,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('bonnet', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -319,7 +363,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('bonnetLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -335,7 +383,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('roof', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -344,7 +392,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('roofLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -360,7 +412,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                     <Option value="Wählen-2">Wählen 2</Option>
                   </Select>
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('windshield', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -369,7 +421,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="lack-depth">
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
-                  <Input addonAfter="µm" placeholder="z.B. 132" />
+                  <FormItem >
+                    {getFieldDecorator('windshieldLackDepth')(
+                      <Input addonAfter="µm" placeholder="z.B. 132" />
+                    )}
+                  </FormItem>
                 </div>
               </div>
             </ div>
@@ -379,17 +435,39 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
         <div className="footer-nav">
           <div className="go-prev">
             <Link to="/inspection/">
-              <Button onClick={() => this.props.previousStep()}>Zurück</Button>
+              <Button onClick={() => this.props.navigateToInspectionForm()}>Zurück</Button>
             </Link>
           </div>
           <div className="go-next">
             <Link to="/documentation/">
-              <Button onClick={() => this.props.nextStep()} className="button-right next">Weiter</Button>
+              <Button onClick={() => this.formSubmit()} className="button-right next">Weiter</Button>
             </Link></div>
         </div>
       </ React.Fragment>
     )
   }
+
+  formSubmit(): any {
+    const { validateFieldsAndScroll, resetFields,
+      getFieldValue, isFieldsTouched } = this.props && this.props.form;
+
+    validateFieldsAndScroll((errors, values) => {
+      if (errors) {
+        return;
+      }
+
+      const [mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
+        doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth] =
+        ['mudguardFrontLeft', 'mudguardFrontLeftLackDepth', 'frontBamper', 'frontBamperLackDepth', 'doorFrontLeft', 'doorFrontLeftLackDepth',
+      'doorRearLeft', 'sidewallRearLeft', 'sidewallRearLeftLackDepth'].map(i => getFieldValue(i));
+
+      this.props.saveComponentsFormData({mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
+        doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth });
+
+      this.props.navigateToDocumentsForm();
+    });
+  }
+
 }
 
 export const ComponentsDataForm = Form.create<Props>()(ComponentsDataComponent);

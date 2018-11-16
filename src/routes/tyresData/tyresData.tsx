@@ -8,11 +8,9 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 
 interface Props {
-  appraisalStep: number;
-  nextStep: () => void;
-  previousStep: () => void;
   saveTyresData: (formData: any) => void,
-  navigateToEquipmentForm: () => void
+  navigateToEquipmentForm: () => void,
+  navigateToVehicleForm: () => void
 }
 
 class TyresDataComponent extends React.Component<Props & FormComponentProps, {}> {
@@ -137,7 +135,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, {}>
         <div className="footer-nav">
           <div className="go-prev">
             <Link to="/">
-              <Button onClick={() => this.props.previousStep()}>Zurück</Button>
+              <Button onClick={() => this.props.navigateToVehicleForm()}>Zurück</Button>
             </Link>
           </div>
           <div className="go-next">

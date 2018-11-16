@@ -9,9 +9,9 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 
 interface Props {
-  appraisalStep: number;
-  nextStep: () => void;
-  previousStep: () => void;
+  saveInspectionData: (formData: any) => void;
+  navigateToComponentsForm: () => void;
+  navigateToEquipmentForm: () => void;
 }
 
 class InspectionDataComponent extends React.Component<Props & FormComponentProps, {}>{
@@ -239,17 +239,34 @@ class InspectionDataComponent extends React.Component<Props & FormComponentProps
         <div className="footer-nav">
           <div className="go-prev">
             <Link to="/equipment/">
-              <Button onClick={() => this.props.previousStep()}>Zurück</Button>
+              <Button onClick={() => this.props.navigateToEquipmentForm()}>Zurück</Button>
             </Link>
           </div>
           <div className="go-next">
             <Link to="/components/">
-              <Button onClick={() => this.props.nextStep()} className="button-right next">Weiter</Button>
+              <Button onClick={() => this.formSubmit()} className="button-right next">Weiter</Button>
             </Link>
           </div>
         </div>
       </React.Fragment>
     )
+  }
+
+  formSubmit(): any {
+    const { validateFieldsAndScroll, resetFields,
+      getFieldValue, isFieldsTouched } = this.props && this.props.form;
+
+      validateFieldsAndScroll((errors, values) => {
+        if (errors) {
+          return;
+        }
+  
+        const [testDriveComment, mileageCorrect, tireType, generator, oilVaste, conditioning, brakes, exhaust, shockAbsober, light, clutch, engine, transmission, note] =
+          ['testDriveComment', 'mileageCorrect', 'tireType', 'generator', 'oilVaste', 'conditioning', 'brakes', 'exhaust', 'shockAbsober', 'light', 'clutch', 'engine', 'transmission', 'note'].map(i => getFieldValue(i));
+  
+        this.props.saveInspectionData({testDriveComment, mileageCorrect, tireType, generator, oilVaste, conditioning, brakes, exhaust, shockAbsober, light, clutch, engine, transmission, note});
+        this.props.navigateToComponentsForm();
+      });
   }
 }
 

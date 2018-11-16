@@ -8,12 +8,13 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 
 interface Props {
-  appraisalStep: number;
-  nextStep: () => void;
-  previousStep: () => void;
+  saveEquipmentData: (formData: any) => void;
+  navigateToInspectionForm: () => void;
+  navigateToTyresForm: () => void;
 }
 
 class EquipmentDataComponent extends React.Component<Props & FormComponentProps, {}> {
+
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
@@ -26,28 +27,54 @@ class EquipmentDataComponent extends React.Component<Props & FormComponentProps,
           <Form>
             <div className="form-part">
               <h2>Serienausstattung</h2>
-              <TextArea rows={30} placeholder={leftPlaceholder} />
+              <FormItem >
+                {getFieldDecorator('standartEquipment', { rules: [] })(
+                  <TextArea rows={30} placeholder={leftPlaceholder} />
+                )}
+              </FormItem>
             </div>
             <div className="form-part">
               <h2>Sonderausstattung</h2>
-              <TextArea rows={30} placeholder={rightPlaceholder} />
+              <FormItem>
+                {getFieldDecorator('extraEquipment', { rules: [] })(
+                  <TextArea rows={30} placeholder={rightPlaceholder} />
+                )}
+              </FormItem>
+
             </div>
           </Form>
         </div>
         <div className="footer-nav">
           <div className="go-prev">
             <Link to="/tyres-data">
-              <Button onClick={() => this.props.previousStep()}>Zurück</Button>
+              <Button onClick={() => this.props.navigateToTyresForm()}>Zurück</Button>
             </Link>
           </div>
           <div className="go-next">
             <Link to="/inspection/">
-              <Button onClick={() => this.props.nextStep()} className="button-right next">Weiter</Button>
+              <Button onClick={() => this.formSubmit()} className="button-right next">Weiter</Button>
             </Link>
           </div>
         </div>
       </React.Fragment>
     )
+  }
+  formSubmit(): any {
+    const { validateFieldsAndScroll, resetFields,
+      getFieldValue, isFieldsTouched } = this.props && this.props.form;
+
+    validateFieldsAndScroll((errors, values) => {
+      if (errors) {
+        return;
+      }
+
+      const [standartEquipment, extraEquipment] =
+        ['standartEquipment', 'extraEquipment'].map(i => getFieldValue(i));
+
+      this.props.saveEquipmentData({standartEquipment, extraEquipment});
+
+      this.props.navigateToInspectionForm();
+    });
   }
 }
 
