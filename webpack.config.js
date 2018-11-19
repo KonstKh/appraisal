@@ -44,7 +44,7 @@ module.exports = {
      {
 			test: /\.less$/,
 			use: [{
-				loader: 'style-loader'
+        loader: 'style-loader', options: { attrs: { id: 'id' } }
 			}, {
 				loader: 'css-loader',
 				options: {

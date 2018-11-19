@@ -1,10 +1,5 @@
 import { actionsEnum } from '../actions/actionsEnum';
-
-export interface AppraisalState {
-}
-
-const defaultState : AppraisalState = {
-}
+import { AppraisalState, defaultState } from './models';
 
 export const inspectionForm = (state: AppraisalState = defaultState, action) => {
   switch(action.type) {

@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Button, Upload, Icon } from 'antd';
+import { Button, Upload, Icon, Modal } from 'antd';
+// import { UploadListProps, UploadFile, UploadListType } from '../../node_modules/antd/lib/upload/interface.d.ts';
+import { UploadFile } from '../../../node_modules/antd/lib/upload/interface'
 import { Link } from 'react-router-dom';
 import './documentsData.less';
 
@@ -8,22 +10,81 @@ interface Props {
   navigateToComponentsForm: () => void;
 }
 
-export class DocumentsDataComponent extends React.Component<Props, {}> {
+interface State {
+  previewVisible: boolean,
+  previewImage: string,
+  fileList?: UploadFile[]
+}
+
+export class DocumentsDataComponent extends React.Component<Props, State> {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      previewVisible: false,
+      previewImage: '',
+    }
+  }
+
+  handlePreview = (file) => {
+    this.setState({
+      previewImage: file.url || file.thumbUrl,
+      previewVisible: true,
+    });
+  }
+
+  handleChange = ({ fileList }) => this.setState({ fileList });
+
+  handleCancel = () => this.setState({ previewVisible: false })
+
   render() {
+
+    const { previewVisible, previewImage, fileList } = this.state;
+
     return (
       <div className="document-data">
-        <h3>Documents Data Form</h3>
         <div className="documentation-form">
-          <h4>Fotodokumentation</h4>
+          <h2>Fotodokumentation</h2>
           <span>Alle Bilde pro Ansicht hohladen:</span>
           <div className="document-upload-container">
-            <Upload className="document-uploader">
+            <Upload className="document-uploader"
+              action=""
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
+            >
+              <div>
+                <Icon type='plus' className="plus-icon" />
+                <div className="ant-upload-text">Hochladen</div>
+              </div>
+            </Upload>
+            <div className="label">Vorne links</div>
+          </ div>
+          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          </Modal>
+        </div>
+
+        <div className="documentation-form">
+          <div className="document-upload-container">
+            <Upload className="document-uploader" 
+              action=""
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={this.handlePreview}
+              onChange={this.handleChange}
+            >
               <div>
                 <Icon type='plus' />
                 <div className="ant-upload-text">Hochladen</div>
               </div>
             </Upload>
-            <label>Vorne links</label>
+            <div className="label">Vorne rechts</div>
+            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+            <img alt="example" style={{ width: '100%' }} src={previewImage} />
+          </Modal>
           </ div>
         </div>
 
@@ -35,7 +96,7 @@ export class DocumentsDataComponent extends React.Component<Props, {}> {
                 <div className="ant-upload-text">Hochladen</div>
               </div>
             </Upload>
-            <label>Vorne rechts</label>
+            <div className="label">Hinten links</div>
           </ div>
         </div>
 
@@ -47,7 +108,7 @@ export class DocumentsDataComponent extends React.Component<Props, {}> {
                 <div className="ant-upload-text">Hochladen</div>
               </div>
             </Upload>
-            <label>Vorne rechts</label>
+            <div className="label">Hinten rechts</div>
           </ div>
         </div>
 
@@ -59,19 +120,7 @@ export class DocumentsDataComponent extends React.Component<Props, {}> {
                 <div className="ant-upload-text">Hochladen</div>
               </div>
             </Upload>
-            <label>Vorne rechts</label>
-          </ div>
-        </div>
-
-        <div className="documentation-form">
-          <div className="document-upload-container">
-            <Upload className="document-uploader">
-              <div>
-                <Icon type='plus' />
-                <div className="ant-upload-text">Hochladen</div>
-              </div>
-            </Upload>
-            <label>Vorne rechts</label>
+            <div className="label">Frontal vorne</div>
           </ div>
         </div>
 

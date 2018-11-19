@@ -41,7 +41,6 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
         keysNumber, vehicleDocoments, nextHU, lastService});
       
       this.props.navigateToTyresForm();
-        // this.props.nextStep();
     });
   }
 

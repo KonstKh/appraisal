@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button, Form, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
+import classnames from 'classnames';
 import './tyresData.less';
 
 const Option = Select.Option;
@@ -13,7 +14,22 @@ interface Props {
   navigateToVehicleForm: () => void
 }
 
-class TyresDataComponent extends React.Component<Props & FormComponentProps, {}> {
+interface State {
+  displayAdditionalTires: boolean
+}
+
+class TyresDataComponent extends React.Component<Props & FormComponentProps, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      displayAdditionalTires: false
+    }
+  }
+
+  handleTiresChange = (value) => {
+    value !== 'Select' ?  this.setState({ displayAdditionalTires: true }) : this.setState({displayAdditionalTires: false})
+  } 
 
   formSubmit = (e) => {
     const { validateFieldsAndScroll, resetFields,
@@ -26,7 +42,6 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, {}>
       const [tire, firstAxeLeft] = ['tire', 'firstAxeLeft'].map(i=> getFieldValue(i));
 
       this.props.saveTyresData({tire, firstAxeLeft});
-      // this.props.nextStep();
       this.props.navigateToEquipmentForm();
     })
   }
@@ -122,11 +137,15 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, {}>
             <div className="form-part-left">
               <div className="selector-wrapper">
                 <label>Zusätzliche Bereifung</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
+                <Select defaultValue="Wählen" onChange={ (tireType) => this.handleTiresChange(tireType)}>
+                  <Option value="Select">Wählen</Option>
+                  <Option value="Sommerrifen">Sommerrifen</Option>
+                  <Option value="Winterrifen">Winterrifen</Option>
+                  <Option value="Ganzjahresreifen">Ganzjahresreifen</Option>
                 </Select>
+              </div>
+              <div className={classnames({ hide: !this.state.displayAdditionalTires })}>
+                  TODO: Create here form for additional tires
               </div>
             </div>
             <div className="form-part-right"></div>
