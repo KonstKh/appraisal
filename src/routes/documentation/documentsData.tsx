@@ -11,6 +11,7 @@ interface Props {
   appraisalStep: number;
   navigateToComponentsForm: () => void;
   saveDocumentationData: (docFormData: any) => void;
+  uploadDocImage: (docImage: any) => void;
 }
 
 interface State {
@@ -73,7 +74,13 @@ export class DocumentsDataComponent extends React.Component<Props, State> {
     let newState = { ...this.state };
     newState.images[meta].fileList = fileList;
     this.setState(newState);
+    //TODO: do we need to save images separetely to redux state?
+    this.props.uploadDocImage({ [meta]: newState.images[meta].fileList});
   };
+
+  onSuccessUpload = () => {
+
+  }
 
   handleCancel = () => this.setState({ previewVisible: false })
 

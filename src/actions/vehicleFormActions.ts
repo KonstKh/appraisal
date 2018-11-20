@@ -38,7 +38,7 @@ export const saveComponentsFormData = (componentsFormData: any) => ({
 export const uploadDocImage = (docImage: any) => ({
   type: actionsEnum.UPLOAD_DOC_IMAGE,
   payload: {
-
+    image: docImage
   }
 })
 
