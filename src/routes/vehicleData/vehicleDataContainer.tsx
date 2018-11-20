@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { VehicleDataForm } from './vehicleData';
-import { saveVehicleData } from '../../actions/vehicleFormActions';
+import { saveVehicleData, uploadVehicleData } from '../../actions/vehicleFormActions';
 import { navigateToTyresForm } from '../../actions/navigationStep';
 
 const mapStateToProps = (state) => {
@@ -13,7 +13,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     saveVehicleData: (vehicleFormData: any) => dispatch(saveVehicleData(vehicleFormData)),
-    navigateToTyresForm: () => dispatch(navigateToTyresForm())
+    navigateToTyresForm: () => dispatch(navigateToTyresForm()),
+    updateVehicleData: (vehicleData: any) => dispatch(uploadVehicleData(vehicleData)) 
   }
 }
 

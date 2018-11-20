@@ -18,6 +18,13 @@ interface State {
   displayAdditionalTires: boolean
 }
 
+enum TyreType {
+  'Sommerrifen' = 'Sommerrifen',
+  'Winterrifen' = 'Winterrifen',
+  'Ganzjaresrifen' = 'Ganzjaresrifen',
+  'Nicht vorhanden' = 'Nicht vorhanden'
+}
+
 class TyresDataComponent extends React.Component<Props & FormComponentProps, State> {
   constructor(props) {
     super(props);
@@ -28,20 +35,20 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
   }
 
   handleTiresChange = (value) => {
-    value !== 'Select' ?  this.setState({ displayAdditionalTires: true }) : this.setState({displayAdditionalTires: false})
-  } 
+    value !== 'Select' ? this.setState({ displayAdditionalTires: true }) : this.setState({ displayAdditionalTires: false })
+  }
 
   formSubmit = (e) => {
     const { validateFieldsAndScroll, resetFields,
       getFieldValue, isFieldsTouched } = this.props && this.props.form;
 
     validateFieldsAndScroll((errors, values) => {
-      if(errors) {
+      if (errors) {
         return;
       }
-      const [tire, firstAxeLeft] = ['tire', 'firstAxeLeft'].map(i=> getFieldValue(i));
+      const [tire, firstAxeLeft] = ['tire', 'firstAxeLeft'].map(i => getFieldValue(i));
 
-      this.props.saveTyresData({tire, firstAxeLeft});
+      this.props.saveTyresData({ tire, firstAxeLeft });
       this.props.navigateToEquipmentForm();
     })
   }
@@ -54,11 +61,18 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
         <Form>
           <div className="tyre-data">
             <div className="form-part-left">
-              <FormItem hasFeedback label="Reifenart" className="single-field">
-                {getFieldDecorator('tire', { rules: [] })(
-                  <Input placeholder="z.B.: Sommerreifen"></Input>
-                )}
-              </FormItem>
+              <div className="selector-wrapper">
+                <label>Reifenart</label>
+                <FormItem>
+                  {getFieldDecorator('inspectionCondition', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      {Object.keys(TyreType).map((item) => {
+                        return <Option key={item} value={item}>{item}</Option>
+                      })}
+                    </Select>
+                  )}
+                </FormItem>
+              </div>
               <FormItem hasFeedback label="1. Achse – links Hersteller/Bezeichnung" className="single-field">
                 {getFieldDecorator('firstAxeLeft', { rules: [] })(
                   <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
@@ -119,7 +133,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
           <hr />
           <div className="tyre-data">
             <div className="form-part-left">
-            <FormItem hasFeedback label="Erzatzrad" className="single-field">
+              <FormItem hasFeedback label="Erzatzrad" className="single-field">
                 {getFieldDecorator('spareWeel', { rules: [] })(
                   <Input placeholder="z.B.: Tirefit"></Input>
                 )}
@@ -137,7 +151,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
             <div className="form-part-left">
               <div className="selector-wrapper">
                 <label>Zusätzliche Bereifung</label>
-                <Select defaultValue="Wählen" onChange={ (tireType) => this.handleTiresChange(tireType)}>
+                <Select defaultValue="Wählen" onChange={(tireType) => this.handleTiresChange(tireType)}>
                   <Option value="Select">Wählen</Option>
                   <Option value="Sommerrifen">Sommerrifen</Option>
                   <Option value="Winterrifen">Winterrifen</Option>
@@ -145,7 +159,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
                 </Select>
               </div>
               <div className={classnames({ hide: !this.state.displayAdditionalTires })}>
-                  TODO: Create here form for additional tires
+                TODO: Create here form for additional tires
               </div>
             </div>
             <div className="form-part-right"></div>

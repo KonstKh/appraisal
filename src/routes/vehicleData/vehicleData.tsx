@@ -9,10 +9,26 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 
 interface Props {
-  appraisalStep: number,
-  nextStep: () => void,
-  saveVehicleData: ( formData: any) => void,
-  navigateToTyresForm: () => void
+  saveVehicleData: (formData: any) => void,
+  navigateToTyresForm: () => void,
+  updateVehicleData: (vehicleData: any) => void
+}
+
+enum Conditions {
+  '1- sehr gut' = '1- sehr gut',
+  '2- gut' = '2- gut',
+  '3- befriedigend' = '3- befriedigend',
+  '4- ausreichend' = '4- ausreichend',
+  '5- mangelhaft' = '5- mangelhaft',
+  '6- ungenügend' = '6- ungenügend'
+}
+
+enum EnvironmentalBadge {
+  'Grün' = 'Grün',
+  'Gelb' = 'Gelb',
+  'Rot' = 'Rot',
+  'Blau' = 'Blau',
+  'Keine' = 'Keine'
 }
 
 class VehicleDataComponent extends React.Component<Props & FormComponentProps, {}> {
@@ -28,18 +44,25 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
     // });
 
     validateFieldsAndScroll((errors, values) => {
-      if(errors) {
+      if (errors) {
         return;
       }
 
-      const [registrationNumber, fin, kbaNr , year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery, 
-        keysNumber, vehicleDocoments, nextHU, lastService] = 
-       ['registrationNumber', 'fin', 'kbaNr', 'year', 'mileage', 'power', 'cylinder', 'beltChanged', 'previousOwners', 'farbeLack', 'unpholstery', 
-       'keysNumber', 'vehicleDocoments', 'nextHU', 'lastService'].map(i => getFieldValue(i));
-  
-       this.props.saveVehicleData({fin, registrationNumber, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery, 
-        keysNumber, vehicleDocoments, nextHU, lastService});
-      
+      const [registrationNumber, fin, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery,
+        keysNumber, vehicleDocoments, nextHU, lastService] =
+        ['registrationNumber', 'fin', 'kbaNr', 'year', 'mileage', 'power', 'cylinder', 'beltChanged', 'previousOwners', 'farbeLack', 'unpholstery',
+          'keysNumber', 'vehicleDocoments', 'nextHU', 'lastService'].map(i => getFieldValue(i));
+
+      this.props.saveVehicleData({
+        fin, registrationNumber, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery,
+        keysNumber, vehicleDocoments, nextHU, lastService
+      });
+
+      this.props.updateVehicleData({
+        fin, registrationNumber, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery,
+        keysNumber, vehicleDocoments, nextHU, lastService
+      });
+
       this.props.navigateToTyresForm();
     });
   }
@@ -133,11 +156,15 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               </FormItem>
               <div className="selector-wrapper">
                 <label>Umweltplakette</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+                <FormItem>
+                  {getFieldDecorator('environmentalBadge', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      { Object.keys(EnvironmentalBadge).map((item) => {
+                          return <Option key={item} value={item}>{item}</Option>
+                      })}
+                    </Select>
+                  )}
+                </FormItem>
               </div>
               <FormItem hasFeedback label="Antriebsart" className="single-field">
                 {getFieldDecorator('autoType', { rules: [] })(
@@ -185,10 +212,10 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               </div>
             </div>
           </div>
-          <hr/>
+          <hr />
           <div className="vehicle-data">
             <div className="form-part">{/* left middle under side */}
-            <FormItem hasFeedback label="Fahrzeugunterlagen" className="single-field">
+              <FormItem hasFeedback label="Fahrzeugunterlagen" className="single-field">
                 {getFieldDecorator('vehicleDocoments', { rules: [] })(
                   <Input placeholder="z.B.: ZB | (Fzg. Schein)"></Input>
                 )}
@@ -216,23 +243,31 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               </div>
               <div className="selector-wrapper">
                 <label>Fahrzeugbrief</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+                <FormItem>
+                  {this.props.form.getFieldDecorator('registrationDocument', {rules:[], initialValue:"Wählen"})(
+                    <Select>
+                      <Option value="available">Vorhanden</Option>
+                      <Option value="unavailable">Nicht vorhanden</Option>
+                      <Option value="at the bank">Bei der Bank</Option>
+                    </Select>
+                  )}
+                </FormItem>
               </div>
               <div className="selector-wrapper">
                 <label>Re-Import</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+                <FormItem>
+                  {this.props.form.getFieldDecorator('reimport', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      <Option value="yes">Ja</Option>
+                      <Option value="no">Nein</Option>
+                      <Option value="unknown">Unbekannt</Option>
+                    </Select>
+                  )}
+                </FormItem>
               </div>
             </div>
             <div className="form-part">{/* Right middle under side */}
-            <FormItem hasFeedback label="Nächste HU /AU" className="single-field">
+              <FormItem hasFeedback label="Nächste HU /AU" className="single-field">
                 {getFieldDecorator('nextHU', { rules: [] })(
                   <Input placeholder="z.B.: 06.2020"></Input>
                 )}
@@ -243,12 +278,16 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
                 )}
               </FormItem>
               <div className="selector-wrapper">
-                <label>Besichtigungsbedingungen</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+              <label>Besichtigungsbedingungen</label>
+                <FormItem>
+                  {getFieldDecorator('inspectionCondition', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      { Object.keys(Conditions).map((item) => {
+                          return <Option key={item} value={item}>{item}</Option>
+                      })}
+                    </Select>
+                  )}
+                </FormItem>
               </div>
               <div className="radio-wrapper">
                 <label>Fahrzeug verkehrssicher</label>
@@ -266,42 +305,58 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               </div>
             </div>
           </div>
-          <hr/>
+          <hr />
           <div className="vehicle-data">
             <div className="form-part"> {/* Left bottom side */}
               <div className="selector-wrapper">
                 <label>Zustand allgemein</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+                <FormItem>
+                  {getFieldDecorator('generalCondition', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      { Object.keys(Conditions).map((item) => {
+                          return <Option key={item} value={item}>{item}</Option>
+                      })}
+                    </Select>
+                  )}
+                </FormItem>
               </div>
               <div className="selector-wrapper">
                 <label>Zustand Fahrwerk</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+                <FormItem>
+                  {getFieldDecorator('chassisCondition', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      { Object.keys(Conditions).map((item) => {
+                          return <Option key={item} value={item}>{item}</Option>
+                      })}
+                    </Select>
+                  )}
+                </FormItem>
               </div>
             </div>
             <div className="form-part"> {/* Rigth bottom side */}
               <div className="selector-wrapper">
                 <label>Zustand außen</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+                <FormItem>
+                  {getFieldDecorator('outerCondition', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      { Object.keys(Conditions).map((item) => {
+                          return <Option key={item} value={item}>{item}</Option>
+                      })}
+                    </Select>
+                  )}
+                </FormItem>
               </div>
               <div className="selector-wrapper">
                 <label>Zustand Innen</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+                <FormItem>
+                  {getFieldDecorator('innerCondition', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      { Object.keys(Conditions).map((item) => {
+                          return <Option key={item} value={item}>{item}</Option>
+                      })}
+                    </Select>
+                  )}
+                </FormItem>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import { combineReducers} from 'redux';
 import { History } from 'history';
 import { RouterState, connectRouter } from 'connected-react-router';
-import { NavigationStepState } from './appraisalSteps';
+import { NavigationStepState } from '../models/common';
 import { navigation } from './navigation';
 import { vehicleForm } from './vehicleData';
 import { tyreForm } from './tyreData';

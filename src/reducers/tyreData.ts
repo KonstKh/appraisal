@@ -1,5 +1,5 @@
 import { actionsEnum } from '../actions/actionsEnum';
-import { AppraisalState, defaultState } from './models';
+import { AppraisalState, defaultState } from '../models/common';
 
 export const tyreForm = (state: AppraisalState = defaultState, action) => {
   switch(action.type) {

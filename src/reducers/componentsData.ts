@@ -1,5 +1,5 @@
 import { actionsEnum } from '../actions/actionsEnum';
-import { AppraisalState, defaultState } from './models';
+import { AppraisalState, defaultState } from '../models/common';
 
 
 export const componentsForm = (state: AppraisalState = defaultState, action) => {
