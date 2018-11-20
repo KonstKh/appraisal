@@ -8,6 +8,7 @@ import { tyreForm } from './tyreData';
 import { equipmentForm } from './equipmentData';
 import { inspectionForm } from './inspectoinData';
 import { componentsForm } from './componentsData';
+import { documentationForm } from './documentsData';
 
 export interface State {
   navigationStep: NavigationStepState,
@@ -22,7 +23,8 @@ const rootReducer = (history: History) => combineReducers({
     tyreForm,
     equipmentForm,
     inspectionForm,
-    componentsForm
+    componentsForm,
+    documentationForm
   })
 });
 
