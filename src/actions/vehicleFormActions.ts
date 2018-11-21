@@ -1,5 +1,5 @@
 import { actionsEnum } from './actionsEnum';
-import { saveVehicle } from '../api/api';
+import { saveVehicle } from '../middleware/api';
 
 export const saveVehicleData = (vehicleFormData: any) => ({
   type: actionsEnum.SAVE_VEHICLE_DATA,
@@ -10,15 +10,16 @@ export const saveVehicleData = (vehicleFormData: any) => ({
 
 export const uploadVehicleData = (vehicleData: any) => {
   return (dispatch) => {
-    return saveVehicle(vehicleData).
-      then(response => {
+    return saveVehicle(vehicleData)
+      .then(response => {
         dispatch(updateVehicleSuccess(response));
-      }).catch(error => {throw(error)});
+      })
+      .catch(error => { throw (error) });
   }
 }
 
 export const updateVehicleSuccess = (updatedVehicle) => {
-  return { type: actionsEnum.UPLOAD_VEHICLE_DATA, updatedVehicle}
+  return { type: actionsEnum.UPLOAD_VEHICLE_DATA, updatedVehicle }
 }
 
 export const saveTyresData = (tyresFormData: any) => ({

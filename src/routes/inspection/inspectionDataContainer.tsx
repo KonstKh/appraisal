@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export const InspectionDataContainer = connect (
+export const InspectionDataContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(InspectionDataForm);

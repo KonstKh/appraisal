@@ -62,7 +62,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
           <div className="tyre-data">
             <div className="form-part-left">
               <div className="selector-wrapper">
-                <label>Reifenart</label>
+                <div className="label">Reifenart</div>
                 <FormItem>
                   {getFieldDecorator('inspectionCondition', { rules: [], initialValue: "Wählen" })(
                     <Select>
@@ -101,12 +101,15 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
             </div>
             <div className="form-part-right">
               <div className="selector-wrapper">
-                <label>Felgentyp</label>
-                <Select defaultValue="Wählen">
-                  <Option value="Wählen">Wählen</Option>
-                  <Option value="Wählen-1">Wählen 1</Option>
-                  <Option value="Wählen-2">Wählen 2</Option>
-                </Select>
+                <div className="label">Felgentyp</div>
+                <FormItem>
+                  {getFieldDecorator('rimType', { rules: [], initialValue: "Wählen" })(
+                    <Select>
+                      <Option value="Aluminium">Aluminium</Option>
+                      <Option value="Stahl">Stahl</Option>
+                    </Select>
+                  )}
+                </FormItem>
               </div>
               <FormItem hasFeedback label="Zustand:" className="single-field">
                 {getFieldDecorator('state', { rules: [] })(
@@ -159,10 +162,69 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
                 </Select>
               </div>
               <div className={classnames({ hide: !this.state.displayAdditionalTires })}>
-                TODO: Create here form for additional tires
+                <FormItem hasFeedback label="1. Achse – links Hersteller/Bezeichnung" className="single-field">
+                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
+                    <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
+                  )}
+                </FormItem>
+                <FormItem hasFeedback label="1. Achse – rechts Hersteller/Bezeichnung" className="single-field">
+                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
+                    <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
+                  )}
+                </FormItem>
+                <FormItem hasFeedback label="2. Achse – links Hersteller/Bezeichnung" className="single-field">
+                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
+                    <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
+                  )}
+                </FormItem>
+                <FormItem hasFeedback label="2. Achse – rechts Hersteller/Bezeichnung" className="single-field">
+                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
+                    <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
+                  )}
+                </FormItem>
+                <FormItem hasFeedback label="DOT-Nummer" className="single-field">
+                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
+                    <Input placeholder="z.B.: 4503"></Input>
+                  )}
+                </FormItem>
               </div>
             </div>
-            <div className="form-part-right"></div>
+            <div className="form-part-right">
+              <div className={classnames({ hide: !this.state.displayAdditionalTires })}>
+                <div className="selector-wrapper">
+                  <div className="label">Felgentyp</div>
+                  <FormItem>
+                    {getFieldDecorator('rimType', { rules: [], initialValue: "Wählen" })(
+                      <Select>
+                        <Option value="Aluminium">Aluminium</Option>
+                        <Option value="Stahl">Stahl</Option>
+                        <Option value="Ohne">Ohne</Option>
+                      </Select>
+                    )}
+                  </FormItem>
+                </div>
+                <FormItem hasFeedback label="Zustand" className="single-field">
+                  {getFieldDecorator('leftFrontState', { rules: [] })(
+                    <Input placeholder="z.B.: 7,31 mm"></Input>
+                  )}
+                </FormItem>
+                <FormItem hasFeedback label="Zustand" className="single-field">
+                  {getFieldDecorator('rightFrontState', { rules: [] })(
+                    <Input placeholder="z.B.: 7,31 mm"></Input>
+                  )}
+                </FormItem>
+                <FormItem hasFeedback label="Zustand" className="single-field">
+                  {getFieldDecorator('leftRearState', { rules: [] })(
+                    <Input placeholder="z.B.: 7,31 mm"></Input>
+                  )}
+                </FormItem>
+                <FormItem hasFeedback label="Zustand" className="single-field">
+                  {getFieldDecorator('rightRearState', { rules: [] })(
+                    <Input placeholder="z.B.: 7,31 mm"></Input>
+                  )}
+                </FormItem>
+              </div>
+            </div>
           </div>
         </Form>
         <div className="footer-nav">

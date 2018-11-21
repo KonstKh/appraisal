@@ -13,6 +13,21 @@ interface Props {
 }
 
 class ComponentsDataComponent extends React.Component<Props & FormComponentProps, {}> {
+
+  renderSelect = (formName: string, ) => {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <FormItem className="selector-wrapper">
+        {getFieldDecorator(formName, { rules: [], initialValue: "Wählen" })(
+          <Select>
+            <Option value="correct">In Ordnung</Option>
+            <Option value="damageDetected">Schaden festgestellt</Option>
+          </Select>
+        )}
+      </FormItem>
+    )
+  }
+
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
 
@@ -29,13 +44,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Kotflügel vorne links</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('wingFrontLeft')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontLeft', { rules: [] })(
+                    {getFieldDecorator('wingFrontLeftDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -58,13 +69,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Stoßstange vorne</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('frontBumber')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('frontBamper', { rules: [] })(
+                    {getFieldDecorator('frontBumberDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -74,7 +81,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
                   <FormItem >
-                    {getFieldDecorator('frontBamperLackDepth')(
+                    {getFieldDecorator('frontBumberLackDepth')(
                       <Input addonAfter="µm" placeholder="z.B. 132" />
                     )}
                   </FormItem>
@@ -87,13 +94,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Tür vorne links</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('frontLeftDoor')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('doorFrontLeft', { rules: [] })(
+                    {getFieldDecorator('frontLeftDoorDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -116,13 +119,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Tür hinten links</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('rearLeftDoor')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('doorRearLeft', { rules: [] })(
+                    {getFieldDecorator('rearLeftDoorDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -132,7 +131,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
                   <FormItem >
-                    {getFieldDecorator('doorRearLeftLackDepth')(
+                    {getFieldDecorator('rearLeftDoorLackDepth')(
                       <Input addonAfter="µm" placeholder="z.B. 132" />
                     )}
                   </FormItem>
@@ -145,13 +144,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Seitenwand hinten links</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('rearLeftSidePanel')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('sidewallRearLeft', { rules: [] })(
+                    {getFieldDecorator('rearLeftSidePanelDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -161,7 +156,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
                 <div className="title">Festgestellte Lackschichtendicke:</div>
                 <div className="input-wrapper">
                   <FormItem >
-                    {getFieldDecorator('sidewallRearLeftLackDepth')(
+                    {getFieldDecorator('rearLeftSidePanelLackDepth')(
                       <Input addonAfter="µm" placeholder="z.B. 132" />
                     )}
                   </FormItem>
@@ -174,13 +169,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Stoßstange hinten</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('rearBumper')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('rearBumper', { rules: [] })(
+                    {getFieldDecorator('rearBumperDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -203,13 +194,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Heckklappe</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('tailgate')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('tailgate', { rules: [] })(
+                    {getFieldDecorator('tailgateDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -232,13 +219,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Seitenwand hinten rechts</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('rearRightSidePanel')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('sidepanelRearRight', { rules: [] })(
+                    {getFieldDecorator('rearRightSidePanelDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -261,13 +244,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Tür hinten rechts</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('rearRightDoor')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('doorRearRight', { rules: [] })(
+                    {getFieldDecorator('rearRightDoorDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -290,13 +269,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Tür vorne rechts</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('frontRightDoor')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('doorFrontRight', { rules: [] })(
+                    {getFieldDecorator('frontRightDoorDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -319,13 +294,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Kotflügel vorne rechts</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('mudguardFrontRight')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontRight', { rules: [] })(
+                    {getFieldDecorator('mudguardFrontRightDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -348,13 +319,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Motorhaube</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('bonnet')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('bonnet', { rules: [] })(
+                    {getFieldDecorator('bonnetDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -377,11 +344,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Dach</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('root')}
                   <FormItem hasFeedback label="" className="single-field">
                     {getFieldDecorator('roof', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
@@ -406,13 +369,9 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               <div className="part-description">
                 <div className="component-row">
                   <div className="label">Windschutzscheibe</div>
-                  <Select defaultValue="Wählen">
-                    <Option value="Wählen">Wählen</Option>
-                    <Option value="Wählen-1">Wählen 1</Option>
-                    <Option value="Wählen-2">Wählen 2</Option>
-                  </Select>
+                  {this.renderSelect('windshield')}
                   <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('windshield', { rules: [] })(
+                    {getFieldDecorator('windshieldDescription', { rules: [] })(
                       <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
                     )}
                   </FormItem>
@@ -459,10 +418,12 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
       const [mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
         doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth] =
         ['mudguardFrontLeft', 'mudguardFrontLeftLackDepth', 'frontBamper', 'frontBamperLackDepth', 'doorFrontLeft', 'doorFrontLeftLackDepth',
-      'doorRearLeft', 'sidewallRearLeft', 'sidewallRearLeftLackDepth'].map(i => getFieldValue(i));
+          'doorRearLeft', 'sidewallRearLeft', 'sidewallRearLeftLackDepth'].map(i => getFieldValue(i));
 
-      this.props.saveComponentsFormData({mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
-        doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth });
+      this.props.saveComponentsFormData({
+        mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
+        doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth
+      });
 
       this.props.navigateToDocumentsForm();
     });
