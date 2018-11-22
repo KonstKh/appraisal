@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import './vehicleData.less';
 
+import { VehicleEntity } from '../../models/vehicle';
+
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -11,7 +13,12 @@ const FormItem = Form.Item;
 interface Props {
   saveVehicleData: (formData: any) => void,
   navigateToTyresForm: () => void,
-  uploadVehicleData: (vehicleData: any) => void
+  uploadVehicleData: (vehicleData: any) => void,
+  vehicle: VehicleEntity
+}
+
+interface State {
+  vehicle: VehicleEntity
 }
 
 enum Conditions {
@@ -31,7 +38,48 @@ enum EnvironmentalBadge {
   'Keine' = 'Keine'
 }
 
-class VehicleDataComponent extends React.Component<Props & FormComponentProps, {}> {
+class VehicleDataComponent extends React.Component<Props & FormComponentProps, State> {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      vehicle: props.vehicle
+    }
+  }
+
+  handleChange = (key) => (event) => {
+    if (typeof key === 'object' && key !== null && key.name) { key = key.name; }
+    this.setState({ vehicle: { ...this.state.vehicle, [key]: event.target.value } });
+  }
+
+  renderInput = (fieldName: string, label: string, placeholder: string) => {
+    const { getFieldDecorator } = this.props.form;
+
+    return (
+      <FormItem hasFeedback label={label} className="single-field">
+        {getFieldDecorator(fieldName, { rules: [], initialValue: this.state.vehicle[fieldName] })(
+          <Input placeholder={placeholder} onChange={this.handleChange(fieldName)}></Input>
+        )}
+      </FormItem>
+    )
+  }
+
+  renderRadio = (name: string, label: string) => {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <div className="radio-wrapper">
+        <FormItem label={label}>
+          {getFieldDecorator(name, { initialValue: this.state.vehicle[name] })(
+            <RadioGroup className="radio-group" name={name} onChange={this.handleChange({ name })}>
+              <Radio value={1} >Ja</Radio>
+              <Radio value={2} >Nein</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+      </div>
+    )
+  }
 
   formSubmit = (e) => {
     const { validateFieldsAndScroll, resetFields,
@@ -48,21 +96,8 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
         return;
       }
 
-      const [registrationNumber, fin, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery,
-        keysNumber, vehicleDocoments, nextHU, lastService] =
-        ['registrationNumber', 'fin', 'kbaNr', 'year', 'mileage', 'power', 'cylinder', 'beltChanged', 'previousOwners', 'farbeLack', 'unpholstery',
-          'keysNumber', 'vehicleDocoments', 'nextHU', 'lastService'].map(i => getFieldValue(i));
-
-      this.props.saveVehicleData({
-        fin, registrationNumber, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery,
-        keysNumber, vehicleDocoments, nextHU, lastService
-      });
-
-      this.props.uploadVehicleData({
-        fin, registrationNumber, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery,
-        keysNumber, vehicleDocoments, nextHU, lastService
-      });
-
+      this.props.saveVehicleData(this.state.vehicle);
+      this.props.uploadVehicleData(this.state.vehicle);
       this.props.navigateToTyresForm();
     });
   }
@@ -75,177 +110,71 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
         <Form>
           <div className="vehicle-data">
             <div className="form-part"> {/* Left top side */}
-              <FormItem hasFeedback label="Amtl. Kennzeichen" className="single-field">
-                {getFieldDecorator('registrationNumber', { rules: [] })(
-                  <Input placeholder="z.B.: ED GG23E"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Fahrzeug-Ident.-Nr." className="single-field">
-                {getFieldDecorator('fin', { rules: [] })(
-                  <Input placeholder="WBAVP31050VK14533"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="KBA-Nr. (HSN/TSN)" className="single-field">
-                {getFieldDecorator('kbaNr', { rules: [] })(
-                  <Input placeholder="z.B.: 0603/CDN"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Erstzulassung" className="single-field">
-                {getFieldDecorator('year', { rules: [] })(
-                  <Input placeholder="16.06.2016"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Laufleistung abgelesen" className="single-field">
-                {getFieldDecorator('mileage', { rules: [] })(
-                  <Input placeholder="z.B.: 85295km"></Input>
-                )}
-              </FormItem>
-              <div className="radio-wrapper">
-                <label>Laufleistung plausibel</label>
-                <RadioGroup name="Umweltplakette" className="radio-group">
-                  <Radio value={1}>Ja</Radio>
-                  <Radio value={2}>Nein</Radio>
-                </RadioGroup>
-              </div>
-              <FormItem hasFeedback label="Hubraum / Leistung" className="single-field">
-                {getFieldDecorator('power', { rules: [] })(
-                  <Input placeholder="z.B.: 1968ccm/176kW"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Zylinder" className="single-field">
-                {getFieldDecorator('cylinder', { rules: [] })(
-                  <Input placeholder="z.B.: 6"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Zahnriemenwechsel km/am" className="single-field">
-                {getFieldDecorator('beltChanged', { rules: [] })(
-                  <Input placeholder="z.B.: 50000 / 01.10.2017"></Input>
-                )}
-              </FormItem>
+
+              {this.renderInput('registrationNumber', 'Amtl. Kennzeichen', 'z.B.: ED GG23E')}
+              {this.renderInput('fin', 'Fahrzeug-Ident.-Nr.', 'WBAVP31050VK14533')}
+              {this.renderInput('kbaNr', 'KBA-Nr. (HSN/TSN)', 'z.B.: 0603/CDN')}
+              {this.renderInput('year', 'Erstzulassung', '16.06.2016')}
+              {this.renderInput('mileage', 'Laufleistung abgelesen', 'z.B.: 85295km')}
+
+              {this.renderRadio('mileagePlausible', 'Laufleistung plausibel')}
+
+              {this.renderInput('power', 'Hubraum / Leistung', 'z.B.: 1968ccm/176kW')}
+              {this.renderInput('cylinder', 'Zylinder', 'z.B.: 6')}
+              {this.renderInput('beltChanged', 'Zahnriemenwechsel km/am', 'z.B.: 50000 / 01.10.2017')}
+
             </div>
             <div className="form-part"> {/* Right top side */}
-              <FormItem hasFeedback label="Anzahl Vorbesitzer" className="single-field">
-                {getFieldDecorator('previousOwners', { rules: [] })(
-                  <Input placeholder="z.B.: 1"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Fahrzeugart" className="single-field">
-                {getFieldDecorator('autotype', { rules: [] })(
-                  <Input placeholder="z.B.: Personenkraftwagen"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Aufbauart" className="single-field">
-                {getFieldDecorator('body', { rules: [] })(
-                  <Input placeholder="z.B.: Limousine"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Türen / Sitzplätze" className="single-field">
-                {getFieldDecorator('doorsSits', { rules: [] })(
-                  <Input placeholder="z.B.: 5 / 5"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Kraftstoff" className="single-field">
-                {getFieldDecorator('fuel', { rules: [] })(
-                  <Input placeholder="z.B.: Diesel"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Emissionsklasse" className="single-field">
-                {getFieldDecorator('emissionClass', { rules: [] })(
-                  <Input placeholder="z.B.: Euro 6"></Input>
-                )}
-              </FormItem>
+              {this.renderInput('previousOwners', 'Anzahl Vorbesitzer', 'z.B.: 1')}
+              {this.renderInput('autoType', 'Fahrzeugart', 'z.B.: Personenkraftwagen')}
+              {this.renderInput('body', 'Aufbauart', 'z.B.: Limousine')}
+              {this.renderInput('doorsSits', 'Türen / Sitzplätze', 'z.B.: 5 / 5')}
+              {this.renderInput('fuel', 'Kraftstoff', 'z.B.: Diesel')}
+              {this.renderInput('emissionClass', 'Emissionsklasse', 'z.B.: Euro 6')}
+
               <div className="selector-wrapper">
                 <label>Umweltplakette</label>
                 <FormItem>
-                  {getFieldDecorator('environmentalBadge', { rules: [], initialValue: "Wählen" })(
-                    <Select>
-                      { Object.keys(EnvironmentalBadge).map((item) => {
-                          return <Option key={item} value={item}>{item}</Option>
+                  {getFieldDecorator('environmentalBadge', { rules: [], initialValue: this.state.vehicle['environmentalBadge'] || "Wählen" })(
+                    <Select onChange={this.handleChange('environmentalBadge')}>
+                      {Object.keys(EnvironmentalBadge).map((item) => {
+                        return <Option key={item} value={item}>{item}</Option>
                       })}
                     </Select>
                   )}
                 </FormItem>
               </div>
-              <FormItem hasFeedback label="Antriebsart" className="single-field">
-                {getFieldDecorator('autoType', { rules: [] })(
-                  <Input placeholder="z.B.: Allrad"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Getriebe Art" className="single-field">
-                {getFieldDecorator('gear', { rules: [] })(
-                  <Input placeholder="z.B.: Automatik"></Input>
-                )}
-              </FormItem>
+
+              {this.renderInput('driveType', 'Antriebsart', 'z.B.: Allrad')}
+              {this.renderInput('gear', 'Getriebe Art', 'z.B.: Automatik')}
+
             </div>
           </div>
           <hr />
           <div className="vehicle-data">
             <div className="form-part"> {/* left middle side */}
-              <FormItem hasFeedback label="Farbe / Lackart" className="single-field">
-                {getFieldDecorator('farbeLack', { rules: [] })(
-                  <Input placeholder="z.B.: 50000 / 01.10.2017"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Farbe Innenraum" className="single-field">
-                {getFieldDecorator('farbeInner', { rules: [] })(
-                  <Input placeholder="z.B.: 50000 / 01.10.2017"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Polster Art" className="single-field">
-                {getFieldDecorator('unpholstery', { rules: [] })(
-                  <Input placeholder="z.B.: Leder"></Input>
-                )}
-              </FormItem>
+              {this.renderInput('colour', 'Farbe / Lackar', 'z.B.: Deep Black / Perleffekt')}
+              {this.renderInput('colourInterior', 'Farbe / Lackar', 'z.B.: Schwarz')}
+              {this.renderInput('unpholstery', 'Polster Art', 'z.B.: Leder')}
             </div>
             <div className="form-part"> {/* Right middle side */}
-              <FormItem hasFeedback label="Anzahl Schlüssel" className="single-field">
-                {getFieldDecorator('keysNumber', { rules: [] })(
-                  <Input placeholder="z.B.: 2"></Input>
-                )}
-              </FormItem>
-              <div className="radio-wrapper">
-                <label>Raucherfahrzeug</label>
-                <RadioGroup name="Umweltplakette" className="radio-group">
-                  <Radio value={1}>Ja</Radio>
-                  <Radio value={2}>Nein</Radio>
-                </RadioGroup>
-              </div>
+              {this.renderInput('keysNumber', 'Anzahl Schlüssel', 'z.B.: 2')}
+              {this.renderRadio('smokingVehicle', 'Raucherfahrzeug')}
             </div>
           </div>
           <hr />
           <div className="vehicle-data">
             <div className="form-part">{/* left middle under side */}
-              <FormItem hasFeedback label="Fahrzeugunterlagen" className="single-field">
-                {getFieldDecorator('vehicleDocoments', { rules: [] })(
-                  <Input placeholder="z.B.: ZB | (Fzg. Schein)"></Input>
-                )}
-              </FormItem>
-              <div className="radio-wrapper">
-                <label>Serviceheft verfügbar</label>
-                <RadioGroup name="Umweltplakette" className="radio-group">
-                  <Radio value={1}>Ja</Radio>
-                  <Radio value={2}>Nein</Radio>
-                </RadioGroup>
-              </div>
-              <div className="radio-wrapper">
-                <label>Lückenlos gepflegt</label>
-                <RadioGroup name="Umweltplakette" className="radio-group">
-                  <Radio value={1}>Ja</Radio>
-                  <Radio value={2}>Nein</Radio>
-                </RadioGroup>
-              </div>
-              <div className="radio-wrapper">
-                <label>Fahrzeugschein</label>
-                <RadioGroup name="Umweltplakette" className="radio-group">
-                  <Radio value={1}>Ja</Radio>
-                  <Radio value={2}>Nein</Radio>
-                </RadioGroup>
-              </div>
+              {this.renderInput('vehicleDocuments', 'Fahrzeugunterlagen', 'z.B.: ZB | (Fzg. Schein)')}
+              {this.renderRadio('serviceBookAvailable ', 'Serviceheft verfügbar')}
+              {this.renderRadio('perfectlyMaintained ', 'Lückenlos gepflegt')}
+              {this.renderRadio('vehicleRegistration ', 'Fahrzeugschein')}
+
               <div className="selector-wrapper">
                 <label>Fahrzeugbrief</label>
                 <FormItem>
-                  {this.props.form.getFieldDecorator('registrationDocument', {rules:[], initialValue:"Wählen"})(
-                    <Select>
+                  {this.props.form.getFieldDecorator('registrationDocument', { rules: [], initialValue: "Wählen" })(
+                    <Select onChange={this.handleChange('registrationDocument')}>
                       <Option value="available">Vorhanden</Option>
                       <Option value="unavailable">Nicht vorhanden</Option>
                       <Option value="at the bank">Bei der Bank</Option>
@@ -257,7 +186,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
                 <label>Re-Import</label>
                 <FormItem>
                   {this.props.form.getFieldDecorator('reimport', { rules: [], initialValue: "Wählen" })(
-                    <Select>
+                    <Select onChange={this.handleChange('reimport')}>
                       <Option value="yes">Ja</Option>
                       <Option value="no">Nein</Option>
                       <Option value="unknown">Unbekannt</Option>
@@ -267,42 +196,24 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               </div>
             </div>
             <div className="form-part">{/* Right middle under side */}
-              <FormItem hasFeedback label="Nächste HU /AU" className="single-field">
-                {getFieldDecorator('nextHU', { rules: [] })(
-                  <Input placeholder="z.B.: 06.2020"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Letzter Service km/am" className="single-field">
-                {getFieldDecorator('lastService', { rules: [] })(
-                  <Input placeholder="z.B.: 21000 / 01.02.2017"></Input>
-                )}
-              </FormItem>
+              {this.renderInput('nextHU', 'Nächste HU /AU', 'z.B.: 06.2020')}
+              {this.renderInput('lastService', 'Letzter Service km/am', 'z.B.: 21000 / 01.02.2017')}
+
               <div className="selector-wrapper">
-              <label>Besichtigungsbedingungen</label>
+                <label>Besichtigungsbedingungen</label>
                 <FormItem>
-                  {getFieldDecorator('inspectionCondition', { rules: [], initialValue: "Wählen" })(
-                    <Select>
-                      { Object.keys(Conditions).map((item) => {
-                          return <Option key={item} value={item}>{item}</Option>
+                  {getFieldDecorator('inspectionCondition', { rules: [], initialValue: this.state.vehicle['inspectionCondition'] || "Wählen" })(
+                    <Select onChange={this.handleChange('inspectionCondition')}>
+                      {Object.keys(Conditions).map((item) => {
+                        return <Option key={item} value={item}>{item}</Option>
                       })}
                     </Select>
                   )}
                 </FormItem>
               </div>
-              <div className="radio-wrapper">
-                <label>Fahrzeug verkehrssicher</label>
-                <RadioGroup name="Umweltplakette" className="radio-group">
-                  <Radio value={1}>Ja</Radio>
-                  <Radio value={2}>Nein</Radio>
-                </RadioGroup>
-              </div>
-              <div className="radio-wrapper">
-                <label>Fahrzeug fahrbereit</label>
-                <RadioGroup name="Umweltplakette" className="radio-group">
-                  <Radio value={1}>Ja</Radio>
-                  <Radio value={2}>Nein</Radio>
-                </RadioGroup>
-              </div>
+              {this.renderRadio('vehicleRoadworthy ', 'Fahrzeug verkehrssicher')}
+              {this.renderRadio('vehicleReadyToDrive ', 'Fahrzeug fahrbereit')}
+
             </div>
           </div>
           <hr />
@@ -311,10 +222,10 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               <div className="selector-wrapper">
                 <label>Zustand allgemein</label>
                 <FormItem>
-                  {getFieldDecorator('generalCondition', { rules: [], initialValue: "Wählen" })(
-                    <Select>
-                      { Object.keys(Conditions).map((item) => {
-                          return <Option key={item} value={item}>{item}</Option>
+                  {getFieldDecorator('generalCondition', { rules: [], initialValue: this.state.vehicle['generalCondition'] || "Wählen" })(
+                    <Select onChange={this.handleChange('generalCondition')}>
+                      {Object.keys(Conditions).map((item) => {
+                        return <Option key={item} value={item}>{item}</Option>
                       })}
                     </Select>
                   )}
@@ -323,10 +234,10 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               <div className="selector-wrapper">
                 <label>Zustand Fahrwerk</label>
                 <FormItem>
-                  {getFieldDecorator('chassisCondition', { rules: [], initialValue: "Wählen" })(
-                    <Select>
-                      { Object.keys(Conditions).map((item) => {
-                          return <Option key={item} value={item}>{item}</Option>
+                  {getFieldDecorator('chassisCondition', { rules: [], initialValue: this.state.vehicle['chassisCondition'] || "Wählen" })(
+                    <Select onChange={this.handleChange('chassisCondition')}>
+                      {Object.keys(Conditions).map((item) => {
+                        return <Option key={item} value={item}>{item}</Option>
                       })}
                     </Select>
                   )}
@@ -337,10 +248,10 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               <div className="selector-wrapper">
                 <label>Zustand außen</label>
                 <FormItem>
-                  {getFieldDecorator('outerCondition', { rules: [], initialValue: "Wählen" })(
-                    <Select>
-                      { Object.keys(Conditions).map((item) => {
-                          return <Option key={item} value={item}>{item}</Option>
+                  {getFieldDecorator('outerCondition', { rules: [], initialValue: this.state.vehicle['outerCondition'] || "Wählen" })(
+                    <Select onChange={this.handleChange('outerCondition')}>
+                      {Object.keys(Conditions).map((item) => {
+                        return <Option key={item} value={item}>{item}</Option>
                       })}
                     </Select>
                   )}
@@ -349,10 +260,10 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
               <div className="selector-wrapper">
                 <label>Zustand Innen</label>
                 <FormItem>
-                  {getFieldDecorator('innerCondition', { rules: [], initialValue: "Wählen" })(
-                    <Select>
-                      { Object.keys(Conditions).map((item) => {
-                          return <Option key={item} value={item}>{item}</Option>
+                  {getFieldDecorator('innerCondition', { rules: [], initialValue: this.state.vehicle['innerCondition'] || "Wählen" })(
+                    <Select onChange={this.handleChange('innerCondition')}>
+                      {Object.keys(Conditions).map((item) => {
+                        return <Option key={item} value={item}>{item}</Option>
                       })}
                     </Select>
                   )}
