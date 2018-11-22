@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 
 interface Props {
   saveInspectionData: (formData: any) => void;
+  uploadInspectionData: (formData: any) => void;
   navigateToComponentsForm: () => void;
   navigateToEquipmentForm: () => void;
 }
@@ -207,6 +208,7 @@ class InspectionDataComponent extends React.Component<Props & FormComponentProps
         ['testDriveComment', 'mileageCorrect', 'tireType', 'generator', 'oilVaste', 'conditioning', 'brakes', 'exhaust', 'shockAbsober', 'light', 'clutch', 'engine', 'transmission', 'note'].map(i => getFieldValue(i));
 
       this.props.saveInspectionData({ testDriveComment, mileageCorrect, tireType, generator, oilVaste, conditioning, brakes, exhaust, shockAbsober, light, clutch, engine, transmission, note });
+      this.props.uploadInspectionData({ testDriveComment, mileageCorrect, tireType, generator, oilVaste, conditioning, brakes, exhaust, shockAbsober, light, clutch, engine, transmission, note });
       this.props.navigateToComponentsForm();
     });
   }

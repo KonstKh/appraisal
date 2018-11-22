@@ -1,19 +1,20 @@
 import { actionsEnum } from '../actions/actionsEnum';
 import { AppraisalState, defaultState } from '../models/common';
 
-export const tyreForm = (state: AppraisalState = defaultState, action) => {
+export const tyresForm = (state: AppraisalState = defaultState, action) => {
   switch(action.type) {
     case actionsEnum.SAVE_TYRES_DATA:
-      return saveTyreData(state, action);
+      return saveTyresData(state, action);
+    case actionsEnum.UPLOAD_TYRES_DATA:
+      return state;
   }
 
   return state;
 }
 
-const saveTyreData = (state: AppraisalState, action: any) => {
+const saveTyresData = (state: AppraisalState, action: any) => {
   return {
     ...state,
     ...action.payload.tyresData
   }
 }
-

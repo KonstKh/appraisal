@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { TyresDataForm } from './tyresData';
-import { saveTyresData } from '../../actions/vehicleFormActions';
+import { saveTyresData, uploadTyresData } from '../../actions/vehicleFormActions';
 import { navigateToEquipmentForm, navigateToVehicleForm } from '../../actions/navigationStep';
 
 const mapStateToProps = (state)  => {
@@ -12,6 +12,7 @@ const mapStateToProps = (state)  => {
 const mapDispatchToProps = (dispatch) => {
   return {
     saveTyresData: (tyresFormData: any) => dispatch(saveTyresData(tyresFormData)),
+    uploadTyresData: (tyresFormData: any) => dispatch(uploadTyresData(tyresFormData)),
     navigateToEquipmentForm: () => dispatch(navigateToEquipmentForm()),
     navigateToVehicleForm: () => dispatch(navigateToVehicleForm())
   }

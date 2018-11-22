@@ -6,6 +6,8 @@ export const equipmentForm = (state: AppraisalState = defaultState, action) => {
   switch(action.type) {
     case actionsEnum.SAVE_EQUIPMENT_DATA:
       return saveEquipmentData(state, action);
+    case actionsEnum.UPLOAD_EQUIPMENT_DATA:
+      return state;
   }
 
   return state;

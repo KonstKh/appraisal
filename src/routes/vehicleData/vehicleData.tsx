@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 interface Props {
   saveVehicleData: (formData: any) => void,
   navigateToTyresForm: () => void,
-  updateVehicleData: (vehicleData: any) => void
+  uploadVehicleData: (vehicleData: any) => void
 }
 
 enum Conditions {
@@ -58,7 +58,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, {
         keysNumber, vehicleDocoments, nextHU, lastService
       });
 
-      this.props.updateVehicleData({
+      this.props.uploadVehicleData({
         fin, registrationNumber, kbaNr, year, mileage, power, cylinder, beltChanged, previousOwners, farbeLack, unpholstery,
         keysNumber, vehicleDocoments, nextHU, lastService
       });

@@ -9,6 +9,7 @@ const FormItem = Form.Item;
 
 interface Props {
   saveEquipmentData: (formData: any) => void;
+  uploadEquipmentData: (formData: any) => void;
   navigateToInspectionForm: () => void;
   navigateToTyresForm: () => void;
 }
@@ -72,7 +73,7 @@ class EquipmentDataComponent extends React.Component<Props & FormComponentProps,
         ['standartEquipment', 'extraEquipment'].map(i => getFieldValue(i));
 
       this.props.saveEquipmentData({standartEquipment, extraEquipment});
-
+      this.props.uploadEquipmentData({standartEquipment, extraEquipment});
       this.props.navigateToInspectionForm();
     });
   }

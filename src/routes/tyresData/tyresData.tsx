@@ -10,6 +10,7 @@ const FormItem = Form.Item;
 
 interface Props {
   saveTyresData: (formData: any) => void,
+  uploadTyresData: (formData: any) => void,
   navigateToEquipmentForm: () => void,
   navigateToVehicleForm: () => void
 }
@@ -49,6 +50,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
       const [tire, firstAxeLeft] = ['tire', 'firstAxeLeft'].map(i => getFieldValue(i));
 
       this.props.saveTyresData({ tire, firstAxeLeft });
+      this.props.uploadTyresData({tire, firstAxeLeft});
       this.props.navigateToEquipmentForm();
     })
   }

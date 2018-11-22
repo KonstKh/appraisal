@@ -4,7 +4,7 @@ import { RouterState, connectRouter } from 'connected-react-router';
 import { NavigationStepState } from '../models/common';
 import { navigation } from './navigation';
 import { vehicleForm } from './vehicleData';
-import { tyreForm } from './tyreData';
+import { tyresForm } from './tyresData';
 import { equipmentForm } from './equipmentData';
 import { inspectionForm } from './inspectoinData';
 import { componentsForm } from './componentsData';
@@ -20,7 +20,7 @@ const rootReducer = (history: History) => combineReducers({
   root: combineReducers({
     navigation,
     vehicleForm,
-    tyreForm,
+    tyresForm,
     equipmentForm,
     inspectionForm,
     componentsForm,

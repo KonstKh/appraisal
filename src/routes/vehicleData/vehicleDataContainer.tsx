@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     saveVehicleData: (vehicleFormData: any) => dispatch(saveVehicleData(vehicleFormData)),
     navigateToTyresForm: () => dispatch(navigateToTyresForm()),
-    updateVehicleData: (vehicleData: any) => dispatch(uploadVehicleData(vehicleData)) 
+    uploadVehicleData: (vehicleData: any) => dispatch(uploadVehicleData(vehicleData)) 
   }
 }
 

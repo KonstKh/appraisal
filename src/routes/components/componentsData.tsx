@@ -3,13 +3,15 @@ import { Button, Form, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import './componentsData.less';
+import { uploadComponentData } from '../../actions/vehicleFormActions';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 interface Props {
   navigateToInspectionForm: () => void,
   navigateToDocumentsForm: () => void,
-  saveComponentsFormData: (formData: any) => void
+  saveComponentsFormData: (formData: any) => void,
+  uploadComponentData: (formData: any) => void
 }
 
 class ComponentsDataComponent extends React.Component<Props & FormComponentProps, {}> {
@@ -424,7 +426,10 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
         mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
         doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth
       });
-
+      this.props.uploadComponentData({
+        mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
+        doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth
+      });
       this.props.navigateToDocumentsForm();
     });
   }
