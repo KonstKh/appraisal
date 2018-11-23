@@ -5,14 +5,15 @@ import { navigateToTyresForm ,navigateToInspectionForm} from '../../actions/navi
 
 const mapStateToProps = (state) => {
   return {
-    currentStep: state.root.navigation.navStep
+    currentStep: state.root.navigation.navStep,
+    equipment: state.root.equipmentForm
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     saveEquipmentData: (formData: any) => dispatch(saveEquipmentData(formData)),
-    uploadEquipmentData: (formData: any) => dispatch(saveEquipmentData(formData)),
+    uploadEquipmentData: (formData: any) => dispatch(uploadEquipmentData(formData)),
     navigateToInspectionForm: () => dispatch(navigateToInspectionForm()),
     navigateToTyresForm: () => dispatch(navigateToTyresForm())
   }

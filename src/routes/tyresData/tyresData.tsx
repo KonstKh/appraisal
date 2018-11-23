@@ -1,8 +1,9 @@
 import * as React from 'react';
+import classnames from 'classnames';
 import { Button, Form, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import classnames from 'classnames';
+import { TyresEntity } from '../../models/tyres';
 import './tyresData.less';
 
 const Option = Select.Option;
@@ -16,7 +17,8 @@ interface Props {
 }
 
 interface State {
-  displayAdditionalTires: boolean
+  displayAdditionalTires: boolean,
+  tyres: TyresEntity
 }
 
 enum TyreType {
@@ -31,12 +33,29 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
     super(props);
 
     this.state = {
-      displayAdditionalTires: false
+      displayAdditionalTires: false,
+      tyres: props.tyres
     }
   }
 
-  handleTiresChange = (value) => {
+  renderInput = (name: string, label: string, placeholder: string) => {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <FormItem hasFeedback label={label} className="single-field">
+        {getFieldDecorator(name, { rules: [] })(
+          <Input placeholder={placeholder} onChange={this.handleItemChange(name)}></Input>
+        )}
+      </FormItem>
+    )
+  }
+
+  toggleAdditionalTyres = (value) => {
     value !== 'Select' ? this.setState({ displayAdditionalTires: true }) : this.setState({ displayAdditionalTires: false })
+  }
+
+  handleItemChange = (key) => (event) => {
+    if (typeof key === 'object' && key !== null && key.name) { key = key.name; }
+    this.setState({ tyres: { ...this.state.tyres, [key]: event.target.value } });
   }
 
   formSubmit = (e) => {
@@ -47,10 +66,9 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
       if (errors) {
         return;
       }
-      const [tire, firstAxeLeft] = ['tire', 'firstAxeLeft'].map(i => getFieldValue(i));
 
-      this.props.saveTyresData({ tire, firstAxeLeft });
-      this.props.uploadTyresData({tire, firstAxeLeft});
+      this.props.saveTyresData(this.state.tyres);
+      this.props.uploadTyresData(this.state.tyres);
       this.props.navigateToEquipmentForm();
     })
   }
@@ -66,8 +84,8 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
               <div className="selector-wrapper">
                 <div className="label">Reifenart</div>
                 <FormItem>
-                  {getFieldDecorator('inspectionCondition', { rules: [], initialValue: "Wählen" })(
-                    <Select>
+                  {getFieldDecorator('inspectionCondition', { initialValue: this.state.tyres['inspectionCondition'] || "Wählen" })(
+                    <Select onChange={this.handleItemChange('inspectionCondition')}>
                       {Object.keys(TyreType).map((item) => {
                         return <Option key={item} value={item}>{item}</Option>
                       })}
@@ -75,79 +93,35 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
                   )}
                 </FormItem>
               </div>
-              <FormItem hasFeedback label="1. Achse – links Hersteller/Bezeichnung" className="single-field">
-                {getFieldDecorator('firstAxeLeft', { rules: [] })(
-                  <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="1. Achse – rechts Hersteller/Bezeichnung" className="single-field">
-                {getFieldDecorator('firstAxeRigth', { rules: [] })(
-                  <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="2. Achse – links Hersteller/Bezeichnung" className="single-field">
-                {getFieldDecorator('secondAxeLeft', { rules: [] })(
-                  <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="2. Achse – rechts Hersteller/Bezeichnung" className="single-field">
-                {getFieldDecorator('secondAxeRight', { rules: [] })(
-                  <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="DOT - Nummer" className="single-field">
-                {getFieldDecorator('dotNumber', { rules: [] })(
-                  <Input placeholder="z.B.: 4503"></Input>
-                )}
-              </FormItem>
+              {this.renderInput('frontAxeLeft', '1. Achse – links Hersteller/Bezeichnung', 'z.B.: Pirelli / 245/45r18 88V')}
+              {this.renderInput('frontAxeRigth', '1. Achse – rechts Hersteller/Bezeichnung', 'z.B.: Pirelli / 245/45r18 88V')}
+              {this.renderInput('rearAxeLeft', '2. Achse – links Hersteller/Bezeichnung', 'z.B.: Pirelli / 245/45r18 88V')}
+              {this.renderInput('rearAxeRight', '2. Achse – rechts Hersteller/Bezeichnung', 'z.B.: Pirelli / 245/45r18 88V')}
+              {this.renderInput('dotNumber', 'DOT - Nummer', 'z.B.: 4503')}
             </div>
             <div className="form-part-right">
               <div className="selector-wrapper">
                 <div className="label">Felgentyp</div>
                 <FormItem>
-                  {getFieldDecorator('rimType', { rules: [], initialValue: "Wählen" })(
-                    <Select>
+                  {getFieldDecorator('rimType', { initialValue: this.state.tyres['rimType'] || "Wählen" })(
+                    <Select onChange={this.handleItemChange('rimType')}>
                       <Option value="Aluminium">Aluminium</Option>
                       <Option value="Stahl">Stahl</Option>
                     </Select>
                   )}
                 </FormItem>
               </div>
-              <FormItem hasFeedback label="Zustand:" className="single-field">
-                {getFieldDecorator('state', { rules: [] })(
-                  <Input placeholder="z.B.: 7,31 mm"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Zustand:" className="single-field">
-                {getFieldDecorator('state1', { rules: [] })(
-                  <Input placeholder="z.B.: 7,31 mm"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Zustand:" className="single-field">
-                {getFieldDecorator('state2', { rules: [] })(
-                  <Input placeholder="z.B.: 7,31 mm"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Zustand:" className="single-field">
-                {getFieldDecorator('state3', { rules: [] })(
-                  <Input placeholder="z.B.: 7,31 mm"></Input>
-                )}
-              </FormItem>
+              {this.renderInput('frontLeftState', 'Zustand:', 'z.B.: 7,31 mm')}
+              {this.renderInput('frontRigthState', 'Zustand:', 'z.B.: 7,31 mm')}
+              {this.renderInput('rearLeftState', 'Zustand:', 'z.B.: 7,31 mm')}
+              {this.renderInput('rearRightState', 'Zustand:', 'z.B.: 7,31 mm')}
             </div>
           </div>
           <hr />
           <div className="tyre-data">
             <div className="form-part-left">
-              <FormItem hasFeedback label="Erzatzrad" className="single-field">
-                {getFieldDecorator('spareWeel', { rules: [] })(
-                  <Input placeholder="z.B.: Tirefit"></Input>
-                )}
-              </FormItem>
-              <FormItem hasFeedback label="Zustand Erzatzrad" className="single-field">
-                {getFieldDecorator('spareWeelAdditional', { rules: [] })(
-                  <Input placeholder="z.B.: Nicht vorhanden"></Input>
-                )}
-              </FormItem>
+              {this.renderInput('spareWeel', 'Erzatzrad', 'z.B.: Tirefit')}
+              {this.renderInput('spareWeelAdditional', 'Zustand Erzatzrad:', 'z.B.: Nicht vorhanden')}
             </div>
             <div className="form-part-right"></div>
           </div>
@@ -156,39 +130,23 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
             <div className="form-part-left">
               <div className="selector-wrapper">
                 <label>Zusätzliche Bereifung</label>
-                <Select defaultValue="Wählen" onChange={(tireType) => this.handleTiresChange(tireType)}>
-                  <Option value="Select">Wählen</Option>
-                  <Option value="Sommerrifen">Sommerrifen</Option>
-                  <Option value="Winterrifen">Winterrifen</Option>
-                  <Option value="Ganzjahresreifen">Ganzjahresreifen</Option>
-                </Select>
+                <FormItem>
+                  {getFieldDecorator('additionalTyres', { initialValue: this.state.tyres['additionalTyres'] || "Wählen" })(
+                    <Select onChange={(tireType) => this.toggleAdditionalTyres(tireType)}>
+                      <Option value="Select">Wählen</Option>
+                      <Option value="Sommerrifen">Sommerrifen</Option>
+                      <Option value="Winterrifen">Winterrifen</Option>
+                      <Option value="Ganzjahresreifen">Ganzjahresreifen</Option>
+                    </Select>
+                  )}
+                </FormItem>
               </div>
               <div className={classnames({ hide: !this.state.displayAdditionalTires })}>
-                <FormItem hasFeedback label="1. Achse – links Hersteller/Bezeichnung" className="single-field">
-                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
-                    <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
-                  )}
-                </FormItem>
-                <FormItem hasFeedback label="1. Achse – rechts Hersteller/Bezeichnung" className="single-field">
-                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
-                    <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
-                  )}
-                </FormItem>
-                <FormItem hasFeedback label="2. Achse – links Hersteller/Bezeichnung" className="single-field">
-                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
-                    <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
-                  )}
-                </FormItem>
-                <FormItem hasFeedback label="2. Achse – rechts Hersteller/Bezeichnung" className="single-field">
-                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
-                    <Input placeholder="z.B.: Pirelli / 245/45r18 88V"></Input>
-                  )}
-                </FormItem>
-                <FormItem hasFeedback label="DOT-Nummer" className="single-field">
-                  {getFieldDecorator('spareWeelAdditional', { rules: [] })(
-                    <Input placeholder="z.B.: 4503"></Input>
-                  )}
-                </FormItem>
+                {this.renderInput('spareWeelAdditionalFrontLeft', '1. Achse – links Hersteller/Bezeichnung', 'z.B.: Pirelli / 245/45r18 88V')}
+                {this.renderInput('spareWeelAdditionalFrontRight', '1. Achse – rechts Hersteller/Bezeichnung', 'z.B.: Pirelli / 245/45r18 88V')}
+                {this.renderInput('spareWeelAdditionalRearLeft', '2. Achse – links Hersteller/Bezeichnung', 'z.B.: Pirelli / 245/45r18 88V')}
+                {this.renderInput('spareWeelAdditionalRearRight', '2. Achse – rechts Hersteller/Bezeichnung', 'z.B.: Pirelli / 245/45r18 88V')}
+                {this.renderInput('spareWeelAdditionalDotNumber', 'DOT-Nummer', 'z.B.: 4503')}
               </div>
             </div>
             <div className="form-part-right">
@@ -196,8 +154,8 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
                 <div className="selector-wrapper">
                   <div className="label">Felgentyp</div>
                   <FormItem>
-                    {getFieldDecorator('rimType', { rules: [], initialValue: "Wählen" })(
-                      <Select>
+                    {getFieldDecorator('additionalRimType', { initialValue: this.state.tyres['additionalRimType'] || "Wählen" })(
+                      <Select onChange={this.handleItemChange('additionalRimType')}>
                         <Option value="Aluminium">Aluminium</Option>
                         <Option value="Stahl">Stahl</Option>
                         <Option value="Ohne">Ohne</Option>
@@ -205,26 +163,10 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
                     )}
                   </FormItem>
                 </div>
-                <FormItem hasFeedback label="Zustand" className="single-field">
-                  {getFieldDecorator('leftFrontState', { rules: [] })(
-                    <Input placeholder="z.B.: 7,31 mm"></Input>
-                  )}
-                </FormItem>
-                <FormItem hasFeedback label="Zustand" className="single-field">
-                  {getFieldDecorator('rightFrontState', { rules: [] })(
-                    <Input placeholder="z.B.: 7,31 mm"></Input>
-                  )}
-                </FormItem>
-                <FormItem hasFeedback label="Zustand" className="single-field">
-                  {getFieldDecorator('leftRearState', { rules: [] })(
-                    <Input placeholder="z.B.: 7,31 mm"></Input>
-                  )}
-                </FormItem>
-                <FormItem hasFeedback label="Zustand" className="single-field">
-                  {getFieldDecorator('rightRearState', { rules: [] })(
-                    <Input placeholder="z.B.: 7,31 mm"></Input>
-                  )}
-                </FormItem>
+                {this.renderInput('spareWeelAdditionalLeftFrontState', 'Zustand', 'z.B.: 7,31 mm')}
+                {this.renderInput('spareWeelAdditionalRightFrontState', 'Zustand', 'z.B.: 7,31 mm')}
+                {this.renderInput('spareWeelAdditionalLeftRearState', 'Zustand', 'z.B.: 7,31 mm')}
+                {this.renderInput('spareWeelAdditionalRightRearState', 'Zustand', 'z.B.: 7,31 mm')}
               </div>
             </div>
           </div>

@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
-import { DocumentsDataComponent } from './documentsData';
+import { DocumentDataForm } from './documentsData';
 import { navigateToComponentsForm } from '../../actions/navigationStep';
 import { saveDocumentationData, uploadDocImage } from '../../actions/vehicleFormActions';
 
 const mapStateToProps = (state)  => {
   return {
-    currentStep: state.root.navigation.navStep
+    currentStep: state.root.navigation.navStep,
+    documents: state.root.documentationForm
   }
 }
 
@@ -20,4 +21,4 @@ const mapDispatchToProps = (dispatch) => {
 export const DocumentsDataContainer = connect (
   mapStateToProps,
   mapDispatchToProps
-)(DocumentsDataComponent);
+)(DocumentDataForm);

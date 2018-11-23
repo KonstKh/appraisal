@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Button, Form, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
+import { ComponentsEntity } from '../../models/components';
 import './componentsData.less';
-import { uploadComponentData } from '../../actions/vehicleFormActions';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -14,14 +14,40 @@ interface Props {
   uploadComponentData: (formData: any) => void
 }
 
-class ComponentsDataComponent extends React.Component<Props & FormComponentProps, {}> {
+interface State {
+  components: ComponentsEntity
+}
 
-  renderSelect = (formName: string, ) => {
+class ComponentsDataComponent extends React.Component<Props & FormComponentProps, State> {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      components: props.components
+    }
+  }
+
+  renderLackDepthComponent = (name: string) => {
+    const { getFieldDecorator } = this.props.form;
+
+    return (
+      <div className="lack-depth">
+        <FormItem className="input-wrapper" label="Festgestellte Lackschichtendicke:">
+          {getFieldDecorator(name, { initialValue: this.state.components[name] || ''})(
+            <Input addonAfter="µm" placeholder="z.B. 132" onChange={this.handleInputChange(name)}/>
+          )}
+        </FormItem>
+      </div>
+    )
+  }
+
+  renderSelect = (name: string, label: string) => {
     const { getFieldDecorator } = this.props.form;
     return (
-      <FormItem className="selector-wrapper">
-        {getFieldDecorator(formName, { rules: [], initialValue: "Wählen" })(
-          <Select>
+      <FormItem className="selector-wrapper" label={label}>
+        {getFieldDecorator(name, { rules: [], initialValue: this.state.components[name] || "Wählen" })(
+          <Select onChange={this.handleSelectorChange(name)}>
             <Option value="correct">In Ordnung</Option>
             <Option value="damageDetected">Schaden festgestellt</Option>
           </Select>
@@ -30,9 +56,30 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
     )
   }
 
+  handleSelectorChange = (key) => (event) => {
+    this.setState({ components: { ...this.state.components, [key]: event }});
+  }
+
+  handleInputChange = (key) => (event) => {
+    if (typeof key === 'object' && key !== null && key.name) { key = key.name; }
+    this.setState({ components: { ...this.state.components, [key]: event.target.value } });
+  }
+
+  renderInput = (name: string, placeholder: string) => {
+    const { getFieldDecorator } = this.props.form;
+
+    return (
+      <FormItem hasFeedback label="" className="single-field">
+        {getFieldDecorator(name, { initialValue: this.state.components[name] || ''})(
+          <Input placeholder={placeholder} onChange={this.handleInputChange(name)}></Input>
+        )}
+      </FormItem>
+    )
+  }
+
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-
+    const placeholder = 'Ggf. kurze Beschreibung des festgestellten Schadens'
     return (
       <React.Fragment>
         <div className="components-form">
@@ -41,356 +88,91 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
             <h4>Zustand</h4>
           </div>
           <Form>
-            {/* Kotflügel vorne links */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Kotflügel vorne links</div>
-                  {this.renderSelect('wingFrontLeft')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('wingFrontLeftDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('mudguardFrontLeftLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Kotflügel vorne links */}
-            {/* Stoßstange vorne */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Stoßstange vorne</div>
-                  {this.renderSelect('frontBumber')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('frontBumberDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('frontBumberLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Stoßstange vorne */}
-            {/* Tür vorne links */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Tür vorne links</div>
-                  {this.renderSelect('frontLeftDoor')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('frontLeftDoorDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('doorFrontLeftLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Tür vorne links */}
-            {/* Tür hinten links */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Tür hinten links</div>
-                  {this.renderSelect('rearLeftDoor')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('rearLeftDoorDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('rearLeftDoorLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Tür hinten links */}
-            {/* Seitenwand hinten links */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Seitenwand hinten links</div>
-                  {this.renderSelect('rearLeftSidePanel')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('rearLeftSidePanelDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('rearLeftSidePanelLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Seitenwand hinten links */}
-            {/* Stoßstange hinten */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Stoßstange hinten</div>
-                  {this.renderSelect('rearBumper')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('rearBumperDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('rearBumperLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Stoßstange hinten */}
-            {/* Heckklappe */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Heckklappe</div>
-                  {this.renderSelect('tailgate')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('tailgateDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('tailgateLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Heckklappe */}
-            {/* Seitenwand hinten rechts */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Seitenwand hinten rechts</div>
-                  {this.renderSelect('rearRightSidePanel')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('rearRightSidePanelDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('sidepanelRearRightLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Seitenwand hinten rechts */}
-            {/* Tür hinten rechts */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Tür hinten rechts</div>
-                  {this.renderSelect('rearRightDoor')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('rearRightDoorDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('doorRearRightLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Tür hinten rechts */}
-            {/* Tür vorne rechts */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Tür vorne rechts</div>
-                  {this.renderSelect('frontRightDoor')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('frontRightDoorDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('doorFrontRightLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Tür vorne rechts */}
-            {/* Kotflügel vorne rechts */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Kotflügel vorne rechts</div>
-                  {this.renderSelect('mudguardFrontRight')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('mudguardFrontRightDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('mudguardFrontRightLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Kotflügel vorne rechts */}
-            {/* Motorhaube */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Motorhaube</div>
-                  {this.renderSelect('bonnet')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('bonnetDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('bonnetLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Motorhaube */}
-            {/* Dach */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Dach</div>
-                  {this.renderSelect('root')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('roof', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('roofLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Dach */}
-            {/* Windschutzscheibe */}
-            <div className="component-control">
-              <div className="part-description">
-                <div className="component-row">
-                  <div className="label">Windschutzscheibe</div>
-                  {this.renderSelect('windshield')}
-                  <FormItem hasFeedback label="" className="single-field">
-                    {getFieldDecorator('windshieldDescription', { rules: [] })(
-                      <Input placeholder="Ggf. kurze Beschreibung des festgestellten Schadens"></Input>
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-              <div className="lack-depth">
-                <div className="title">Festgestellte Lackschichtendicke:</div>
-                <div className="input-wrapper">
-                  <FormItem >
-                    {getFieldDecorator('windshieldLackDepth')(
-                      <Input addonAfter="µm" placeholder="z.B. 132" />
-                    )}
-                  </FormItem>
-                </div>
-              </div>
-            </ div>
-            {/* Windschutzscheibe */}
+            <div className="component-row">
+              {this.renderSelect('wingFrontLeft', 'Kotflügel vorne links')}
+              {this.renderInput('wingFrontLeftDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('wingFrontLeftLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('frontBumber', 'Stoßstange vorne')}
+              {this.renderInput('frontBumberDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('frontBumberLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('frontLeftDoor', 'Tür vorne links')}
+              {this.renderInput('frontLeftDoorDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('frontLeftDoorLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('rearLeftDoor', 'Tür hinten links')}
+              {this.renderInput('rearLeftDoorDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('rearLeftDoorLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('rearLeftSidePanel', 'Seitenwand hinten links')}
+              {this.renderInput('rearLeftSidePanelDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('rearLeftSidePanelLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('rearBumper', 'Stoßstange hinten')}
+              {this.renderInput('rearBumperDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('rearBumperLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('trunk', 'Heckklappe')}
+              {this.renderInput('trunkDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('trunkLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('rearRightSidePanel', 'Seitenwand hinten rechts')}
+              {this.renderInput('rearRightSidePanelDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('rearRightSidePanelLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('rearRightDoor', 'Tür hinten rechts')}
+              {this.renderInput('rearRightDoorDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('rearRightDoorLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('frontRightDoor', 'Tür vorne rechts')}
+              {this.renderInput('frontRightDoorDescription', placeholder)}
+            </div>
+
+            {this.renderLackDepthComponent('frontRightDoorLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('wingFrontRight', 'Kotflügel vorne rechts')}
+              {this.renderInput('wingFrontRightDescription', placeholder)}
+            </div>
+
+            {this.renderLackDepthComponent('wingFrontRightLackDepth')}
+            <div className="component-row">
+              {this.renderSelect('bonnet', 'Motorhaube')}
+              {this.renderInput('bonnetDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('bonnetLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('roof', 'Dach')}
+              {this.renderInput('roofDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('roofLackDepth')}
+
+            <div className="component-row">
+              {this.renderSelect('windshield', 'Windschutzscheibe')}
+              {this.renderInput('windshieldDescription', placeholder)}
+            </div>
+            {this.renderLackDepthComponent('windshieldLackDepth')}
+
           </Form>
         </div>
         <div className="footer-nav">
@@ -417,19 +199,8 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
         return;
       }
 
-      const [mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
-        doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth] =
-        ['mudguardFrontLeft', 'mudguardFrontLeftLackDepth', 'frontBamper', 'frontBamperLackDepth', 'doorFrontLeft', 'doorFrontLeftLackDepth',
-          'doorRearLeft', 'sidewallRearLeft', 'sidewallRearLeftLackDepth'].map(i => getFieldValue(i));
-
-      this.props.saveComponentsFormData({
-        mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
-        doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth
-      });
-      this.props.uploadComponentData({
-        mudguardFrontLeft, mudguardFrontLeftLackDepth, frontBamper, frontBamperLackDepth, doorFrontLeft, doorFrontLeftLackDepth,
-        doorRearLeft, sidewallRearLeft, sidewallRearLeftLackDepth
-      });
+      this.props.saveComponentsFormData(this.state.components);
+      this.props.uploadComponentData(this.state.components);
       this.props.navigateToDocumentsForm();
     });
   }

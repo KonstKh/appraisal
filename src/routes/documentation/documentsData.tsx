@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Button, Upload, Icon, Modal, Select, Input } from 'antd';
+import { FormComponentProps } from 'antd/lib/form/Form';
+import { Button, Upload, Icon, Modal, Select, Input, Form } from 'antd';
 // import { UploadListProps, UploadFile, UploadListType } from '../../node_modules/antd/lib/upload/interface.d.ts';
 import { UploadFile } from '../../../node_modules/antd/lib/upload/interface'
 import { Link } from 'react-router-dom';
+import { DocumentsEntity, DamageDocumentation } from '../../models/documents';
 import './documentsData.less';
 
 const Option = Select.Option;
@@ -18,10 +20,12 @@ interface State {
   previewVisible: boolean,
   previewImage: string,
   fileList?: UploadFile[],
-  images?: any
+  images?: any,
+  damageComponents: number;
+  damages: DamageDocumentation[];
 }
 
-export class DocumentsDataComponent extends React.Component<Props, State> {
+class DocumentsDataComponent extends React.Component<Props & FormComponentProps, State> {
 
   constructor(props) {
     super(props)
@@ -52,7 +56,10 @@ export class DocumentsDataComponent extends React.Component<Props, State> {
       },
       previewVisible: false,
       previewImage: '',
+      damageComponents: 1,
+      damages: [new DamageDocumentation()]
     }
+    
   }
 
   submitChanges = () => {
@@ -75,7 +82,7 @@ export class DocumentsDataComponent extends React.Component<Props, State> {
     newState.images[meta].fileList = fileList;
     this.setState(newState);
     //TODO: do we need to save images separetely to redux state?
-    this.props.uploadDocImage({ [meta]: newState.images[meta].fileList});
+    this.props.uploadDocImage({ [meta]: newState.images[meta].fileList });
   };
 
   onSuccessUpload = () => {
@@ -84,67 +91,107 @@ export class DocumentsDataComponent extends React.Component<Props, State> {
 
   handleCancel = () => this.setState({ previewVisible: false })
 
-  renderUpload = (meta, fileList) => {
+  renderUpload = (meta, fileList, label: string) => {
+    const { previewVisible, previewImage } = this.state;
+
     return (
-      <Upload className="document-uploader"
-        action=""
-        name={meta}
-        listType="picture-card"
-        fileList={fileList}
-        onPreview={this.handlePreview}
-        onChange={this.handleChange(meta)}
-      >
-        <div>
-          <Icon type='plus' className="plus-icon" />
-          <div className="ant-upload-text">Hochladen</div>
-        </div>
-      </Upload>
+      <div className="document-upload-container">
+        <Upload className="document-uploader"
+          action=""
+          name={meta}
+          listType="picture-card"
+          fileList={fileList}
+          onPreview={this.handlePreview}
+          onChange={this.handleChange(meta)}
+        >
+          <div>
+            <Icon type='plus' className="plus-icon" />
+            <div className="ant-upload-text">Hochladen</div>
+          </div>
+        </Upload>
+        <div className="label">{label}</div>
+        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        </Modal>
+      </div>
     )
   }
 
-  renderDamageControl = () => {
+  handleComponentSelectChange = (component: number) => (event) => {
+    //setState  this.setState({ components: { ...this.state.components, [key]: event }});
+    console.log('component_selected:', component, event);
+  }
+
+  handlePositionSelectChange = (component: number) => (event) => {
+    // this.setState({})
+    console.log('position_selected:', component, event);
+  }
+
+  handleDamageInputChange = (component: number) => (event) => {
+    // this.setState({})
+    console.log('description', component, event.target.value);
+  }
+
+  renderDamageControl = (componentNumber: number) => {
+
+    const { getFieldDecorator } = this.props.form;
+    let componentName = `damage_${componentNumber}`;
+    let position = `position_${componentNumber}`;
+    console.log('positon', position);
+    
     return (
       <div className="damage-wrapper">
-        <div className="document-upload-container">
-          {this.renderUpload('damage_1', this.state.images.damage_1.fileList)}
-          <div className="label">Schadensbild 1</div>
-          <Modal visible={this.state.previewVisible} footer={null} onCancel={this.handleCancel}>
-            <img alt="example" style={{ width: '100%' }} src={this.state.previewImage} />
-          </Modal>
-        </ div>
+
+        {this.renderUpload(componentName, this.state.damages[componentNumber].fileList, `Schadensbild ${componentNumber}`)}
 
         <div className="damage-pictures-description">
-          <div className="selectors-wrapper">
-            <label>Bauteil</label>
-            <Select defaultValue="Wählen">
-              <Option value="Wählen">Wählen</Option>
-              <Option value="Kotflügel">Kotflügel</Option>
-              <Option value="Stoßstange">Stoßstange</Option>
-              <Option value="Tür">Tür</Option>
-              <Option value="Seitenwand">Seitenwand</Option>
-              <Option value="Motorhaube">Motorhaube</Option>
-              <Option value="Heckklappe">Heckklappe</Option>
-              <Option value="Dach">Dach</Option>
-              <Option value="Windschutzscheibe">Windschutzscheibe</Option>
-            </Select>
-            <label>Stelle</label>
-            <Select defaultValue="Wählen">
-              <Option value="Wählen">Wählen</Option>
-              <Option value="Vorne">Vorne</Option>
-              <Option value="Hinten">Hinten</Option>
-              <Option value="Vorne links">Vorne links</Option>
-              <Option value="Vorne rechts">Vorne rechts</Option>
-              <Option value="Hinten links">Hinten links</Option>
-              <Option value="Hinten rechts">Hinten rechts</Option>
-            </Select>
+          <div className="selectors">
+            <div className="selector-wrapper">
+              <div className="label">Bauteil</div>
+              <Form.Item>
+                {getFieldDecorator(componentName, { initialValue: this.state.damages[componentNumber].name || "Wählen"})(
+                  <Select onChange={this.handleComponentSelectChange(componentNumber)}>
+                    <Option value="wing">Kotflügel</Option>
+                    <Option value="bumper">Stoßstange</Option>
+                    <Option value="door">Tür</Option>
+                    <Option value="sidewall">Seitenwand</Option>
+                    <Option value="bonnet">Motorhaube</Option>
+                    <Option value="trunk">Heckklappe</Option>
+                    <Option value="roof">Dach</Option>
+                    <Option value="windshield">Windschutzscheibe</Option>
+                  </Select>
+                )}
+              </Form.Item>
+            </div>
+            <div className="selector-wrapper">
+              <div className="label">Stelle</div>
+              <Form.Item>
+                {getFieldDecorator(position, { initialValue: this.state.damages[componentNumber].position || "Wählen"})}
+                <Select onChange={this.handlePositionSelectChange(componentNumber)}>
+                  <Option value="front">Vorne</Option>
+                  <Option value="rear">Hinten</Option>
+                  <Option value="frontLeft">Vorne links</Option>
+                  <Option value="frontRight">Vorne rechts</Option>
+                  <Option value="rearLeft">Hinten links</Option>
+                  <Option value="rearRight">Hinten rechts</Option>
+                </Select>
+              </Form.Item>
+            </div>
           </div>
-          <label htmlFor="">Art des Schadens</label>
-          <Input placeholder="z.B. Hagelschaden"></Input>
-          {/* // TODO: add another line at the bottom of this component - [suggestion]: use ant table instead?  */}
-          {/* <button onClick={this.renderDamageControl}>Add noch ein linie</button> */}
+          <label>Art des Schadens</label>
+          <Input placeholder="z.B. Hagelschaden" onChange={this.handleDamageInputChange(componentNumber)}></Input>
         </div>
       </div>
     )
+  }
+
+  renderDamageComponents = () => {
+    let components = []
+
+    for (let i = 0; i < this.state.damageComponents; i++) {
+      components.push(this.renderDamageControl(i))
+    }
+    return components;
   }
 
   render() {
@@ -157,170 +204,63 @@ export class DocumentsDataComponent extends React.Component<Props, State> {
           <h2>Fotodokumentation</h2>
           <span>Alle Bilde pro Ansicht hohladen:</span>
 
-          <div className="document-upload-container">
-            {this.renderUpload('frontLeft', this.state.images.frontLeft.fileList)}
-            <div className="label">Vorne links</div>
-          </ div>
-          <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-            <img alt="example" style={{ width: '100%' }} src={previewImage} />
-          </Modal>
+          {this.renderUpload('frontLeft', this.state.images.frontLeft.fileList, 'Vorne links')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('frontRight', this.state.images.frontRight.fileList)}
-            <div className="label">Vorne rechts</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('frontRight', this.state.images.frontRight.fileList, 'Vorne rechts')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('rearLeft', this.state.images.rearLeft.fileList)}
-            <div className="label">Hinten links</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('rearLeft', this.state.images.rearLeft.fileList, 'Hinten links')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('rearRigth', this.state.images.rearRigth.fileList)}
-            <div className="label">Hinten rechts</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('rearRigth', this.state.images.rearRigth.fileList, 'Hinten rechts')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('front', this.state.images.front.fileList)}
-            <div className="label">Frontal vorne</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('front', this.state.images.front.fileList, 'Frontal vorne')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('frontBehind', this.state.images.frontBehind.fileList)}
-            <div className="label">Frontal hinten</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('frontBehind', this.state.images.frontBehind.fileList, 'Frontal hinten')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('frontSide', this.state.images.frontSide.fileList)}
-            <div className="label">Frontal Seite</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('frontSide', this.state.images.frontSide.fileList, 'Frontal Seite')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('driverSteering', this.state.images.driverSteering.fileList)}
-            <div className="label">Fahrerseite mit Lenkgrad</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('driverSteering', this.state.images.driverSteering.fileList, 'Fahrerseite mit Lenkgrad')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('driverSeat', this.state.images.driverSeat.fileList)}
-            <div className="label">Fahrersitz</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('driverSeat', this.state.images.driverSeat.fileList, 'Fahrersitz')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('passengerSeat', this.state.images.passengerSeat.fileList)}
-            <div className="label">Beifahrersitz</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('passengerSeat', this.state.images.passengerSeat.fileList, 'Beifahrersitz')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('centerConsole', this.state.images.centerConsole.fileList)}
-            <div className="label">Mittelkonsole</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('centerConsole', this.state.images.centerConsole.fileList, 'Mittelkonsole')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('speedometer', this.state.images.speedometer.fileList)}
-            <div className="label">Tacho</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('speedometer', this.state.images.speedometer.fileList, 'Tacho')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('backSeat', this.state.images.backSeat.fileList)}
-            <div className="label">Rückbank</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('backSeat', this.state.images.backSeat.fileList, 'Rückbank')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('trunk', this.state.images.trunk.fileList)}
-            <div className="label">Kofferraum</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('trunk', this.state.images.trunk.fileList, 'Kofferraum')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('rim', this.state.images.rim.fileList)}
-            <div className="label">Felge</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('rim', this.state.images.rim.fileList, 'Felge')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('secondSetTires', this.state.images.secondSetTires.fileList)}
-            <div className="label">zweiter satz reifen</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('secondSetTires', this.state.images.secondSetTires.fileList, 'zweiter satz reifen')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('misc', this.state.images.misc.fileList)}
-            <div className="label">sonstiges</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('misc', this.state.images.misc.fileList, 'sonstiges')}
 
           <h2>Fotodokumentation Schadensbilder</h2>
 
-          {this.renderDamageControl()}
+          {/* {this.renderDamageControl(0)} */}
+
+          {this.renderDamageComponents()}
+
+          <Button onClick={() => {
+            this.setState({ damageComponents: this.state.damageComponents + 1 })
+            let newDamages = this.state.damages;
+            newDamages.push(new DamageDocumentation());
+            this.setState({ damages: newDamages})
+            // let control = this.renderDamageControl()
+            // ReactDOM.render(control, document.getElementById('additional'))
+          }}>Schadensbilder hinzufügen</Button>
 
           <h2>Fotodokumentation Dokumente</h2>
-          <div className="document-upload-container">
-            {this.renderUpload('vehicleRegistration', this.state.images.vehicleRegistration.fileList)}
-            <div className="label">Fahrzeugschein</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
 
-          <div className="document-upload-container">
-            {this.renderUpload('serviceBook', this.state.images.serviceBook.fileList)}
-            <div className="label">Serviceheft</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('vehicleRegistration', this.state.images.vehicleRegistration.fileList, 'Fahrzeugschein')}
 
-          <div className="document-upload-container">
-            {this.renderUpload('bills', this.state.images.bills.fileList)}
-            <div className="label">Rechnungen</div>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
-          </ div>
+          {this.renderUpload('serviceBook', this.state.images.serviceBook.fileList, 'Serviceheft')}
+
+          {this.renderUpload('bills', this.state.images.bills.fileList, 'Rechnungen')}
+
         </div>
 
         <div className="footer-nav">
@@ -329,9 +269,13 @@ export class DocumentsDataComponent extends React.Component<Props, State> {
               <Button onClick={this.submitChanges}>Zurück</Button>
             </Link>
           </div>
-          <div className="go-next"></div>
+          <div className="go-next">
+            {/* <Button>Generate PDF document</Button> */}
+          </div>
         </div>
       </div>
     )
   }
 }
+
+export const DocumentDataForm = Form.create<Props>()(DocumentsDataComponent);

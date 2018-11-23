@@ -5,7 +5,8 @@ import { saveComponentsFormData, uploadComponentData } from '../../actions/vehic
 
 const mapStateToProps = (state)  => {
   return {
-    currentStep: state.root.navigation.navStep
+    currentStep: state.root.navigation.navStep,
+    components: state.root.componentsForm
   }
 }
 

@@ -14,8 +14,18 @@
       width: 200px;
     }
   }
-  textarea.ant-input {
-    max-width: calc(100% - 200px);
+
+  .labeled-input {
+    display: flex;
+
+    .ant-form-item-label{
+      width: 200px;
+      text-align: left;
+    }
+
+    .ant-form-item-control-wrapper {
+      width: calc(100% - 200px);
+    }
   }
 
   .single-field {

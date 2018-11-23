@@ -1,0 +1,34 @@
+export class InspectionEntity {
+  rimType: string;
+  testDriveComment: string;
+  mileageCorrect: string;
+  mileageCorrectAdvice: string;
+  previousDamage: string;
+  previousDamageDescription: string;
+  paintThicknessMeasurement: string;
+  paintThicknessMeasurementDescription: string;
+  existingAccidentDamage: string;
+  existingAccidentDamageDescription: string;
+  generalInspectionAdvice: string;
+  generator: string;
+  generatorComment: string;
+  oilLoose: string;
+  oilLooseComment: string;
+  conditioning: string;
+  conditioningComment: string;
+  brakes: string;
+  brakesComment: string;
+  exhaust: string;
+  exhaustComment: string;
+  shockAbsober: string;
+  shockAbsoberComment: string;
+  light: string;
+  lightComment: string;
+  clutch: string;
+  clutchComment: string;
+  engine: string;
+  engineComment: string;
+  transmission: string;
+  transmissionComment: string;
+  note: string;
+}

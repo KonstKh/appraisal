@@ -5,7 +5,8 @@ import { saveInspectionFormData, uploadInspectionData } from '../../actions/vehi
 
 const mapStateToProps = (state)  => {
   return {
-    currentStep: state.root.navigation.navStep
+    currentStep: state.root.navigation.navStep,
+    inspection: state.root.inspectionForm
   }
 }
 

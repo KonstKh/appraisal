@@ -10,7 +10,6 @@ export class VehicleEntity {
   power: string;
   cylinder: string;
   beltChanged: string;
-
   previousOwners: string;
   autoType: string;
   body: string;

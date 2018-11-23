@@ -10,12 +10,12 @@
   .component-row {
     display: flex;
     justify-content: left;
+    align-items: center;
 
-    .label {
-      display: inline-block;
-      width: 20%;
+    .ant-form-item-label {
+      width: 200px;
+      text-align: left;
     }
-
     .ant-input {
       width: 100%;
     }
@@ -26,7 +26,7 @@
   }
 
   .single-field{
-    margin-left: 50px;
+    margin: 0 0 0 50px;
     width: 50%;
     
     .ant-form-item-control-wrapper {
@@ -42,9 +42,13 @@
       margin-left:235px;
     }
 
+    .ant-form-item-control-wrapper {
+      margin-left: 22px;
+    }
+
     .input-wrapper {
-      margin-left: 40px;
-      width: 130px;
+      display: flex;
+      margin-left: 200px;
     }
     .ant-form-item-children {
       line-height: 21px;

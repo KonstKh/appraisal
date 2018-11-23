@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Button, Input, Form } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
+import { EquipmentEntity } from '../../models/equipment';
 import './equipmentData.less';
 
 const { TextArea } = Input;
@@ -14,8 +15,23 @@ interface Props {
   navigateToTyresForm: () => void;
 }
 
-class EquipmentDataComponent extends React.Component<Props & FormComponentProps, {}> {
+interface State {
+  equipment: EquipmentEntity
+}
 
+class EquipmentDataComponent extends React.Component<Props & FormComponentProps, State> {
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      equipment: props.equipment
+    }
+  }
+
+  handleChange = (key: string) => (event) => {
+    this.setState({ equipment: { ...this.state.equipment, [key]: event.target.value}})
+  }
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
@@ -29,16 +45,16 @@ class EquipmentDataComponent extends React.Component<Props & FormComponentProps,
             <div className="form-part">
               <h2>Serienausstattung</h2>
               <FormItem >
-                {getFieldDecorator('standartEquipment', { rules: [] })(
-                  <TextArea rows={30} placeholder={leftPlaceholder} />
+                {getFieldDecorator('standartEquipment', { initialValue: this.state.equipment['standartEquipment'] || ''})(
+                  <TextArea rows={30} placeholder={leftPlaceholder} onChange={this.handleChange('standartEquipment')}/>
                 )}
               </FormItem>
             </div>
             <div className="form-part">
               <h2>Sonderausstattung</h2>
               <FormItem>
-                {getFieldDecorator('extraEquipment', { rules: [] })(
-                  <TextArea rows={30} placeholder={rightPlaceholder} />
+                {getFieldDecorator('extraEquipment', { initialValue: this.state.equipment['extraEquipment'] || '' })(
+                  <TextArea rows={30} placeholder={rightPlaceholder} onChange={this.handleChange('extraEquipment')}/>
                 )}
               </FormItem>
 
@@ -69,11 +85,8 @@ class EquipmentDataComponent extends React.Component<Props & FormComponentProps,
         return;
       }
 
-      const [standartEquipment, extraEquipment] =
-        ['standartEquipment', 'extraEquipment'].map(i => getFieldValue(i));
-
-      this.props.saveEquipmentData({standartEquipment, extraEquipment});
-      this.props.uploadEquipmentData({standartEquipment, extraEquipment});
+      this.props.saveEquipmentData(this.state.equipment);
+      this.props.uploadEquipmentData(this.state.equipment);
       this.props.navigateToInspectionForm();
     });
   }

@@ -1,0 +1,45 @@
+export class ComponentsEntity {
+  wingFrontLeft: string;
+  wingFrontLeftDescription: string;
+  wingFrontLeftLackDepth: string;
+  frontBumber: string;
+  frontBumberDescription: string;
+  frontBumberLackDepth: string;
+  frontLeftDoor: string;
+  frontLeftDoorDescription: string;
+  frontLeftDoorLackDepth: string;
+  rearLeftDoor: string;
+  rearLeftDoorDescription: string;
+  rearLeftDoorLackDepth: string;
+  rearLeftSidePanel: string;
+  rearLeftSidePanelDescription: string;
+  rearLeftSidePanelLackDepth: string;
+  rearBumper: string;
+  rearBumperDescription: string;
+  rearBumperLackDepth: string;
+  trunk: string;
+  trunkDescription: string;
+  trunkLackDepth: string;
+  rearRightSidePanel: string;
+  rearRightSidePanelDescription: string;
+  rearRightSidePanelLackDepth: string;
+  rearRightDoor: string;
+  rearRightDoorDescription: string;
+  rearRightDoorLackDepth: string;
+  frontRightDoor: string;
+  frontRightDoorDescription: string;
+  frontRightDoorLackDepth: string;
+  wingFrontRight: string;
+  wingFrontRightDescription: string;
+  wingFrontRightLackDepth: string;
+  bonnet: string;
+  bonnetDescription: string;
+  bonnetLackDepth: string;
+  roof: string;
+  roofDescription: string;
+  roofLackDepth: string;
+  windshield: string;
+  windshieldDescription: string;
+  windshieldLackDepth: string;
+  
+}

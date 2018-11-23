@@ -5,7 +5,8 @@ import { navigateToEquipmentForm, navigateToVehicleForm } from '../../actions/na
 
 const mapStateToProps = (state)  => {
   return {
-    currentStep: state.root.navigation.navStep
+    currentStep: state.root.navigation.navStep,
+    tyres: state.root.tyresForm
   }
 }
 
