@@ -76,8 +76,9 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
     });
   }
 
-  handleChange = (meta) => ({ fileList }) => {
+  handleChange = (meta) => ({ fileList, file }) => {
     // this.setState({ [meta]: { fileList } } as any)
+    debugger;
     let newState = { ...this.state };
     newState.images[meta].fileList = fileList;
     this.setState(newState);
@@ -93,16 +94,20 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
   renderUpload = (meta, fileList, label: string) => {
     const { previewVisible, previewImage } = this.state;
+    const apiUrl = 'http://127.0.0.1:9000/admin/appraisal';
 
     return (
       <div className="document-upload-container">
         <Upload className="document-uploader"
-          action=""
+          action={`${apiUrl}/appraisalImage`}
           name={meta}
           listType="picture-card"
           fileList={fileList}
           onPreview={this.handlePreview}
           onChange={this.handleChange(meta)}
+          // headers={{
+          //   Authorization: "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViOGQxMmEyOGRhNDcyMjIwOTAwMGU5NCIsImlhdCI6MTU0MjM3Mjg5MSwiZXhwIjoxNTQyNDU5MjkxfQ._6yBhOIbf5_96KUiDuFFfpdt_vdDhll25e5aEzwfHpM"
+          // }}
         >
           <div>
             <Icon type='plus' className="plus-icon" />

@@ -42,7 +42,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
     const { getFieldDecorator } = this.props.form;
     return (
       <FormItem hasFeedback label={label} className="single-field">
-        {getFieldDecorator(name, { rules: [] })(
+        {getFieldDecorator(name, { initialValue: this.state.tyres[name] || '' })(
           <Input placeholder={placeholder} onChange={this.handleItemChange(name)}></Input>
         )}
       </FormItem>
@@ -51,6 +51,10 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
 
   toggleAdditionalTyres = (value) => {
     value !== 'Select' ? this.setState({ displayAdditionalTires: true }) : this.setState({ displayAdditionalTires: false })
+  }
+
+  handleSelectChange = (key) => (event) => {
+    this.setState({ tyres: { ...this.state.tyres, [key]: event}})
   }
 
   handleItemChange = (key) => (event) => {
@@ -85,7 +89,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
                 <div className="label">Reifenart</div>
                 <FormItem>
                   {getFieldDecorator('inspectionCondition', { initialValue: this.state.tyres['inspectionCondition'] || "Wählen" })(
-                    <Select onChange={this.handleItemChange('inspectionCondition')}>
+                    <Select onChange={this.handleSelectChange('inspectionCondition')}>
                       {Object.keys(TyreType).map((item) => {
                         return <Option key={item} value={item}>{item}</Option>
                       })}
@@ -104,7 +108,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
                 <div className="label">Felgentyp</div>
                 <FormItem>
                   {getFieldDecorator('rimType', { initialValue: this.state.tyres['rimType'] || "Wählen" })(
-                    <Select onChange={this.handleItemChange('rimType')}>
+                    <Select onChange={this.handleSelectChange('rimType')}>
                       <Option value="Aluminium">Aluminium</Option>
                       <Option value="Stahl">Stahl</Option>
                     </Select>
@@ -155,7 +159,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
                   <div className="label">Felgentyp</div>
                   <FormItem>
                     {getFieldDecorator('additionalRimType', { initialValue: this.state.tyres['additionalRimType'] || "Wählen" })(
-                      <Select onChange={this.handleItemChange('additionalRimType')}>
+                      <Select onChange={this.handleSelectChange('additionalRimType')}>
                         <Option value="Aluminium">Aluminium</Option>
                         <Option value="Stahl">Stahl</Option>
                         <Option value="Ohne">Ohne</Option>

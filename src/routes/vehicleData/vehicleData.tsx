@@ -53,6 +53,10 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
     this.setState({ vehicle: { ...this.state.vehicle, [key]: event.target.value } });
   }
 
+  handleSelectChange = (key) => (event) => {
+    this.setState({ vehicle: { ...this.state.vehicle, [key]: event}});
+  }
+
   renderInput = (fieldName: string, label: string, placeholder: string) => {
     const { getFieldDecorator } = this.props.form;
 
@@ -136,7 +140,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
                 <label>Umweltplakette</label>
                 <FormItem>
                   {getFieldDecorator('environmentalBadge', { rules: [], initialValue: this.state.vehicle['environmentalBadge'] || "Wählen" })(
-                    <Select onChange={this.handleChange('environmentalBadge')}>
+                    <Select onChange={this.handleSelectChange('environmentalBadge')}>
                       {Object.keys(EnvironmentalBadge).map((item) => {
                         return <Option key={item} value={item}>{item}</Option>
                       })}
@@ -174,7 +178,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
                 <label>Fahrzeugbrief</label>
                 <FormItem>
                   {this.props.form.getFieldDecorator('registrationDocument', { rules: [], initialValue: "Wählen" })(
-                    <Select onChange={this.handleChange('registrationDocument')}>
+                    <Select onChange={this.handleSelectChange('registrationDocument')}>
                       <Option value="available">Vorhanden</Option>
                       <Option value="unavailable">Nicht vorhanden</Option>
                       <Option value="at the bank">Bei der Bank</Option>
@@ -186,7 +190,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
                 <label>Re-Import</label>
                 <FormItem>
                   {this.props.form.getFieldDecorator('reimport', { rules: [], initialValue: "Wählen" })(
-                    <Select onChange={this.handleChange('reimport')}>
+                    <Select onChange={this.handleSelectChange('reimport')}>
                       <Option value="yes">Ja</Option>
                       <Option value="no">Nein</Option>
                       <Option value="unknown">Unbekannt</Option>
@@ -203,7 +207,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
                 <label>Besichtigungsbedingungen</label>
                 <FormItem>
                   {getFieldDecorator('inspectionCondition', { rules: [], initialValue: this.state.vehicle['inspectionCondition'] || "Wählen" })(
-                    <Select onChange={this.handleChange('inspectionCondition')}>
+                    <Select onChange={this.handleSelectChange('inspectionCondition')}>
                       {Object.keys(Conditions).map((item) => {
                         return <Option key={item} value={item}>{item}</Option>
                       })}
@@ -223,7 +227,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
                 <label>Zustand allgemein</label>
                 <FormItem>
                   {getFieldDecorator('generalCondition', { rules: [], initialValue: this.state.vehicle['generalCondition'] || "Wählen" })(
-                    <Select onChange={this.handleChange('generalCondition')}>
+                    <Select onChange={this.handleSelectChange('generalCondition')}>
                       {Object.keys(Conditions).map((item) => {
                         return <Option key={item} value={item}>{item}</Option>
                       })}
@@ -235,7 +239,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
                 <label>Zustand Fahrwerk</label>
                 <FormItem>
                   {getFieldDecorator('chassisCondition', { rules: [], initialValue: this.state.vehicle['chassisCondition'] || "Wählen" })(
-                    <Select onChange={this.handleChange('chassisCondition')}>
+                    <Select onChange={this.handleSelectChange('chassisCondition')}>
                       {Object.keys(Conditions).map((item) => {
                         return <Option key={item} value={item}>{item}</Option>
                       })}
@@ -249,7 +253,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
                 <label>Zustand außen</label>
                 <FormItem>
                   {getFieldDecorator('outerCondition', { rules: [], initialValue: this.state.vehicle['outerCondition'] || "Wählen" })(
-                    <Select onChange={this.handleChange('outerCondition')}>
+                    <Select onChange={this.handleSelectChange('outerCondition')}>
                       {Object.keys(Conditions).map((item) => {
                         return <Option key={item} value={item}>{item}</Option>
                       })}
@@ -261,7 +265,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
                 <label>Zustand Innen</label>
                 <FormItem>
                   {getFieldDecorator('innerCondition', { rules: [], initialValue: this.state.vehicle['innerCondition'] || "Wählen" })(
-                    <Select onChange={this.handleChange('innerCondition')}>
+                    <Select onChange={this.handleSelectChange('innerCondition')}>
                       {Object.keys(Conditions).map((item) => {
                         return <Option key={item} value={item}>{item}</Option>
                       })}
