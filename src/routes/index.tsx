@@ -18,7 +18,7 @@ const routes = (
     </header>
     <main>
       <Switch>
-        <Route exact path="/" component={VehicleDataContainer} />
+        <Route exact path="/" component={DocumentsDataContainer} />
         <Route path="/tyres-data" component={TyresDataContainer} />
         <Route path="/equipment" component={EquipmentDataContainer} />
         <Route path="/inspection" component={InspectionDataContainer} />

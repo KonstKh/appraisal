@@ -116,7 +116,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
             <Upload className="document-uploader"
               action={`${apiUrl}/appraisalImage`}
               name='appraisalImage'
-              data={{docPart: name}}
+              data={{docPart: name, dealId: '5bcd9245ce27da436982f68c'}} //todo: set hardcoded DealId to th real one
               listType="picture-card"
               fileList={fileList}
               onPreview={this.handlePreview}
@@ -181,7 +181,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
             <Upload className="document-uploader"
               action={`${apiUrl}/appraisalImage`}
               name='appraisalImage'
-              data={{docPart: name}}
+              data={{docPart: name, dealId: '5bcd9245ce27da436982f68c'}} //todo: set hardcoded DealId to th real one
               listType="picture-card"
               fileList={fileList}
               onPreview={this.handlePreview}
