@@ -57,12 +57,41 @@ export const saveComponents = (components: any) => {
     })
 }
 
-export const saveImage = (image: any) => {
-  return axios.put('/image', image)
+export const saveImage = (image: any, meta) => {
+
+  const config = {
+    method: 'POST',
+    mode: 'cors',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+    body: image
+  }
+
+  // const formData = new FormData();
+  // formData.append('meta', meta);
+  // formData.append('appraisalImage', image);
+  // const config = {
+  //   headers: {
+  //     'content-type': 'multipart/form-data'
+  //   },
+  //   mode: 'cors'  
+  // };
+
+  return fetch('/appraisalImage', config as RequestInit)
     .then(response => {
-      return response.data
+      return response.formData
     })
     .catch(error => {
-      throw (error)
+      throw( error );
     })
+  // return axios.post('/appraisalImage', image)
+  //   .then(response => {
+  //     debugger;
+  //     return response.data
+  //   })
+  //   .catch(error => {
+  //     throw (error)
+  //   })
 }

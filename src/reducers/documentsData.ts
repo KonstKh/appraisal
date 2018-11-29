@@ -7,6 +7,8 @@ export const documentationForm = (state: AppraisalState = defaultState, action) 
       return saveDocsData(state, action);
     case actionsEnum.UPLOAD_DOC_IMAGE:
       return saveDocImageData(state, action);
+    case actionsEnum.UPDATE_DOCS_DATA: 
+      return updateDamageDocumentation(state, action);
   }
   return state;
 }
@@ -22,5 +24,12 @@ const saveDocImageData = (state, action) => {
   return {
     ...state,
     ...action.payload.docImage
+  }
+}
+
+const updateDamageDocumentation = (state, action) => {
+  return {
+    ...state,
+    ...action.payload.damageData
   }
 }

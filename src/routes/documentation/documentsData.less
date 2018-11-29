@@ -8,6 +8,10 @@
     text-align: center;
     width: 100px;
     margin: 15px;
+
+    .ant-form-item {
+      margin-bottom: 0;
+    }
   }
 
   .document-uploader {
@@ -30,18 +34,18 @@
     border-radius: 3px;
     width: 100px;
     height: 100px;
-    background-color: #E7EEF1;
+    background-color: fade(#E7EEF1, 20%);
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
   .damage-wrapper {
-    display: flex;
+    // display: flex;
     margin-bottom: 25px;
 
     .damage-pictures-description {
-      margin: 13px 0 0 38px;
+      margin: 13px 0 0 200px;
       width: 51%;
 
       .selectors {
@@ -53,7 +57,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      margin: 0 65px 25px 0;
+      margin-right: 65px;
 
       .ant-select {
         width: 225px;

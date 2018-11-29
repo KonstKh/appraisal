@@ -96,18 +96,30 @@ export const uploadComponentData = (componentData: any) => {
   return (dispatch) => {
     return api.saveComponents(componentData)
       .then(response => {
-        dispatch(updateInspectionSuccess(response));
+        dispatch(updateComponentsSuccess(response));
       })
       .catch(error => { throw (error) });
   }
 }
 
-export const uploadDocImage = (docImage: any) => ({
-  type: actionsEnum.UPLOAD_DOC_IMAGE,
-  payload: {
-    image: docImage
+export const updateComponentsSuccess = (updatedComponents) => {
+  return { type: actionsEnum.UPLOAD_COMPONENTS_DATA, updatedComponents }
+}
+
+export const uploadDocImage = (docImage: any, meta: any) => {
+  return (dispatch) => {
+    return api.saveImage(docImage, meta)
+    .then(response => {
+      debugger;
+      dispatch(imageUploadSuccess(response));
+    })
+    .catch(error => { throw (error)});
   }
-})
+}
+
+export const imageUploadSuccess = (updatedImage) => {
+  return { type: actionsEnum.UPLOAD_DOC_IMAGE, updatedImage }
+}
 
 export const saveDocumentationData = (docFormData: any) => ({
   type: actionsEnum.SAVE_DOCUMENTATION_DATA,
@@ -116,3 +128,9 @@ export const saveDocumentationData = (docFormData: any) => ({
   }
 })
 
+export const updateDamageDocumentation = (updatedDocs: any) => ({
+  type: actionsEnum.UPDATE_DOCS_DATA, 
+  payload: {
+    damageData:   updatedDocs
+  }
+})

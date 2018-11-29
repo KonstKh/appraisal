@@ -11,9 +11,11 @@ const Option = Select.Option;
 
 interface Props {
   appraisalStep: number;
+  documents: { damages: {}},
   navigateToComponentsForm: () => void;
   saveDocumentationData: (docFormData: any) => void;
-  uploadDocImage: (docImage: any) => void;
+  uploadDocImage: (docImage: any, meta: any) => void;
+  updateDamageDocs: (damageDoc: any) => void;
 }
 
 interface State {
@@ -49,7 +51,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
         rim: {},
         secondSetTires: {},
         misc: {},
-        damage_1: {},
+        damage_0: {},
         vehicleRegistration: {},
         serviceBook: {},
         bills: {}
@@ -70,21 +72,28 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
   }
 
   handlePreview = (file) => {
+    console.log('file', file)
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true,
     });
   }
 
-  handleChange = (meta) => ({ fileList, file }) => {
-    // this.setState({ [meta]: { fileList } } as any)
-    debugger;
-    let newState = { ...this.state };
-    newState.images[meta].fileList = fileList;
-    this.setState(newState);
-    //TODO: do we need to save images separetely to redux state?
-    this.props.uploadDocImage({ [meta]: newState.images[meta].fileList });
-  };
+  handleImageChange = (name) => {
+    return ({ fileList }) => {
+      this.setState((prevState) => {
+        return {
+          ...prevState,
+          images: {
+            ...prevState.images,
+            [name]: {
+              ...prevState.images[name],
+              fileList
+            }
+          }
+        }
+      });
+  }};
 
   onSuccessUpload = () => {
 
@@ -92,70 +101,123 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
   handleCancel = () => this.setState({ previewVisible: false })
 
-  renderUpload = (meta, fileList, label: string) => {
+  renderUpload = (name, fileList, label: string) => {
     const { previewVisible, previewImage } = this.state;
     const apiUrl = 'http://127.0.0.1:9000/admin/appraisal';
+    const { getFieldDecorator } = this.props.form;
 
+    if(this.state.images[name] === undefined){
+      this.state.images[name] = {}
+    }
     return (
       <div className="document-upload-container">
-        <Upload className="document-uploader"
-          action={`${apiUrl}/appraisalImage`}
-          name={meta}
-          listType="picture-card"
-          fileList={fileList}
-          onPreview={this.handlePreview}
-          onChange={this.handleChange(meta)}
-          // headers={{
-          //   Authorization: "JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjViOGQxMmEyOGRhNDcyMjIwOTAwMGU5NCIsImlhdCI6MTU0MjM3Mjg5MSwiZXhwIjoxNTQyNDU5MjkxfQ._6yBhOIbf5_96KUiDuFFfpdt_vdDhll25e5aEzwfHpM"
-          // }}
-        >
-          <div>
-            <Icon type='plus' className="plus-icon" />
-            <div className="ant-upload-text">Hochladen</div>
-          </div>
-        </Upload>
+      <Form.Item>
+        {getFieldDecorator(name as string, { initialValue: this.state.images[name].fileList || null})(
+            <Upload className="document-uploader"
+              action={`${apiUrl}/appraisalImage`}
+              name='appraisalImage'
+              data={{docPart: name}}
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={this.handlePreview}
+              onChange={this.handleImageChange(name)}
+            >
+              <div>
+                <Icon type='plus' className="plus-icon" />
+                <div className="ant-upload-text">Hochladen</div>
+              </div>
+            </Upload>
+          )}
+        </Form.Item>
         <div className="label">{label}</div>
         <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
           <img alt="example" style={{ width: '100%' }} src={previewImage} />
         </Modal>
+
       </div>
     )
   }
 
   handleComponentSelectChange = (component: number) => (event) => {
-    //setState  this.setState({ components: { ...this.state.components, [key]: event }});
-    console.log('component_selected:', component, event);
+    let updatedDamages = this.state.damages;
+    updatedDamages[component].name = event;
+    this.setState({ damages: updatedDamages});
+    // this.props.updateDamageDocs(this.state);
   }
 
   handlePositionSelectChange = (component: number) => (event) => {
-    // this.setState({})
-    console.log('position_selected:', component, event);
+    let updatedDamages = this.state.damages;
+    updatedDamages[component].position = event;
+    this.setState({ damages: updatedDamages});
+    // this.props.updateDamageDocs(this.state);
   }
 
   handleDamageInputChange = (component: number) => (event) => {
-    // this.setState({})
-    console.log('description', component, event.target.value);
+    let updatedDamages = this.state.damages;
+    updatedDamages[component].description = event.target.value;
+    this.setState({damages: updatedDamages});
+    // this.props.updateDamageDocs(this.state);
   }
 
-  renderDamageControl = (componentNumber: number) => {
+  handleDamageImageChange = (index) => {
+    return ({ fileList }) => {
+      this.setState((prevState) => {
+        prevState.damages[index].fileList = fileList;
+        return prevState;
+      });
+    }
+  }
 
+  renderDamageUpload = (name, fileList, label, index) => {
+
+    const { previewVisible, previewImage } = this.state;
     const { getFieldDecorator } = this.props.form;
-    let componentName = `damage_${componentNumber}`;
-    let position = `position_${componentNumber}`;
-    console.log('positon', position);
-    
-    return (
-      <div className="damage-wrapper">
+    const apiUrl = 'http://127.0.0.1:9000/admin/appraisal';
 
-        {this.renderUpload(componentName, this.state.damages[componentNumber].fileList, `Schadensbild ${componentNumber}`)}
+    return (
+      <div className="document-upload-container">
+      <Form.Item>
+        {getFieldDecorator(name as string, { initialValue: this.state.damages[index].fileList || null})(
+            <Upload className="document-uploader"
+              action={`${apiUrl}/appraisalImage`}
+              name='appraisalImage'
+              data={{docPart: name}}
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={this.handlePreview}
+              onChange={this.handleDamageImageChange(index)}
+            >
+              <div>
+                <Icon type='plus' className="plus-icon" />
+                <div className="ant-upload-text">Hochladen</div>
+              </div>
+            </Upload>
+          )}
+        </Form.Item>
+        <div className="label">{label}</div>
+        <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
+          <img alt="example" style={{ width: '100%' }} src={previewImage} />
+        </Modal>
+
+      </div>
+    )
+  }
+
+  renderDamageControl = (damage: any, index) => {
+    const { getFieldDecorator } = this.props.form;
+    const componentName = `damage_${index}`
+    return (
+      <div className="damage-wrapper" key={index}>
+
+        {this.renderDamageUpload(componentName, damage.fileList, `Schadensbild ${index + 1}`, index)}
 
         <div className="damage-pictures-description">
           <div className="selectors">
             <div className="selector-wrapper">
               <div className="label">Bauteil</div>
               <Form.Item>
-                {getFieldDecorator(componentName, { initialValue: this.state.damages[componentNumber].name || "Wählen"})(
-                  <Select onChange={this.handleComponentSelectChange(componentNumber)}>
+                {getFieldDecorator(`name_${index}`, { initialValue: damage.name || "Wählen"})(
+                  <Select onChange={this.handleComponentSelectChange(index)}>
                     <Option value="wing">Kotflügel</Option>
                     <Option value="bumper">Stoßstange</Option>
                     <Option value="door">Tür</Option>
@@ -171,33 +233,33 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
             <div className="selector-wrapper">
               <div className="label">Stelle</div>
               <Form.Item>
-                {getFieldDecorator(position, { initialValue: this.state.damages[componentNumber].position || "Wählen"})}
-                <Select onChange={this.handlePositionSelectChange(componentNumber)}>
-                  <Option value="front">Vorne</Option>
-                  <Option value="rear">Hinten</Option>
-                  <Option value="frontLeft">Vorne links</Option>
-                  <Option value="frontRight">Vorne rechts</Option>
-                  <Option value="rearLeft">Hinten links</Option>
-                  <Option value="rearRight">Hinten rechts</Option>
-                </Select>
+                {getFieldDecorator(`position_${index}`, { initialValue: this.state.damages[index].position || "Wählen" })(
+                  <Select onChange={this.handlePositionSelectChange(index)}>
+                    <Option value="front">Vorne</Option>
+                    <Option value="rear">Hinten</Option>
+                    <Option value="frontLeft">Vorne links</Option>
+                    <Option value="frontRight">Vorne rechts</Option>
+                    <Option value="rearLeft">Hinten links</Option>
+                    <Option value="rearRight">Hinten rechts</Option>
+                  </Select>
+                )}
               </Form.Item>
             </div>
           </div>
           <label>Art des Schadens</label>
-          <Input placeholder="z.B. Hagelschaden" onChange={this.handleDamageInputChange(componentNumber)}></Input>
+          <div className="selectors">
+            <Form.Item>
+              {getFieldDecorator(`description_${index}`, {initialValue: damage.description || ''})(
+                <Input placeholder="z.B. Hagelschaden" onChange={this.handleDamageInputChange(index)}></Input>
+              )}
+            </Form.Item>
+          </div>
         </div>
       </div>
     )
   }
 
-  renderDamageComponents = () => {
-    let components = []
-
-    for (let i = 0; i < this.state.damageComponents; i++) {
-      components.push(this.renderDamageControl(i))
-    }
-    return components;
-  }
+  renderDamageComponents = () => this.state.damages.map(this.renderDamageControl);
 
   render() {
 
@@ -208,6 +270,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
         <div className="documentation-form">
           <h2>Fotodokumentation</h2>
           <span>Alle Bilde pro Ansicht hohladen:</span>
+          <Form encType="multipart/form-data">
 
           {this.renderUpload('frontLeft', this.state.images.frontLeft.fileList, 'Vorne links')}
 
@@ -245,8 +308,6 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
           <h2>Fotodokumentation Schadensbilder</h2>
 
-          {/* {this.renderDamageControl(0)} */}
-
           {this.renderDamageComponents()}
 
           <Button onClick={() => {
@@ -254,8 +315,6 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
             let newDamages = this.state.damages;
             newDamages.push(new DamageDocumentation());
             this.setState({ damages: newDamages})
-            // let control = this.renderDamageControl()
-            // ReactDOM.render(control, document.getElementById('additional'))
           }}>Schadensbilder hinzufügen</Button>
 
           <h2>Fotodokumentation Dokumente</h2>
@@ -265,9 +324,8 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
           {this.renderUpload('serviceBook', this.state.images.serviceBook.fileList, 'Serviceheft')}
 
           {this.renderUpload('bills', this.state.images.bills.fileList, 'Rechnungen')}
-
+        </Form>
         </div>
-
         <div className="footer-nav">
           <div className="go-prev">
             <Link to="/components/">
