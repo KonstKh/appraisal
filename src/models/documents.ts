@@ -1,10 +1,12 @@
 import { UploadFile } from '../../node_modules/antd/lib/upload/interface';
 
 export class DocumentsEntity {
-  damageDocumentation: DamageDocumentation[];
+  damages: DamageDocumentation[];
+  images: {};
+  damageComponents: number;
 
   public constructor() {
-    this.damageDocumentation = new DamageDocumentation()[1]
+    this.damages = [new DamageDocumentation()]
   }
 }
 

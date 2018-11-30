@@ -1,16 +1,25 @@
-import Axios from 'axios';
-
+import 'isomorphic-fetch'
 // const apiUrl = 'http://5bf3e5a691c25b0013a3b967.mockapi.io/api/v1';
-const apiUrl = 'http://127.0.0.1:9000/admin/appraisal';
 
-const axios = Axios.create({
-  baseURL: apiUrl
-})
+// todo: extract to configuration
+const API_ROOT = 'http://127.0.0.1:9000/admin/appraisal'
+
+const options = {
+  method: 'PUT',
+  mode: 'cors',
+  body: '',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json;charset=UTF-8',
+  }
+}
 
 export const saveVehicle = (vehicle: any) => {
-  return axios.put('/vehicle', vehicle)
+  options.body = JSON.stringify(vehicle);
+
+  return fetch(`${API_ROOT}/vehicle`, options as RequestInit )
     .then(response => {
-      return response.data;
+      return response.formData;
     })
     .catch(error => {
       throw (error);
@@ -18,9 +27,11 @@ export const saveVehicle = (vehicle: any) => {
 }
 
 export const saveTyres = (tyres: any) => {
-  return axios.put('/tyres', tyres)
+  options.body = JSON.stringify(tyres);
+
+  return fetch(`${API_ROOT}/tyres`, options as RequestInit )
     .then(response => {
-      return response.data
+      return response.formData
     })
     .catch(error => {
       throw (error);
@@ -28,9 +39,11 @@ export const saveTyres = (tyres: any) => {
 }
 
 export const saveEquipment = (equipment: any) => {
-  return axios.put('/equipment', equipment)
+  options.body = JSON.stringify(equipment);
+
+  return fetch(`${API_ROOT}/equipment`, options as RequestInit)
     .then(response => {
-      return response.data
+      return response.formData
     })
     .catch(error => {
       throw (error);
@@ -38,9 +51,11 @@ export const saveEquipment = (equipment: any) => {
 }
 
 export const saveInspection = (inspection: any) => {
-  return axios.put('/inspection', inspection)
+  options.body = JSON.stringify(inspection);
+
+  return fetch(`${API_ROOT}/inspection`, options as RequestInit)
     .then(response => {
-      return response.data
+      return response.formData
     })
     .catch(error => {
       throw (error);
@@ -48,15 +63,18 @@ export const saveInspection = (inspection: any) => {
 }
 
 export const saveComponents = (components: any) => {
-  return axios.put('/components', components)
+  options.body = JSON.stringify(components);
+
+  return fetch(`${API_ROOT}/components`, options as RequestInit)
     .then(response => {
-      return response.data
+      return response.formData
     })
     .catch(error => {
       throw (error);
     })
 }
 
+// TODO: remove it
 export const saveImage = (image: any, meta) => {
 
   const config = {
@@ -69,29 +87,11 @@ export const saveImage = (image: any, meta) => {
     body: image
   }
 
-  // const formData = new FormData();
-  // formData.append('meta', meta);
-  // formData.append('appraisalImage', image);
-  // const config = {
-  //   headers: {
-  //     'content-type': 'multipart/form-data'
-  //   },
-  //   mode: 'cors'  
-  // };
-
-  return fetch('/appraisalImage', config as RequestInit)
+  return fetch(`${API_ROOT}/components`, config as RequestInit)
     .then(response => {
       return response.formData
     })
     .catch(error => {
       throw( error );
     })
-  // return axios.post('/appraisalImage', image)
-  //   .then(response => {
-  //     debugger;
-  //     return response.data
-  //   })
-  //   .catch(error => {
-  //     throw (error)
-  //   })
 }

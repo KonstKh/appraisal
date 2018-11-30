@@ -11,7 +11,7 @@ const Option = Select.Option;
 
 interface Props {
   appraisalStep: number;
-  documents: { damages: {}},
+  documents: { damages: {}, images: {}},
   navigateToComponentsForm: () => void;
   saveDocumentationData: (docFormData: any) => void;
   uploadDocImage: (docImage: any, meta: any) => void;
@@ -28,7 +28,7 @@ interface State {
 }
 
 class DocumentsDataComponent extends React.Component<Props & FormComponentProps, State> {
-
+  
   constructor(props) {
     super(props)
 
@@ -61,12 +61,15 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
       damageComponents: 1,
       damages: [new DamageDocumentation()]
     }
-    
   }
+
+  apiUrl = 'http://127.0.0.1:9000/admin/appraisal'; //TODO: extract to config
+  dealId = '5bcd9245ce27da436982f68c';
 
   submitChanges = () => {
     //TODO: check changed values on the form
-    const formData = this.state.images;
+    const formData  = this.state;
+
     this.props.saveDocumentationData(formData);
     this.props.navigateToComponentsForm();
   }
@@ -103,7 +106,6 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
   renderUpload = (name, fileList, label: string) => {
     const { previewVisible, previewImage } = this.state;
-    const apiUrl = 'http://127.0.0.1:9000/admin/appraisal';
     const { getFieldDecorator } = this.props.form;
 
     if(this.state.images[name] === undefined){
@@ -112,11 +114,11 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
     return (
       <div className="document-upload-container">
       <Form.Item>
-        {getFieldDecorator(name as string, { initialValue: this.state.images[name].fileList || null})(
+        {getFieldDecorator(name as string, { initialValue: fileList || null})(
             <Upload className="document-uploader"
-              action={`${apiUrl}/appraisalImage`}
+              action={`${this.apiUrl}/appraisalImage`}
               name='appraisalImage'
-              data={{docPart: name, dealId: '5bcd9245ce27da436982f68c'}} //todo: set hardcoded DealId to th real one
+              data={{docPart: name, dealId: this.dealId}} //todo: set hardcoded DealId to th real one
               listType="picture-card"
               fileList={fileList}
               onPreview={this.handlePreview}
@@ -172,16 +174,15 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
     const { previewVisible, previewImage } = this.state;
     const { getFieldDecorator } = this.props.form;
-    const apiUrl = 'http://127.0.0.1:9000/admin/appraisal';
 
     return (
       <div className="document-upload-container">
       <Form.Item>
-        {getFieldDecorator(name as string, { initialValue: this.state.damages[index].fileList || null})(
+        {getFieldDecorator(name as string, { initialValue: fileList || null})(
             <Upload className="document-uploader"
-              action={`${apiUrl}/appraisalImage`}
+              action={`${this.apiUrl}/appraisalImage`}
               name='appraisalImage'
-              data={{docPart: name, dealId: '5bcd9245ce27da436982f68c'}} //todo: set hardcoded DealId to th real one
+              data={{docPart: name, dealId: this.dealId }} //todo: set hardcoded DealId to th real one
               listType="picture-card"
               fileList={fileList}
               onPreview={this.handlePreview}
@@ -264,6 +265,8 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
   render() {
 
     const { previewVisible, previewImage, fileList } = this.state;
+    const { images } = this.state.images;
+    console.log('count', images)
 
     return (
       <div className="document-data">
@@ -310,7 +313,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
           {this.renderDamageComponents()}
 
-          <Button onClick={() => {
+          <Button type="primary" onClick={() => {
             this.setState({ damageComponents: this.state.damageComponents + 1 })
             let newDamages = this.state.damages;
             newDamages.push(new DamageDocumentation());

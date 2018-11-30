@@ -131,6 +131,6 @@ export const saveDocumentationData = (docFormData: any) => ({
 export const updateDamageDocumentation = (updatedDocs: any) => ({
   type: actionsEnum.UPDATE_DOCS_DATA, 
   payload: {
-    damageData:   updatedDocs
+    damageData: updatedDocs
   }
 })

@@ -5,6 +5,7 @@ import { FormComponentProps } from 'antd/lib/form/Form';
 import './vehicleData.less';
 
 import { VehicleEntity } from '../../models/vehicle';
+import { vehicleForm } from '../../reducers/vehicleData';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
