@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Button, Radio, Select, Form, Input } from 'antd';
+import { Button, Radio, Select, Form, Input, DatePicker } from 'antd';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import Vehicle from '../../models/vehicle';
 
@@ -109,7 +110,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-
+    const dateFormat = 'DD.MM.YYYY';
     return (
       <React.Fragment>
         <Form>
@@ -119,7 +120,11 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
               {this.renderInput('registrationNumber', 'Amtl. Kennzeichen', 'z.B.: ED GG23E')}
               {this.renderInput('fin', 'Fahrzeug-Ident.-Nr.', 'WBAVP31050VK14533')}
               {this.renderInput('kbaNr', 'KBA-Nr. (HSN/TSN)', 'z.B.: 0603/CDN')}
-              {this.renderInput('year', 'Erstzulassung', '16.06.2016')}
+              <FormItem label="Erstzulassung" className="single-field">
+                {getFieldDecorator('year', { initialValue: moment(this.state.vehicle['year']) })(
+                  <DatePicker></DatePicker>
+                )
+              }</FormItem>
               {this.renderInput('mileage', 'Laufleistung abgelesen', 'z.B.: 85295km')}
 
               {this.renderRadio('mileagePlausible', 'Laufleistung plausibel')}
@@ -201,7 +206,12 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
               </div>
             </div>
             <div className="form-part">{/* Right middle under side */}
-              {this.renderInput('nextHU', 'Nächste HU /AU', 'z.B.: 06.2020')}
+              {/* {this.renderInput('nextHU', 'Nächste HU /AU', 'z.B.: 06.2020')} */}
+              <FormItem label="Nächste HU /AU" className="single-field">
+                {getFieldDecorator('nextHU', { initialValue: moment(this.state.vehicle['year']) })(
+                  <DatePicker></DatePicker>
+                )
+              }</FormItem>
               {this.renderInput('lastService', 'Letzter Service km/am', 'z.B.: 21000 / 01.02.2017')}
 
               <div className="selector-wrapper">

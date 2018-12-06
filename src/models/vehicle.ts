@@ -27,7 +27,7 @@ export default class Vehicle {
   serviceBookAvailable: number;
   perfectlyMaintained:number;
   vehicleRegistration: number;
-  nextHU: string;
+  nextHU: Date;
   lastService: string;
   inspectionCondition: string;
   vehicleRoadworthy: number;
