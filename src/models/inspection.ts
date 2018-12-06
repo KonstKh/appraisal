@@ -1,4 +1,4 @@
-export class InspectionEntity {
+export default class Inspection {
   rimType: string;
   testDriveComment: string;
   mileageCorrect: string;

@@ -3,22 +3,22 @@ import classnames from 'classnames';
 import { Button, Form, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import { TyresEntity } from '../../models/tyres';
+import Tyres from '../../models/tyres';
 import './tyresData.less';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
 
 interface Props {
-  saveTyresData: (formData: any) => void,
-  uploadTyresData: (formData: any) => void,
+  saveTyresData: (formData: Tyres) => void,
+  uploadTyresData: (formData: Tyres) => void,
   navigateToEquipmentForm: () => void,
   navigateToVehicleForm: () => void
 }
 
 interface State {
   displayAdditionalTires: boolean,
-  tyres: TyresEntity
+  tyres: Tyres
 }
 
 enum TyreType {

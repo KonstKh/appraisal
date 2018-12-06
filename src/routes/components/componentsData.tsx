@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Form, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import { ComponentsEntity } from '../../models/components';
+import Components from '../../models/components';
 import './componentsData.less';
 
 const FormItem = Form.Item;
@@ -10,12 +10,12 @@ const Option = Select.Option;
 interface Props {
   navigateToInspectionForm: () => void,
   navigateToDocumentsForm: () => void,
-  saveComponentsFormData: (formData: any) => void,
-  uploadComponentData: (formData: any) => void
+  saveComponentsFormData: (formData: Components) => void,
+  uploadComponentData: (formData: Components) => void
 }
 
 interface State {
-  components: ComponentsEntity
+  components: Components
 }
 
 class ComponentsDataComponent extends React.Component<Props & FormComponentProps, State> {

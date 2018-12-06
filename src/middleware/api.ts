@@ -1,4 +1,11 @@
-import 'isomorphic-fetch'
+import 'isomorphic-fetch';
+import Vehicle from '../models/vehicle';
+import Tyres from '../models/tyres';
+import Equipment from '../models/equipment';
+import Inspection from '../models/inspection';
+import Components from '../models/components';
+
+
 // const apiUrl = 'http://5bf3e5a691c25b0013a3b967.mockapi.io/api/v1';
 
 // todo: extract to configuration
@@ -14,7 +21,7 @@ const options = {
   }
 }
 
-export const saveVehicle = (vehicle: any) => {
+export const saveVehicle = (vehicle: Vehicle) => {
   options.body = JSON.stringify(vehicle);
 
   return fetch(`${API_ROOT}/vehicle`, options as RequestInit )
@@ -26,7 +33,7 @@ export const saveVehicle = (vehicle: any) => {
     });
 }
 
-export const saveTyres = (tyres: any) => {
+export const saveTyres = (tyres: Tyres) => {
   options.body = JSON.stringify(tyres);
 
   return fetch(`${API_ROOT}/tyres`, options as RequestInit )
@@ -38,7 +45,7 @@ export const saveTyres = (tyres: any) => {
     })
 }
 
-export const saveEquipment = (equipment: any) => {
+export const saveEquipment = (equipment: Equipment) => {
   options.body = JSON.stringify(equipment);
 
   return fetch(`${API_ROOT}/equipment`, options as RequestInit)
@@ -50,7 +57,7 @@ export const saveEquipment = (equipment: any) => {
     })
 }
 
-export const saveInspection = (inspection: any) => {
+export const saveInspection = (inspection: Inspection) => {
   options.body = JSON.stringify(inspection);
 
   return fetch(`${API_ROOT}/inspection`, options as RequestInit)
@@ -62,7 +69,7 @@ export const saveInspection = (inspection: any) => {
     })
 }
 
-export const saveComponents = (components: any) => {
+export const saveComponents = (components: Components) => {
   options.body = JSON.stringify(components);
 
   return fetch(`${API_ROOT}/components`, options as RequestInit)

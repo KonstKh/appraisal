@@ -2,21 +2,21 @@ import * as React from 'react';
 import { Button, Input, Form } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import { EquipmentEntity } from '../../models/equipment';
+import Equipment from '../../models/equipment';
 import './equipmentData.less';
 
 const { TextArea } = Input;
 const FormItem = Form.Item;
 
 interface Props {
-  saveEquipmentData: (formData: any) => void;
-  uploadEquipmentData: (formData: any) => void;
+  saveEquipmentData: (formData: Equipment) => void;
+  uploadEquipmentData: (formData: Equipment) => void;
   navigateToInspectionForm: () => void;
   navigateToTyresForm: () => void;
 }
 
 interface State {
-  equipment: EquipmentEntity
+  equipment: Equipment
 }
 
 class EquipmentDataComponent extends React.Component<Props & FormComponentProps, State> {

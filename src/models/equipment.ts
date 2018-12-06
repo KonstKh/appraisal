@@ -1,4 +1,4 @@
-export class EquipmentEntity {
+export default class Equipment {
   standartEquipment: string;
   extraEquipment: string;
 }

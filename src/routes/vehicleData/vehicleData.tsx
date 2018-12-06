@@ -2,24 +2,24 @@ import * as React from 'react';
 import { Button, Radio, Select, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
+import Vehicle from '../../models/vehicle';
+
 import './vehicleData.less';
 
-import { VehicleEntity } from '../../models/vehicle';
-import { vehicleForm } from '../../reducers/vehicleData';
 
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
 
 interface Props {
-  saveVehicleData: (formData: any) => void,
+  saveVehicleData: (formData: Vehicle) => void,
   navigateToTyresForm: () => void,
-  uploadVehicleData: (vehicleData: any) => void,
-  vehicle: VehicleEntity
+  uploadVehicleData: (vehicleData: Vehicle) => void,
+  vehicle: Vehicle
 }
 
 interface State {
-  vehicle: VehicleEntity
+  vehicle: Vehicle
 }
 
 enum Conditions {

@@ -1,5 +1,4 @@
-export class VehicleEntity {
-
+export default class Vehicle {
   registrationNumber: string;
   fin: string;
   kbaNr: string;
@@ -37,15 +36,4 @@ export class VehicleEntity {
   chassisCondition: string;
   outerCondition: string;
   innerCondition: string;
-
-  public constructor() {
-    this.registrationNumber = '';
-    this.fin = '';
-    this.kbaNr = '';
-    this.year = new Date();
-    this.mileage = '';
-    this.power = '';
-    this.cylinder = '';
-    this.beltChanged = '';
-  }
 }

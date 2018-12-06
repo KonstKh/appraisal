@@ -1,4 +1,4 @@
-export class ComponentsEntity {
+export default class Components {
   wingFrontLeft: string;
   wingFrontLeftDescription: string;
   wingFrontLeftLackDepth: string;

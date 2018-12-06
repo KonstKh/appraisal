@@ -2,9 +2,8 @@ import * as React from 'react';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import { Button, Upload, Icon, Modal, Select, Input, Form } from 'antd';
 // import { UploadListProps, UploadFile, UploadListType } from '../../node_modules/antd/lib/upload/interface.d.ts';
-import { UploadFile } from '../../../node_modules/antd/lib/upload/interface'
 import { Link } from 'react-router-dom';
-import { DocumentsEntity, DamageDocumentation } from '../../models/documents';
+import { Documents, DamageDocumentation } from '../../models/documents';
 import './documentsData.less';
 
 const Option = Select.Option;
@@ -13,15 +12,14 @@ interface Props {
   appraisalStep: number;
   documents: { damages: {}, images: {}},
   navigateToComponentsForm: () => void;
-  saveDocumentationData: (docFormData: any) => void;
+  saveDocumentationData: (docFormData: Documents) => void;
   uploadDocImage: (docImage: any, meta: any) => void;
-  updateDamageDocs: (damageDoc: any) => void;
+  updateDamageDocs: (damageDoc: DamageDocumentation) => void;
 }
 
 interface State {
   previewVisible: boolean,
   previewImage: string,
-  fileList?: UploadFile[],
   images?: any,
   damageComponents: number;
   damages: DamageDocumentation[];
@@ -32,35 +30,9 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
   constructor(props) {
     super(props)
 
-    this.state = {
-      images: {
-        frontLeft: {},
-        frontRight: {},
-        rearLeft: {},
-        rearRigth: {},
-        front: {},
-        frontBehind: {},
-        frontSide: {},
-        driverSteering: {},
-        driverSeat: {},
-        passengerSeat: {},
-        centerConsole: {},
-        speedometer: {},
-        backSeat: {},
-        trunk: {},
-        rim: {},
-        secondSetTires: {},
-        misc: {},
-        damage_0: {},
-        vehicleRegistration: {},
-        serviceBook: {},
-        bills: {}
-      },
-      previewVisible: false,
-      previewImage: '',
-      damageComponents: 1,
-      damages: [new DamageDocumentation()]
-    }
+    console.log('props', props.documents);
+    this.state = Object.keys(props.documents).length === 0 ?new Documents() : props.documents;
+
   }
 
   apiUrl = 'http://127.0.0.1:9000/admin/appraisal'; //TODO: extract to config
@@ -70,7 +42,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
     //TODO: check changed values on the form
     const formData  = this.state;
 
-    this.props.saveDocumentationData(formData);
+    this.props.saveDocumentationData(formData as Documents);
     this.props.navigateToComponentsForm();
   }
 
@@ -264,9 +236,9 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
   render() {
 
-    const { previewVisible, previewImage, fileList } = this.state;
-    const { images } = this.state.images;
-    console.log('count', images)
+    const { previewVisible, previewImage } = this.state;
+    // const { images } = this.props.documents;
+    // console.log('props', images)
 
     return (
       <div className="document-data">

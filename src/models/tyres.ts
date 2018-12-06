@@ -1,4 +1,4 @@
-export class TyresEntity {
+export default class Tyres {
   inspectionCondition: string;
   frontAxeLeft: string;
   frontAxeRigth: string;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Form, Input, Select } from 'antd';
 import { Link } from 'react-router-dom';
 import { FormComponentProps } from 'antd/lib/form/Form';
-import { InspectionEntity } from '../../models/inspection';
+import Inspection from '../../models/inspection';
 import './inspection.less';
 
 const Option = Select.Option;
@@ -10,14 +10,14 @@ const { TextArea } = Input;
 const FormItem = Form.Item;
 
 interface Props {
-  saveInspectionData: (formData: any) => void;
-  uploadInspectionData: (formData: any) => void;
+  saveInspectionData: (formData: Inspection) => void;
+  uploadInspectionData: (formData: Inspection) => void;
   navigateToComponentsForm: () => void;
   navigateToEquipmentForm: () => void;
 }
 
 interface State {
-  inspection: InspectionEntity
+  inspection: Inspection
 }
 
 class InspectionDataComponent extends React.Component<Props & FormComponentProps, State>{
