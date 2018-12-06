@@ -59,6 +59,10 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
     this.setState({ vehicle: { ...this.state.vehicle, [key]: event}});
   }
 
+  handleDataChange = (key) => (event) => {
+    this.setState({ vehicle: { ...this.state.vehicle, [key]: event.toDate()}})
+  }
+
   renderInput = (fieldName: string, label: string, placeholder: string) => {
     const { getFieldDecorator } = this.props.form;
 
@@ -122,7 +126,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
               {this.renderInput('kbaNr', 'KBA-Nr. (HSN/TSN)', 'z.B.: 0603/CDN')}
               <FormItem label="Erstzulassung" className="single-field">
                 {getFieldDecorator('year', { initialValue: moment(this.state.vehicle['year']) })(
-                  <DatePicker></DatePicker>
+                  <DatePicker onChange={this.handleDataChange('year')}></DatePicker>
                 )
               }</FormItem>
               {this.renderInput('mileage', 'Laufleistung abgelesen', 'z.B.: 85295km')}
@@ -209,7 +213,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
               {/* {this.renderInput('nextHU', 'Nächste HU /AU', 'z.B.: 06.2020')} */}
               <FormItem label="Nächste HU /AU" className="single-field">
                 {getFieldDecorator('nextHU', { initialValue: moment(this.state.vehicle['year']) })(
-                  <DatePicker></DatePicker>
+                  <DatePicker onChange={this.handleDataChange('nextHU')}></DatePicker>
                 )
               }</FormItem>
               {this.renderInput('lastService', 'Letzter Service km/am', 'z.B.: 21000 / 01.02.2017')}
