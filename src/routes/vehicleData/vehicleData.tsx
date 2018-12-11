@@ -114,7 +114,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-    const dateFormat = 'DD.MM.YYYY';
+
     return (
       <React.Fragment>
         <Form>

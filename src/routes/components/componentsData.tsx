@@ -34,8 +34,8 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
     return (
       <div className="lack-depth">
         <FormItem className="input-wrapper" label="Festgestellte Lackschichtendicke:">
-          {getFieldDecorator(name, { initialValue: this.state.components[name] || ''})(
-            <Input addonAfter="µm" placeholder="z.B. 132" onChange={this.handleInputChange(name)}/>
+          {getFieldDecorator(name, { initialValue: this.state.components[name] || '' })(
+            <Input addonAfter="µm" placeholder="z.B. 132" onChange={this.handleInputChange(name)} />
           )}
         </FormItem>
       </div>
@@ -57,7 +57,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
   }
 
   handleSelectorChange = (key) => (event) => {
-    this.setState({ components: { ...this.state.components, [key]: event }});
+    this.setState({ components: { ...this.state.components, [key]: event } });
   }
 
   handleInputChange = (key) => (event) => {
@@ -70,7 +70,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
 
     return (
       <FormItem hasFeedback label="" className="single-field">
-        {getFieldDecorator(name, { initialValue: this.state.components[name] || ''})(
+        {getFieldDecorator(name, { initialValue: this.state.components[name] || '' })(
           <Input placeholder={placeholder} onChange={this.handleInputChange(name)}></Input>
         )}
       </FormItem>
@@ -79,7 +79,24 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-    const placeholder = 'Ggf. kurze Beschreibung des festgestellten Schadens'
+    const placeholder = 'Ggf. kurze Beschreibung des festgestellten Schadens';
+    const components = [
+      { name: 'wingFrontLeft', title: 'Kotflügel vorne links', descr: 'wingFrontLeftDescription', lack: 'wingFrontLeftLackDepth' },
+      { name: 'frontBumber', title: 'Stoßstange vorne', descr: 'frontBumberDescription', lack: 'frontBumberLackDepth' },
+      { name: 'frontLeftDoor', title: 'Tür vorne links', descr: 'frontLeftDoorDescription', lack: 'frontLeftDoorLackDepth' },
+      { name: 'rearLeftDoor', title: 'Tür hinten links', descr: 'rearLeftDoorDescription', lack: 'rearLeftDoorLackDepth' },
+      { name: 'rearLeftSidePanel', title: 'Seitenwand hinten links', descr: 'rearLeftSidePanelDescription', lack: 'rearLeftSidePanelLackDepth' },
+      { name: 'rearBumper', title: 'Stoßstange hinten', descr: 'rearBumperDescription', lack: 'rearBumperLackDepth' },
+      { name: 'trunk', title: 'Heckklappe', descr: 'trunkDescription', lack: 'trunkLackDepth' },
+      { name: 'rearRightSidePanel', title: 'Seitenwand hinten rechts', descr: 'rearRightSidePanelDescription', lack: 'rearRightSidePanelLackDepth' },
+      { name: 'rearRightDoor', title: 'Tür hinten rechts', descr: 'rearRightDoorDescription', lack: 'rearRightDoorLackDepth' },
+      { name: 'frontRightDoor', title: 'Tür vorne rechts', descr: 'frontRightDoorDescription', lack: 'frontRightDoorLackDepth' },
+      { name: 'wingFrontRight', title: 'Kotflügel vorne rechts', descr: 'wingFrontRightDescription', lack: 'wingFrontRightLackDepth' },
+      { name: 'bonnet', title: 'Motorhaube', descr: 'frontRightDoorDescription', lack: 'frontRightDoorLackDepth' },
+      { name: 'roof', title: 'Dach', descr: 'roofDescription', lack: 'roofLackDepth' },
+      { name: 'windshield', title: 'Windschutzscheibe', descr: 'windshieldDescription', lack: 'windshieldLackDepth' },
+
+    ]
     return (
       <React.Fragment>
         <div className="components-form">
@@ -88,90 +105,17 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
             <h4>Zustand</h4>
           </div>
           <Form>
-            <div className="component-row">
-              {this.renderSelect('wingFrontLeft', 'Kotflügel vorne links')}
-              {this.renderInput('wingFrontLeftDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('wingFrontLeftLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('frontBumber', 'Stoßstange vorne')}
-              {this.renderInput('frontBumberDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('frontBumberLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('frontLeftDoor', 'Tür vorne links')}
-              {this.renderInput('frontLeftDoorDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('frontLeftDoorLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('rearLeftDoor', 'Tür hinten links')}
-              {this.renderInput('rearLeftDoorDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('rearLeftDoorLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('rearLeftSidePanel', 'Seitenwand hinten links')}
-              {this.renderInput('rearLeftSidePanelDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('rearLeftSidePanelLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('rearBumper', 'Stoßstange hinten')}
-              {this.renderInput('rearBumperDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('rearBumperLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('trunk', 'Heckklappe')}
-              {this.renderInput('trunkDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('trunkLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('rearRightSidePanel', 'Seitenwand hinten rechts')}
-              {this.renderInput('rearRightSidePanelDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('rearRightSidePanelLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('rearRightDoor', 'Tür hinten rechts')}
-              {this.renderInput('rearRightDoorDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('rearRightDoorLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('frontRightDoor', 'Tür vorne rechts')}
-              {this.renderInput('frontRightDoorDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('frontRightDoorLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('wingFrontRight', 'Kotflügel vorne rechts')}
-              {this.renderInput('wingFrontRightDescription', placeholder)}
-            </div>
-
-            {this.renderLackDepthComponent('wingFrontRightLackDepth')}
-            <div className="component-row">
-              {this.renderSelect('bonnet', 'Motorhaube')}
-              {this.renderInput('bonnetDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('bonnetLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('roof', 'Dach')}
-              {this.renderInput('roofDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('roofLackDepth')}
-
-            <div className="component-row">
-              {this.renderSelect('windshield', 'Windschutzscheibe')}
-              {this.renderInput('windshieldDescription', placeholder)}
-            </div>
-            {this.renderLackDepthComponent('windshieldLackDepth')}
-
+            {components.map((item, index) => {
+              return (
+                <React.Fragment key={index}>
+                  <div className="component-row">
+                    {this.renderSelect(item.name, item.title)}
+                    {this.renderInput(item.descr, placeholder)}
+                  </div>
+                  {this.renderLackDepthComponent(item.lack)}
+                </React.Fragment>
+              )
+            })}
           </Form>
         </div>
         <div className="footer-nav">
