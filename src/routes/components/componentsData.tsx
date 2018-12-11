@@ -146,7 +146,6 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
               {this.renderSelect('frontRightDoor', 'Tür vorne rechts')}
               {this.renderInput('frontRightDoorDescription', placeholder)}
             </div>
-
             {this.renderLackDepthComponent('frontRightDoorLackDepth')}
 
             <div className="component-row">
