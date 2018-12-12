@@ -227,7 +227,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
           <Form encType="multipart/form-data">
             {carParts.map((item, index) => {
               return <Form.Item key={index}>
-                {getFieldDecorator(item.name)(<ImgUpload title={item.title}></ImgUpload>)}
+                {getFieldDecorator(item.name)(<ImgUpload title={item.title} name={item.name}></ImgUpload>)}
               </Form.Item>
             })}
 
@@ -239,7 +239,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
             <h2>Fotodokumentation Dokumente</h2>
             {docParts.map((item, index) => {
               return <Form.Item key={index}>
-                {getFieldDecorator(item.name)(<ImgUpload title={item.title}></ImgUpload>)}
+                {getFieldDecorator(item.name)(<ImgUpload title={item.title} name={item.name}></ImgUpload>)}
               </Form.Item>
             })}
           </Form>

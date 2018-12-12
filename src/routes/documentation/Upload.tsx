@@ -7,7 +7,8 @@ import './documentsData.less';
 
 interface Props {
   fileList?: string[]
-  title: string
+  title: string,
+  name: string
 }
 interface State {
   previewVisible: boolean,
@@ -55,7 +56,7 @@ export class ImgUpload extends React.Component<Props, State> {
 
   render() {
     const { previewVisible, previewImage } = this.state;
-    const { title } = this.props;
+    const { title, name } = this.props;
 
     return (
       <React.Fragment>
