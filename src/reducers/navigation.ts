@@ -8,7 +8,6 @@ const defaultState : AppraisalState = {
 }
 
 export const navigation = (state: AppraisalState = defaultState, action) => {
-  // debugger;
   switch(action.type) {
     case actionsEnum.GO_TO_VEHICLE_FORM:
       return { ...state, navStep: 0}

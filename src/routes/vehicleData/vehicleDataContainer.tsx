@@ -6,7 +6,8 @@ import { navigateToTyresForm } from '../../actions/navigationStep';
 const mapStateToProps = (state) => {
   return {
     currentStep: state.root.navigation.navStep,
-    vehicle: state.root.vehicleForm
+    vehicle: state.root.vehicleForm,
+    url: state.router.location
   }
 }
 

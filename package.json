@@ -4,6 +4,12 @@
   "description": "appraisal frontend project",
   "main": "src/index.tsx",
   "scripts": {
+    "build:clean": "rimraf dist",
+    "build:assets": "mkdir -p dist/ && cp -R favicon.ico dist/",
+    "build:webpack": "webpack --config webpack.config.js",
+    "build:app": "npm run build:clean && npm run build:assets && npm run build:webpack",
+    "start": "node server.js",
+    "lint": "tslint src/**",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server  --mode development --inline --hot --open",
     "build": "webpack  --mode production"
@@ -43,13 +49,18 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.24.0",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-middleware": "^3.4.0",
+    "webpack-dev-server": "^3.1.10",
+    "webpack-hot-middleware": "^2.24.3"
   },
   "dependencies": {
     "antd": "^3.10.4",
+    "config": "^3.0.0",
+    "config-webpack": "^1.0.4",
     "connected-react-router": "^5.0.1",
     "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",
+    "js-yaml": "^3.12.0",
     "moment": "^2.22.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
@@ -58,6 +69,7 @@
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "serve-favicon": "^2.5.0"
   }
 }

@@ -16,7 +16,8 @@ interface Props {
   saveVehicleData: (formData: Vehicle) => void,
   navigateToTyresForm: () => void,
   uploadVehicleData: (vehicleData: Vehicle) => void,
-  vehicle: Vehicle
+  vehicle: Vehicle,
+  location: any
 }
 
 interface State {
@@ -94,6 +95,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
   formSubmit = (e) => {
     const { validateFieldsAndScroll, resetFields,
       getFieldValue, isFieldsTouched } = this.props && this.props.form
+    const { location } = this.props
     // e.preventDefault();
     // this.props.form.validateFields((err, values) => {
     //   if (!err) {
@@ -114,7 +116,6 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
 
   render() {
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-
     return (
       <React.Fragment>
         <Form>

@@ -5,11 +5,11 @@ import Equipment from '../models/equipment';
 import Inspection from '../models/inspection';
 import Components from '../models/components';
 
+const config = require('config')
 
 // const apiUrl = 'http://5bf3e5a691c25b0013a3b967.mockapi.io/api/v1';
 
-// todo: extract to configuration
-const API_ROOT = 'http://127.0.0.1:9000/admin/appraisal'
+const API_ROOT = `${config.services.backend.api}admin/appraisal`
 
 const options = {
   method: 'PUT',
@@ -26,7 +26,7 @@ export const saveVehicle = (vehicle: Vehicle) => {
 
   return fetch(`${API_ROOT}/vehicle`, options as RequestInit )
     .then(response => {
-      return response.formData;
+      return response.json();
     })
     .catch(error => {
       throw (error);
@@ -38,7 +38,7 @@ export const saveTyres = (tyres: Tyres) => {
 
   return fetch(`${API_ROOT}/tyres`, options as RequestInit )
     .then(response => {
-      return response.formData
+      return response.json();
     })
     .catch(error => {
       throw (error);
@@ -50,7 +50,7 @@ export const saveEquipment = (equipment: Equipment) => {
 
   return fetch(`${API_ROOT}/equipment`, options as RequestInit)
     .then(response => {
-      return response.formData
+      return response.json();
     })
     .catch(error => {
       throw (error);
@@ -62,7 +62,7 @@ export const saveInspection = (inspection: Inspection) => {
 
   return fetch(`${API_ROOT}/inspection`, options as RequestInit)
     .then(response => {
-      return response.formData
+      return response.json();
     })
     .catch(error => {
       throw (error);
@@ -74,7 +74,7 @@ export const saveComponents = (components: Components) => {
 
   return fetch(`${API_ROOT}/components`, options as RequestInit)
     .then(response => {
-      return response.formData
+      return response.json();
     })
     .catch(error => {
       throw (error);
@@ -96,7 +96,7 @@ export const saveImage = (image: any, meta) => {
 
   return fetch(`${API_ROOT}/components`, config as RequestInit)
     .then(response => {
-      return response.formData
+      return response.json();
     })
     .catch(error => {
       throw( error );

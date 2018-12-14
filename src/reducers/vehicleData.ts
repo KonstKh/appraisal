@@ -8,9 +8,14 @@ export const vehicleForm = (state: AppraisalState = defaultState, action) => {
     case actionsEnum.SAVE_VEHICLE_DATA:
       return saveVehicleData(state, action);
     case actionsEnum.UPLOAD_VEHICLE_DATA:
-      return {...state}
+      return uploadVehicleData(state, action);
   }
 
+  return state;
+}
+
+const uploadVehicleData = (state: any, action: any) => {
+  console.log('action', action);
   return state;
 }
 
