@@ -1,0 +1,8 @@
+environment: NODE_ENV
+url: 
+  hostname: ABRACAR_URL_HOSTNAME
+  port: ABRACAR_URL_PORT
+  basepath: ABRACAR_URL_BASEPATH
+services:
+  backend:
+    api: DEAL_SERVICE_API_URL

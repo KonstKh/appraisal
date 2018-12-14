@@ -37,7 +37,7 @@ export class ImgUpload extends React.Component<Props, State> {
       name: image.split('/')[image.split('/').length - 1],
       status: 'done',
       url: image,
-      id: image._id,//todo: path fileList as a object with id
+      id: image._id,//todo: send fileList as a object with id
     }))
   }
 

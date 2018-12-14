@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './footer.less';
 
-const logo = require("../../static/positiv.png");
+const logo = require("../../static/assets/positiv.png");
 
 export const FooterComponent = () => {
   return(

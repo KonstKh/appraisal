@@ -1,21 +1,30 @@
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var MiniCssExtractPlugin = require('mini-css-extract-plugin');
-var webpack = require('webpack');
-var path = require('path');
 
-var basePath = __dirname;
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ConfigWebpackPlugin = require("config-webpack");
+const webpack = require('webpack');
+const path = require('path');
+const config = require('config');
+
+const publicPath = config.url.basepath;
+const basepath = __dirname;
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
- context: path.join(basePath, "src"),
+ mode: isProduction ? 'production' : 'development',
+ context: path.join(basepath, "src"),
  resolve: {
    extensions: ['.js', '.ts', '.tsx', '.css','.less']
  },
+ node: {
+  fs: 'empty'
+},
  entry: ['@babel/polyfill',
          './index.tsx'
         ],
  output: {
-   path: path.join(basePath, 'dist'),
-   filename: '[name].js'
+   path: path.join(basepath, 'dist'),
+   filename: 'static/[name].[hash].js'
  },
  devtool: 'source-map',
  devServer: {
@@ -58,12 +67,13 @@ module.exports = {
 			}]
 		},
      {
-       test: /\.(png|jpg|gif|svg)?$/,
+       test: /\.(png|jpg|jpeg|gif|svg)?$/,
        loader: 'url-loader',
        options: {
          limit: 8192,
          fallback: 'file-loader',
-         mimetipe: 'image/[ext]'
+         mimetipe: 'image/[ext]',
+         name: 'images/[name].[ext]'
        }
      },
   ],
@@ -71,14 +81,16 @@ module.exports = {
  plugins: [
    //Generate index.html in /dist => https://github.com/ampedandwired/html-webpack-plugin
    new HtmlWebpackPlugin({
-     filename: 'index.html', //Name of file in ./dist/
-     template: 'index.html', //Name of template in ./src
+     filename: 'index.html',
+     template: 'index.html',
      hash: true,
    }),
    new MiniCssExtractPlugin({
-     filename: "[name].css",
+     filename: "static/[name].css",
      chunkFilename: "[id].css"
    }),
    new webpack.HotModuleReplacementPlugin(),
+   new ConfigWebpackPlugin(),
+   new webpack.DefinePlugin({ 'process.env.NODE_CONFIG': JSON.stringify(JSON.stringify(config)) })
  ],
 };
