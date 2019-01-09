@@ -76,6 +76,9 @@ button {
     min-width: 200px;
     width: 35%;
   }
+  @media only screen and (min-width: 481px) and (max-width: 1820px) {
+    flex-direction: column;
+   }
 }
 
 .radio-wrapper {
@@ -101,6 +104,12 @@ button {
   .ant-radio-wrapper {
     min-width: 55px;
   }
+
+  .ant-row {
+    @media only screen and (min-width: 481px) and (max-width: 1820px) {
+      flex-direction: column;
+     }
+  }
 }
 
 .selector-wrapper {
@@ -109,7 +118,6 @@ button {
   margin-top: auto;
   justify-content: space-between;
   margin: 4px 0;
-  align-items: center;
   
   label {
     min-width: 200px;
@@ -118,6 +126,9 @@ button {
     width: 48%;
     min-width: 200px;
   }
+  @media only screen and (min-width: 481px) and (max-width: 1820px) {
+    flex-direction: column;
+   }
 }
 
 .footer-nav {

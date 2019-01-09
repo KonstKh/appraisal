@@ -7,10 +7,22 @@
     width: 23%;
   }
 
+  .selector-wrapper{
+    @media only screen and (min-width: 481px) and (max-width: 1820px) {
+      flex-direction: row;
+      justify-content: left;
+    }
+  }
+
   .component-row {
     display: flex;
     justify-content: left;
     align-items: center;
+
+    @media only screen and (min-width: 481px) and (max-width: 1820px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
     .ant-form-item-label {
       width: 200px;
@@ -28,6 +40,10 @@
   .single-field{
     margin: 0 0 0 50px;
     width: 50%;
+
+    @media only screen and (min-width: 481px) and (max-width: 1820px) {
+        margin-left: 200px;
+    }
     
     .ant-form-item-control-wrapper {
       width: 100%;
@@ -44,11 +60,18 @@
 
     .ant-form-item-control-wrapper {
       margin-left: 22px;
+      @media only screen and (min-width: 481px) and (max-width: 1820px) {
+        margin-left: 0;
+      }
     }
 
     .input-wrapper {
       display: flex;
       margin-left: 200px;
+      @media only screen and (min-width: 481px) and (max-width: 1820px) {
+        flex-direction: column;
+        margin-left: 200px;
+      }
     }
     .ant-form-item-children {
       line-height: 21px;
