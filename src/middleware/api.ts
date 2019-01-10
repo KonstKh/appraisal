@@ -5,7 +5,7 @@ import Equipment from '../models/equipment';
 import Inspection from '../models/inspection';
 import Components from '../models/components';
 
-const config = require('config')
+const config = require('config');
 
 // const apiUrl = 'http://5bf3e5a691c25b0013a3b967.mockapi.io/api/v1';
 

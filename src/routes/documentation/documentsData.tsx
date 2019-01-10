@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import { Button, Upload, Icon, Modal, Select, Input, Form } from 'antd';
-// import { UploadListProps, UploadFile, UploadListType } from '../../node_modules/antd/lib/upload/interface.d.ts';
 import { Link } from 'react-router-dom';
 import { Documents, DamageDocumentation } from '../../models/documents';
+import { ImgUpload } from './Upload';
 import './documentsData.less';
 
-
-import { ImgUpload } from './Upload';
+const config = require('config');
 
 const Option = Select.Option;
 
@@ -24,8 +23,9 @@ interface State {
   previewVisible: boolean,
   previewImage: string,
   images?: any,
-  damageComponents: number;
-  damages: DamageDocumentation[];
+  damages: DamageDocumentation[],
+  dealId: String,
+  apiUrl: String
 }
 
 class DocumentsDataComponent extends React.Component<Props & FormComponentProps, State> {
@@ -33,12 +33,18 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
   constructor(props) {
     super(props)
 
-    this.state = Object.keys(props.documents).length === 0 ? new Documents() : props.documents;
+    const dealId = localStorage.getItem('dealId');
+    const docs = Object.keys(props.documents).length === 0 ? new Documents() : props.documents;
 
+    this.state = { 
+      previewVisible: docs.previewVisible,
+      previewImage: docs.previewImage,
+      images: docs.images,
+      damages: docs.damages,
+      dealId,
+      apiUrl: `${config.services.backend.api}admin/appraisal`
+    }
   }
-
-  apiUrl = 'http://127.0.0.1:9000/admin/appraisal'; //TODO: extract to config
-  dealId = '5bcd9245ce27da436982f68c';
 
   submitChanges = () => {
     //TODO: check changed values on the form
@@ -90,7 +96,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
   renderDamageUpload = (name, fileList, label, index) => {
 
-    const { previewVisible, previewImage } = this.state;
+    const { previewVisible, previewImage, dealId, apiUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -98,9 +104,9 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
         <Form.Item>
           {getFieldDecorator(name as string, { initialValue: fileList || null })(
             <Upload className="document-uploader"
-              action={`${this.apiUrl}/appraisalImage`}
+              action={`${apiUrl}/appraisalImage`}
               name='appraisalImage'
-              data={{ docPart: name, dealId: this.dealId }}
+              data={{ partName: name, dealId: dealId }}
               listType="picture-card"
               fileList={fileList}
               onPreview={this.handlePreview}
@@ -123,7 +129,6 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
   }
 
   handleDamageGenButtonClick = () => {
-    this.setState({ damageComponents: this.state.damageComponents + 1 })
     let newDamages = this.state.damages;
     newDamages.push(new DamageDocumentation());
     this.setState({ damages: newDamages })
@@ -191,8 +196,6 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
     const { getFieldDecorator } = this.props.form;
 
-    // todo: get fileLists from DB
-
     const carParts = [
       { name: 'frontLeft', title: 'Vorne links' },
       { name: 'frontRight', title: 'Vorne rechts' },
@@ -251,7 +254,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
             </Link>
           </div>
           <div className="go-next">
-            {/* <Button>Generate PDF document</Button> */}
+            {/* <Button>Go to the summary page</Button> */}
           </div>
         </div>
       </div>

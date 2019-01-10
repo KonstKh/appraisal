@@ -3,7 +3,6 @@ import { UploadFile } from '../../node_modules/antd/lib/upload/interface';
 export class Documents {
   damages: DamageDocumentation[];
   images: {};
-  damageComponents: number;
   previewVisible: boolean;
   previewImage: string;
 
@@ -32,7 +31,6 @@ export class Documents {
         bills: {}
     };
     this.damages = [new DamageDocumentation()];
-    this.damageComponents = 1;
     this.previewImage = '';
     this.previewVisible = false;
   }
