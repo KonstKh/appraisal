@@ -1,4 +1,5 @@
 import * as React from 'react';
+import qs from 'query-string';
 import { Button, Radio, Select, Form, Input, DatePicker } from 'antd';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -7,7 +8,6 @@ import Vehicle from '../../models/vehicle';
 
 import './vehicleData.less';
 
-
 const RadioGroup = Radio.Group;
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -15,13 +15,14 @@ const FormItem = Form.Item;
 interface Props {
   saveVehicleData: (formData: Vehicle) => void,
   navigateToTyresForm: () => void,
-  uploadVehicleData: (vehicleData: Vehicle) => void,
+  uploadVehicleData: (vehicleData: Vehicle, dealId: String) => void,
   vehicle: Vehicle,
   location: any
 }
 
 interface State {
-  vehicle: Vehicle
+  vehicle: Vehicle,
+  dealId: String
 }
 
 enum Conditions {
@@ -46,8 +47,12 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
   constructor(props) {
     super(props)
 
+    const dealId = qs.parse(this.props.location.search,  { ignoreQueryPrefix: true }).id;
+    localStorage.setItem('dealId', dealId);
+
     this.state = {
-      vehicle: props.vehicle
+      vehicle: props.vehicle,
+      dealId
     }
   }
 
@@ -109,7 +114,7 @@ class VehicleDataComponent extends React.Component<Props & FormComponentProps, S
       }
 
       this.props.saveVehicleData(this.state.vehicle);
-      this.props.uploadVehicleData(this.state.vehicle);
+      this.props.uploadVehicleData(this.state.vehicle, this.state.dealId);
       this.props.navigateToTyresForm();
     });
   }

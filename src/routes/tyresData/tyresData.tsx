@@ -11,14 +11,15 @@ const FormItem = Form.Item;
 
 interface Props {
   saveTyresData: (formData: Tyres) => void,
-  uploadTyresData: (formData: Tyres) => void,
+  uploadTyresData: (formData: Tyres, dealId: String) => void,
   navigateToEquipmentForm: () => void,
   navigateToVehicleForm: () => void
 }
 
 interface State {
   displayAdditionalTires: boolean,
-  tyres: Tyres
+  tyres: Tyres,
+  dealId: String
 }
 
 enum TyreType {
@@ -32,9 +33,12 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
   constructor(props) {
     super(props);
 
+    const dealId = localStorage.getItem('dealId');
+
     this.state = {
       displayAdditionalTires: false,
-      tyres: props.tyres
+      tyres: props.tyres,
+      dealId
     }
   }
 
@@ -72,7 +76,7 @@ class TyresDataComponent extends React.Component<Props & FormComponentProps, Sta
       }
 
       this.props.saveTyresData(this.state.tyres);
-      this.props.uploadTyresData(this.state.tyres);
+      this.props.uploadTyresData(this.state.tyres, this.state.dealId);
       this.props.navigateToEquipmentForm();
     })
   }

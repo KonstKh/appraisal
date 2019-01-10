@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => {
     navigateToInspectionForm: () => dispatch(navigateToInspectionForm()),
     navigateToDocumentsForm: () => dispatch(navigateToDocumentsForm()),
     saveComponentsFormData: (formData: Components ) => dispatch(saveComponentsFormData(formData)),
-    uploadComponentData: (formData: Components) => dispatch(uploadComponentData(formData))
+    uploadComponentData: (formData: Components, dealId: String) => dispatch(uploadComponentData(formData, dealId))
   }
 }
 

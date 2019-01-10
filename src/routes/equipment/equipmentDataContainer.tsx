@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     saveEquipmentData: (formData: Equipment) => dispatch(saveEquipmentData(formData)),
-    uploadEquipmentData: (formData: Equipment) => dispatch(uploadEquipmentData(formData)),
+    uploadEquipmentData: (formData: Equipment, dealId: String) => dispatch(uploadEquipmentData(formData, dealId)),
     navigateToInspectionForm: () => dispatch(navigateToInspectionForm()),
     navigateToTyresForm: () => dispatch(navigateToTyresForm())
   }

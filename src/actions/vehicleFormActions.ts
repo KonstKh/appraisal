@@ -14,9 +14,9 @@ export const saveVehicleData = (vehicleFormData: Vehicle) => ({
   }
 });
 
-export const uploadVehicleData = (vehicleData: Vehicle) => {
+export const uploadVehicleData = (vehicleData: Vehicle, dealId: String) => {
   return (dispatch) => {
-    return api.saveVehicle(vehicleData)
+    return api.saveVehicle(vehicleData, dealId)
       .then(response => {
         dispatch(updateVehicleSuccess(response));
       })
@@ -35,9 +35,9 @@ export const saveTyresData = (tyresFormData: Tyres) => ({
   }
 })
 
-export const uploadTyresData = (tyresData: Tyres) => {
+export const uploadTyresData = (tyresData: Tyres, dealId: String) => {
   return (dispatch) => {
-    return api.saveTyres(tyresData)
+    return api.saveTyres(tyresData, dealId)
       .then(response => {
         dispatch(updateTyresSuccess(response));
       })
@@ -56,9 +56,9 @@ export const saveEquipmentData = (equipmentFormData: Equipement) => ({
   }
 })
 
-export const uploadEquipmentData = (equipmentData: Equipement) => {
+export const uploadEquipmentData = (equipmentData: Equipement, dealId: String) => {
   return (dispatch) => {
-    return api.saveEquipment(equipmentData)
+    return api.saveEquipment(equipmentData, dealId)
       .then(response => {
         dispatch(updateEquipmentSuccess(response));
       })
@@ -77,9 +77,9 @@ export const saveInspectionFormData = (inspectionFormData: Inspection) => ({
   }
 })
 
-export const uploadInspectionData = (inspectionData: Inspection) => {
+export const uploadInspectionData = (inspectionData: Inspection, dealId: String) => {
   return (dispatch) => {
-    return api.saveInspection(inspectionData)
+    return api.saveInspection(inspectionData, dealId)
       .then(response => {
         dispatch(updateInspectionSuccess(response));
       })
@@ -98,9 +98,9 @@ export const saveComponentsFormData = (componentsFormData: Components) => ({
   }
 })
 
-export const uploadComponentData = (componentData: Components) => {
+export const uploadComponentData = (componentData: Components, dealId: String) => {
   return (dispatch) => {
-    return api.saveComponents(componentData)
+    return api.saveComponents(componentData, dealId)
       .then(response => {
         dispatch(updateComponentsSuccess(response));
       })

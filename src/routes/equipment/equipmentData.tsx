@@ -10,13 +10,14 @@ const FormItem = Form.Item;
 
 interface Props {
   saveEquipmentData: (formData: Equipment) => void;
-  uploadEquipmentData: (formData: Equipment) => void;
+  uploadEquipmentData: (formData: Equipment, dealId: String) => void;
   navigateToInspectionForm: () => void;
   navigateToTyresForm: () => void;
 }
 
 interface State {
-  equipment: Equipment
+  equipment: Equipment,
+  dealId: String
 }
 
 class EquipmentDataComponent extends React.Component<Props & FormComponentProps, State> {
@@ -24,8 +25,11 @@ class EquipmentDataComponent extends React.Component<Props & FormComponentProps,
   constructor(props) {
     super(props)
 
+    const dealId = localStorage.getItem('dealId');
+
     this.state = {
-      equipment: props.equipment
+      equipment: props.equipment,
+      dealId
     }
   }
 
@@ -86,7 +90,7 @@ class EquipmentDataComponent extends React.Component<Props & FormComponentProps,
       }
 
       this.props.saveEquipmentData(this.state.equipment);
-      this.props.uploadEquipmentData(this.state.equipment);
+      this.props.uploadEquipmentData(this.state.equipment, this.state.dealId);
       this.props.navigateToInspectionForm();
     });
   }
