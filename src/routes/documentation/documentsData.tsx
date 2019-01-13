@@ -1,4 +1,5 @@
 import * as React from 'react';
+import _ from 'lodash';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import { Button, Upload, Icon, Modal, Select, Input, Form } from 'antd';
 import { Link } from 'react-router-dom';
@@ -14,9 +15,8 @@ interface Props {
   appraisalStep: number;
   documents: { damages: {}, images: {} },
   navigateToComponentsForm: () => void;
-  saveDocumentationData: (docFormData: Documents) => void;
-  uploadDocImage: (docImage: any, meta: any) => void;
-  updateDamageDocs: (damageDoc: DamageDocumentation) => void;
+  saveDocumentationData: (docFormData: DamageDocumentation[]) => void;
+  uploadDamageDocs: (damageDoc: DamageDocumentation[], dealId) => void;
 }
 
 interface State {
@@ -46,11 +46,26 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
     }
   }
 
+  formSubmit = () => {
+
+    let damageDocumentationData = this.state.damages.map(i => {
+      let data = Object.assign({}, i);
+      delete data.fileList;
+      return data;
+    });
+
+    this.props.uploadDamageDocs(damageDocumentationData, this.state.dealId);
+    this.props.saveDocumentationData(this.state.damages);
+
+    // this.props.navigateToSummaryPage(); //todo: implement it
+  }
+
   submitChanges = () => {
     //TODO: check changed values on the form
-    const formData = this.state;
+    const damageDocumentation = this.state.damages;
+    // this.props.uploadDamageDocs(damageDocumentation);
 
-    this.props.saveDocumentationData(formData as Documents);
+    // this.props.saveDocumentationData(formData.damages);
     this.props.navigateToComponentsForm();
   }
 
@@ -66,23 +81,26 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
   handleComponentSelectChange = (component: number) => (event) => {
     let updatedDamages = this.state.damages;
-    updatedDamages[component].name = event;
+    updatedDamages[component].component = event;
+    updatedDamages[component].name = `damage_${component}`;
     this.setState({ damages: updatedDamages });
-    // this.props.updateDamageDocs(this.state);
+    // this.props.uploadDamageDocs(this.state);
   }
 
   handlePositionSelectChange = (component: number) => (event) => {
     let updatedDamages = this.state.damages;
     updatedDamages[component].position = event;
+    updatedDamages[component].name = `damage_${component}`;
     this.setState({ damages: updatedDamages });
-    // this.props.updateDamageDocs(this.state);
+    // this.props.uploadDamageDocs(this.state);
   }
 
   handleDamageInputChange = (component: number) => (event) => {
     let updatedDamages = this.state.damages;
     updatedDamages[component].description = event.target.value;
+    updatedDamages[component].name = `damage_${component}`;
     this.setState({ damages: updatedDamages });
-    // this.props.updateDamageDocs(this.state);
+    // this.props.uploadDamageDocs(this.state);
   }
 
   handleDamageImageChange = (index) => {
@@ -254,7 +272,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
             </Link>
           </div>
           <div className="go-next">
-            {/* <Button>Go to the summary page</Button> */}
+            <Button onClick={this.formSubmit}>Summary</Button>
           </div>
         </div>
       </div>

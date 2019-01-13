@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { DocumentDataForm } from './documentsData';
 import { navigateToComponentsForm } from '../../actions/navigationStep';
-import { saveDocumentationData, uploadDocImage, updateDamageDocumentation } from '../../actions/vehicleFormActions';
+import { saveDocumentationData, uploadDocumentationData } from '../../actions/vehicleFormActions';
+import { DamageDocumentation } from '../../models/documents';
 
 const mapStateToProps = (state)  => {
   return {
@@ -13,9 +14,8 @@ const mapStateToProps = (state)  => {
 const mapDispatchToProps = (dispatch) => {
   return {
     navigateToComponentsForm: () => dispatch(navigateToComponentsForm()),
-    saveDocumentationData: (docFormData: any) => dispatch(saveDocumentationData(docFormData)),
-    uploadDocImage: (docImage: any, meta: any) => dispatch(uploadDocImage(docImage, meta)),
-    updateDamageDocs: (damageProperty: any) => dispatch(updateDamageDocumentation(damageProperty))
+    saveDocumentationData: (docFormData: DamageDocumentation[]) => dispatch(saveDocumentationData(docFormData)),
+    uploadDamageDocs: (damageProperty: DamageDocumentation[], dealId: String) => dispatch(uploadDocumentationData(damageProperty, dealId))
   }
 }
 

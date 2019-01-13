@@ -4,6 +4,7 @@ import Tyres from '../models/tyres';
 import Equipment from '../models/equipment';
 import Inspection from '../models/inspection';
 import Components from '../models/components';
+import { DamageDocumentation } from '../models/documents';
 
 const config = require('config');
 
@@ -24,7 +25,7 @@ const options = {
 export const saveVehicle = (vehicle: Vehicle, dealId: String) => {
   options.body = JSON.stringify(vehicle);
 
-  return fetch(`${API_ROOT}/vehicle/${dealId}`, options as RequestInit )
+  return fetch(`${API_ROOT}/vehicle/${dealId}`, options as RequestInit)
     .then(response => {
       return response.json();
     })
@@ -36,7 +37,7 @@ export const saveVehicle = (vehicle: Vehicle, dealId: String) => {
 export const saveTyres = (tyres: Tyres, dealId: String) => {
   options.body = JSON.stringify(tyres);
 
-  return fetch(`${API_ROOT}/tyres/${dealId}`, options as RequestInit )
+  return fetch(`${API_ROOT}/tyres/${dealId}`, options as RequestInit)
     .then(response => {
       return response.json();
     })
@@ -81,24 +82,14 @@ export const saveComponents = (components: Components, dealId: String) => {
     })
 }
 
-// TODO: remove it
-export const saveImage = (image: any, meta) => {
+export const saveDocumentation = (documentation: DamageDocumentation[], dealId: String) => {
+  options.body = JSON.stringify(documentation);
 
-  const config = {
-    method: 'POST',
-    mode: 'cors',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json;charset=UTF-8',
-    },
-    body: image
-  }
-
-  return fetch(`${API_ROOT}/components`, config as RequestInit)
+  return fetch(`${API_ROOT}/documents/${dealId}`, options as RequestInit)
     .then(response => {
       return response.json();
     })
     .catch(error => {
-      throw( error );
+      throw (error);
     })
 }

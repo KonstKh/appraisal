@@ -35,16 +35,17 @@ export class Documents {
     this.previewVisible = false;
   }
 }
-
 export class DamageDocumentation {
 
   name: string;
+  component: string;
   position: string;
   fileList: UploadFile[];
   description: string;
 
   public constructor() {
     this.name = '';
+    this.component = '';
     this.position = '';
     this.description = '';
     this.fileList = [];

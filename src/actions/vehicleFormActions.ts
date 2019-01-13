@@ -5,7 +5,7 @@ import Tyres from '../models/tyres';
 import Equipement from '../models/equipment';
 import Inspection from '../models/inspection';
 import Components from '../models/components';
-import { Documents } from '../models/documents';
+import { DamageDocumentation } from '../models/documents';
 
 export const saveVehicleData = (vehicleFormData: Vehicle) => ({
   type: actionsEnum.SAVE_VEHICLE_DATA,
@@ -112,30 +112,22 @@ export const updateComponentsSuccess = (updatedComponents) => {
   return { type: actionsEnum.UPLOAD_COMPONENTS_DATA, updatedComponents }
 }
 
-export const uploadDocImage = (docImage: any, meta: any) => {
-  return (dispatch) => {
-    return api.saveImage(docImage, meta)
-    .then(response => {
-      debugger;
-      dispatch(imageUploadSuccess(response));
-    })
-    .catch(error => { throw (error)});
+export const uploadDocumentationData = (docFormData: DamageDocumentation[], dealId: String) => {
+  return(dispatch) => {
+    return api.saveDocumentation(docFormData, dealId)
+      .then(response => {
+        dispatch(updateDocumantationSuccess(response));
+      })
+      .catch(error => { throw (error)});
   }
 }
 
-export const imageUploadSuccess = (updatedImage) => {
-  return { type: actionsEnum.UPLOAD_DOC_IMAGE, updatedImage }
+const updateDocumantationSuccess = (updatedDocuments) => {
+  return { type: actionsEnum.UPLOAD_DOCUMENTATION_DATA, updatedDocuments}
 }
 
-export const saveDocumentationData = (docFormData: Documents) => ({
-  type: actionsEnum.SAVE_DOCUMENTATION_DATA,
-  payload: {
-    documentationData: docFormData
-  }
-})
-
-export const updateDamageDocumentation = (updatedDocs: Documents) => ({
-  type: actionsEnum.UPDATE_DOCS_DATA, 
+export const saveDocumentationData = (updatedDocs: DamageDocumentation[]) => ({
+  type: actionsEnum.SAVE_DOCUMENTATION_DATA, 
   payload: {
     damageData: updatedDocs
   }
