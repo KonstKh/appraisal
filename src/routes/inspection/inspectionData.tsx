@@ -11,13 +11,14 @@ const FormItem = Form.Item;
 
 interface Props {
   saveInspectionData: (formData: Inspection) => void;
-  uploadInspectionData: (formData: Inspection) => void;
+  uploadInspectionData: (formData: Inspection, dealId: String) => void;
   navigateToComponentsForm: () => void;
   navigateToEquipmentForm: () => void;
 }
 
 interface State {
-  inspection: Inspection
+  inspection: Inspection,
+  dealId: String
 }
 
 class InspectionDataComponent extends React.Component<Props & FormComponentProps, State>{
@@ -25,8 +26,11 @@ class InspectionDataComponent extends React.Component<Props & FormComponentProps
   constructor(props) {
     super(props)
 
+    const dealId = localStorage.getItem('dealId');
+
     this.state = {
-      inspection: props.inspection
+      inspection: props.inspection,
+      dealId
     }
   }
   handleItemChange = (key) => (event) => {
@@ -222,7 +226,7 @@ class InspectionDataComponent extends React.Component<Props & FormComponentProps
       }
 
       this.props.saveInspectionData(this.state.inspection);
-      this.props.uploadInspectionData(this.state.inspection);
+      this.props.uploadInspectionData(this.state.inspection, this.state.dealId);
 
       this.props.navigateToComponentsForm();
     });

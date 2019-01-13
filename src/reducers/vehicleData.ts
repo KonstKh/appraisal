@@ -15,7 +15,6 @@ export const vehicleForm = (state: AppraisalState = defaultState, action) => {
 }
 
 const uploadVehicleData = (state: any, action: any) => {
-  console.log('action', action);
   return state;
 }
 

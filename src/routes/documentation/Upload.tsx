@@ -5,6 +5,8 @@ import { UploadFile } from '../../../node_modules/antd/lib/upload/interface';
 
 import './documentsData.less';
 
+const config = require('config');
+
 interface Props {
   fileList?: string[]
   title: string,
@@ -13,22 +15,26 @@ interface Props {
 interface State {
   previewVisible: boolean,
   previewImage: string,
-  fileList: UploadFile[]
+  fileList: UploadFile[],
+  dealId: String,
+  apiUrl: String
 }
 
 export class ImgUpload extends React.Component<Props, State> {
 
   constructor(props) {
     super(props)
+    const dealId = localStorage.getItem('dealId');
+    const apiUrl = `${config.services.backend.api}admin/appraisal`;
+
     this.state = {
       fileList: this.constructFileList(props.fileList) || [],
       previewVisible: false,
-      previewImage: ''
+      previewImage: '',
+      dealId,
+      apiUrl
     }
   }
-
-  apiUrl = 'http://127.0.0.1:9000/admin/appraisal';
-  dealId = '5bcd9245ce27da436982f68c';
 
   constructFileList = (fileList) => {
     if(!fileList) return;
@@ -37,12 +43,11 @@ export class ImgUpload extends React.Component<Props, State> {
       name: image.split('/')[image.split('/').length - 1],
       status: 'done',
       url: image,
-      id: image._id,//todo: send fileList as a object with id
+      id: image._id,
     }))
   }
 
   handlePreview = (file) => {
-    console.log('file', file)
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true,
@@ -55,15 +60,15 @@ export class ImgUpload extends React.Component<Props, State> {
   }
 
   render() {
-    const { previewVisible, previewImage } = this.state;
+    const { previewVisible, previewImage, dealId, apiUrl } = this.state;
     const { title, name } = this.props;
 
     return (
       <React.Fragment>
         <Upload className="document-uploader"
-          action={`${this.apiUrl}/appraisalImage`}
+          action={`${apiUrl}/appraisalImage`}
           name='appraisalImage'
-          data={{ docPart: name, dealId: this.dealId }}
+          data={{ partName: name, dealId }}
           listType="picture-card"
           fileList={this.state.fileList}
           onPreview={this.handlePreview}

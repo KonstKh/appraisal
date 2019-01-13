@@ -1,13 +1,13 @@
 import * as React from 'react';
+import _ from 'lodash';
 import { FormComponentProps } from 'antd/lib/form/Form';
 import { Button, Upload, Icon, Modal, Select, Input, Form } from 'antd';
-// import { UploadListProps, UploadFile, UploadListType } from '../../node_modules/antd/lib/upload/interface.d.ts';
 import { Link } from 'react-router-dom';
 import { Documents, DamageDocumentation } from '../../models/documents';
+import { ImgUpload } from './Upload';
 import './documentsData.less';
 
-
-import { ImgUpload } from './Upload';
+const config = require('config');
 
 const Option = Select.Option;
 
@@ -15,17 +15,17 @@ interface Props {
   appraisalStep: number;
   documents: { damages: {}, images: {} },
   navigateToComponentsForm: () => void;
-  saveDocumentationData: (docFormData: Documents) => void;
-  uploadDocImage: (docImage: any, meta: any) => void;
-  updateDamageDocs: (damageDoc: DamageDocumentation) => void;
+  saveDocumentationData: (docFormData: DamageDocumentation[]) => void;
+  uploadDamageDocs: (damageDoc: DamageDocumentation[], dealId) => void;
 }
 
 interface State {
   previewVisible: boolean,
   previewImage: string,
   images?: any,
-  damageComponents: number;
-  damages: DamageDocumentation[];
+  damages: DamageDocumentation[],
+  dealId: String,
+  apiUrl: String
 }
 
 class DocumentsDataComponent extends React.Component<Props & FormComponentProps, State> {
@@ -33,18 +33,39 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
   constructor(props) {
     super(props)
 
-    this.state = Object.keys(props.documents).length === 0 ? new Documents() : props.documents;
+    const dealId = localStorage.getItem('dealId');
+    const docs = Object.keys(props.documents).length === 0 ? new Documents() : props.documents;
 
+    this.state = { 
+      previewVisible: docs.previewVisible,
+      previewImage: docs.previewImage,
+      images: docs.images,
+      damages: docs.damages,
+      dealId,
+      apiUrl: `${config.services.backend.api}admin/appraisal`
+    }
   }
 
-  apiUrl = 'http://127.0.0.1:9000/admin/appraisal'; //TODO: extract to config
-  dealId = '5bcd9245ce27da436982f68c';
+  formSubmit = () => {
+
+    let damageDocumentationData = this.state.damages.map(i => {
+      let data = Object.assign({}, i);
+      delete data.fileList;
+      return data;
+    });
+
+    this.props.uploadDamageDocs(damageDocumentationData, this.state.dealId);
+    this.props.saveDocumentationData(this.state.damages);
+
+    // this.props.navigateToSummaryPage(); //todo: implement it
+  }
 
   submitChanges = () => {
     //TODO: check changed values on the form
-    const formData = this.state;
+    const damageDocumentation = this.state.damages;
+    // this.props.uploadDamageDocs(damageDocumentation);
 
-    this.props.saveDocumentationData(formData as Documents);
+    // this.props.saveDocumentationData(formData.damages);
     this.props.navigateToComponentsForm();
   }
 
@@ -60,23 +81,26 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
   handleComponentSelectChange = (component: number) => (event) => {
     let updatedDamages = this.state.damages;
-    updatedDamages[component].name = event;
+    updatedDamages[component].component = event;
+    updatedDamages[component].name = `damage_${component}`;
     this.setState({ damages: updatedDamages });
-    // this.props.updateDamageDocs(this.state);
+    // this.props.uploadDamageDocs(this.state);
   }
 
   handlePositionSelectChange = (component: number) => (event) => {
     let updatedDamages = this.state.damages;
     updatedDamages[component].position = event;
+    updatedDamages[component].name = `damage_${component}`;
     this.setState({ damages: updatedDamages });
-    // this.props.updateDamageDocs(this.state);
+    // this.props.uploadDamageDocs(this.state);
   }
 
   handleDamageInputChange = (component: number) => (event) => {
     let updatedDamages = this.state.damages;
     updatedDamages[component].description = event.target.value;
+    updatedDamages[component].name = `damage_${component}`;
     this.setState({ damages: updatedDamages });
-    // this.props.updateDamageDocs(this.state);
+    // this.props.uploadDamageDocs(this.state);
   }
 
   handleDamageImageChange = (index) => {
@@ -90,7 +114,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
   renderDamageUpload = (name, fileList, label, index) => {
 
-    const { previewVisible, previewImage } = this.state;
+    const { previewVisible, previewImage, dealId, apiUrl } = this.state;
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -98,9 +122,9 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
         <Form.Item>
           {getFieldDecorator(name as string, { initialValue: fileList || null })(
             <Upload className="document-uploader"
-              action={`${this.apiUrl}/appraisalImage`}
+              action={`${apiUrl}/appraisalImage`}
               name='appraisalImage'
-              data={{ docPart: name, dealId: this.dealId }}
+              data={{ partName: name, dealId: dealId }}
               listType="picture-card"
               fileList={fileList}
               onPreview={this.handlePreview}
@@ -123,7 +147,6 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
   }
 
   handleDamageGenButtonClick = () => {
-    this.setState({ damageComponents: this.state.damageComponents + 1 })
     let newDamages = this.state.damages;
     newDamages.push(new DamageDocumentation());
     this.setState({ damages: newDamages })
@@ -191,8 +214,6 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
 
     const { getFieldDecorator } = this.props.form;
 
-    // todo: get fileLists from DB
-
     const carParts = [
       { name: 'frontLeft', title: 'Vorne links' },
       { name: 'frontRight', title: 'Vorne rechts' },
@@ -251,7 +272,7 @@ class DocumentsDataComponent extends React.Component<Props & FormComponentProps,
             </Link>
           </div>
           <div className="go-next">
-            {/* <Button>Generate PDF document</Button> */}
+            <Button onClick={this.formSubmit}>Summary</Button>
           </div>
         </div>
       </div>

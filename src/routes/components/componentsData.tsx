@@ -11,11 +11,12 @@ interface Props {
   navigateToInspectionForm: () => void,
   navigateToDocumentsForm: () => void,
   saveComponentsFormData: (formData: Components) => void,
-  uploadComponentData: (formData: Components) => void
+  uploadComponentData: (formData: Components, dealId: String) => void
 }
 
 interface State {
-  components: Components
+  components: Components,
+  dealId: String
 }
 
 class ComponentsDataComponent extends React.Component<Props & FormComponentProps, State> {
@@ -23,8 +24,11 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
   constructor(props) {
     super(props)
 
+    const dealId = localStorage.getItem('dealId');
+
     this.state = {
-      components: props.components
+      components: props.components,
+      dealId
     }
   }
 
@@ -143,7 +147,7 @@ class ComponentsDataComponent extends React.Component<Props & FormComponentProps
       }
 
       this.props.saveComponentsFormData(this.state.components);
-      this.props.uploadComponentData(this.state.components);
+      this.props.uploadComponentData(this.state.components, this.state.dealId);
       this.props.navigateToDocumentsForm();
     });
   }
